@@ -1,4 +1,4 @@
-# Speech WebHound
+# Voxetta 
 
 An audio recorder web application, where user is given a prompt, then reads off
 the prompt. Their recording is then stored to be used to help improve speech
