@@ -1,5 +1,7 @@
 # Voxetta 
 
+### This is not an officially supported Google product.
+
 An audio recorder web application, where user is given a prompt, then reads off
 the prompt. Their recording is then stored to be used to help improve speech
 recognition models.
