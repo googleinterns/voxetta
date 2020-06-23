@@ -2,8 +2,8 @@
   "version": 2,
   "tags": [
     {
-      "name": "voxetta-frontend",
-      "description": "An application with a title and an action counter",
+      "name": "VoxettaMain",
+      "description": "An open-source voice recording data collection app.",
       "properties": [
         {
           "name": "title",
