@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.speech.tools.voxetta.servlets;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import {LitElement, html} from 'lit-element';
 
-/ * * 
- * Servlet that handles the  "/" endpoint 
+/**
+ * Component encapsulating the Voxetta app.
  */
-@WebServlet("/")
-public class RootServlet extends HttpServlet {
-
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.getWriter().write("Welcome to the Voxetta API");
+export class VoxettaApp extends LitElement {
+    render() {
+        return html`
+            <main>
+                Welcome to the Voxetta app
+            </main>
+        `;
     }
 }
+
+customElements.define('vox-app', VoxettaApp);

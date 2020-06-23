@@ -6,7 +6,7 @@
     <version>1</version>
     <packaging>war</packaging>
     <properties>
-        <!-- This project uses java 8 (even tho its running on a java 11 cloudtop) -->
+        <!-- Configured for 1.8 (for now); compiled on 11 -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,7 +32,7 @@
             <version>2.8.6</version>
         </dependency>
 
-        <!-- is this the correct version? -->
+        <!-- TODO(eldrickb): is this the correct version? -->
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
@@ -41,7 +41,7 @@
     </dependencies>
 
     <build>
-        <!-- TODO: import UI on build -->
+        <!-- TODO(eldrickb): import UI on build -->
         <plugins>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
