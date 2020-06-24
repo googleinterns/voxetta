@@ -6,6 +6,8 @@
     "license": "MIT",
     "scripts": {
         "start": "es-dev-server --app-index index.html --node-resolve --open --watch",
+        "build": "rimraf dist && rollup -c rollup.config.js",
+        "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --compatibility none --open",
         "format": "prettier src/* --write",
         "lint": "eslint src/*"
     },
@@ -14,12 +16,18 @@
         "lit-element": "^2.0.1"
     },
     "devDependencies": {
-        "es-dev-server": "^1.5.0",
+        "@open-wc/building-rollup": "^1.3.1",
+        "@open-wc/rollup-plugin-html": "^1.1.0",
+        "@rollup/plugin-node-resolve": "^8.1.0",
+        "deepmerge": "^4.2.2",
+        "es-dev-server": "^1.55.1",
         "eslint": "^7.3.1",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-lit": "^1.2.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "prettier": "^2.0.5"
+        "prettier": "^2.0.5",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.18.0"
     }
 }
