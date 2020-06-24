@@ -2,6 +2,7 @@ import merge from 'deepmerge';
 // use createSpaConfig for bundling a Single Page App
 import {createSpaConfig} from '@open-wc/building-rollup';
 import resolve from '@rollup/plugin-node-resolve';
+import copy from 'rollup-plugin-copy';
 
 // use createBasicConfig to do regular JS to JS bundling
 // import { createBasicConfig } from '@open-wc/building-rollup';
@@ -34,5 +35,15 @@ export default merge(baseConfig, {
         dir: 'dist',
         format: 'cjs',
     },
-    plugins: [resolve()],
+    plugins: [
+        resolve(),
+        copy({
+            targets: [
+                {
+                    src: 'WEB-INF',
+                    dest: 'dist/',
+                },
+            ],
+        }),
+    ],
 });
