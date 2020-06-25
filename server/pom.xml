@@ -40,14 +40,13 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<!-- TODO(eldrickb): import UI on build -->
 		<plugins>
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>2.2.0</version>
 				<configuration>
-					<!-- TODO: set project ID. -->
+					<!-- TODO(eldrickb): set project ID. -->
 					<deploy.projectId>VOXETTA PROJECT ID</deploy.projectId>
 					<deploy.version>1</deploy.version>
 				</configuration>
