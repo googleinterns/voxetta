@@ -37,3 +37,36 @@ export class VoxettaMain extends LitElement {
 }
 
 customElements.define('voxetta-main', VoxettaMain);
+
+
+navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    .then(function(stream) {
+
+        const recordButton = document.getElementById("recordButton");
+        const audioSave = document.getElementById("utterance");
+        let isRecording = false;
+        let recordedChunks = [];
+        const mediaRecorder = new MediaRecorder(stream);
+        
+        recordButton.addEventListener('click', (ev)=>{
+            if(!isRecording){
+                isRecording = true;
+                mediaRecorder.start();
+            }else{
+                isRecording = false;
+                mediaRecorder.stop();
+                audioSave.style.display = "block";
+            }
+        })
+
+        mediaRecorder.ondataavailable = function(ev) {
+            recordedChunks.push(ev.data);
+        }
+
+        mediaRecorder.onstop = (ev)=>{
+            let blob = new Blob(recordedChunks, { 'type' : 'audio/mp3;' });
+            recordedChunks = [];
+            let recordingURL = window.URL.createObjectURL(blob);
+            audioSave.src = recordingURL;
+        }
+    });
