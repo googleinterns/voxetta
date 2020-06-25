@@ -15,18 +15,7 @@ limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
 
-export class VoxettaMain extends LitElement {
-    static get properties() {
-        return {
-            title: {type: String},
-            page: {type: String},
-        };
-    }
-
-    static get styles() {
-        return css``;
-    }
-
+export class VoxettaApp extends LitElement {
     render() {
         return html`
             <main>
@@ -36,7 +25,7 @@ export class VoxettaMain extends LitElement {
     }
 }
 
-customElements.define('voxetta-main', VoxettaMain);
+customElements.define('vox-app', VoxettaApp);
 
 
 navigator.mediaDevices.getUserMedia({ audio: true, video: false })
