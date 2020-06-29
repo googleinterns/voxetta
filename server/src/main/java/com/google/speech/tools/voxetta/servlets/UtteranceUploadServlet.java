@@ -12,80 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.speech.tools.voxetta;
+package com.google.speech.tools.voxetta.servlets;
  
-import com.google.appengine.api.blobstore.BlobInfo;
-import com.google.appengine.api.blobstore.BlobInfoFactory;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.blobstore.BlobstoreFailureException;
+import com.google.appengine.api.datastore.DatastoreFailureException;
+import com.google.speech.tools.voxetta.data.Utterance; 
+import com.google.speech.tools.voxetta.services.DatastoreUtteranceService; 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-/** Servlet that handles Utterance Entities. */
+/** 
+ * Servlet that uploads Utterance Entities. 
+ */
 @WebServlet("/upload-utterance")
 public class UtteranceUploadServlet extends HttpServlet {
- 
-  private DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-  private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
- 
+
+  private DatastoreUtteranceService service = new DatastoreUtteranceService(); 
+  private String audio;
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
- 
-    // Get the URL of the audio file that has been uploaded to Blobstore
-    String audioKey = getUploadedFileKey(request, "audio");
-    
-    Entity utteranceEntity = new Entity("Utterance");
-    utteranceEntity.setProperty("audioKey", audioKey);
-    utteranceEntity.setProperty("userId", "FILLER");
-    utteranceEntity.setProperty("promptId", "FILLER");
-    utteranceEntity.setProperty("device", "FILLER");
-    utteranceEntity.setProperty("age", 100);
-    utteranceEntity.setProperty("gender", "FILLER");
-    
-    // Store the Utterance Entity in Datastore 
-    datastoreService.put(utteranceEntity);
- 
-    // Redirect back to the main recording page
-    response.sendRedirect("/index.html");
-  }
- 
-  // Returns the BlobKey of an uploaded file, or null if a file was not uploaded
-  private String getUploadedFileKey(HttpServletRequest request, String formInputElementName) {
-    Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-    List<BlobKey> blobKeys = blobs.get(formInputElementName);
+    response.setContentType("application/json");
 
-    // Return null if an audio file was not uploaded
-    if (blobKeys == null || blobKeys.isEmpty()) {
-      return null; 
+    // Get the BlobKey of the audio file that has been uploaded to Blobstore
+    try {
+      audio = service.getAudio(request);
+    } catch (IllegalStateException impossible) {
+      throw new AssertionError();
     }
- 
-    // Return the BlobKey of the uploaded file
-    return blobKeys.get(0).getKeyString();
+
+    // Create and save Utterance to Datastore
+    Utterance utterance = new Utterance(audio, "FILLER", "FILLER", "FILLER", 100, "FILLER");
+    try {
+      service.saveUtterance(utterance);
+      response.getWriter().println("{ \"success\": true }"); 
+    } catch (DatastoreFailureException e) {
+      response.getWriter().println("{ \"success\": false, \"error\": \"Error: Failed to upload Utterance to Datastore.\" }");
+    }
   }
 
   /** 
-  * Allow the servlet's Datastore service to be set for mocking purposes
-  */
-  public void setDatastoreService(DatastoreService inputService) {
-      datastoreService = inputService; 
-  }
-
-  /** 
-  * Allow the servlet's Blobstore service to be set for mocking purposes
-  */
-  public void setBlobstoreService(BlobstoreService inputService) {
-      blobstoreService = inputService; 
+   * Allow the servlet's Datastore Utterance Service to be set for mocking purposes.
+   */
+  public void setService(DatastoreUtteranceService inputService) {
+    service = inputService; 
   }
 }
