@@ -13,49 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
+import {AudioRecorder} from './AudioRecorder';
 import {LitElement, html, css} from 'lit-element';
 
 export class VoxettaApp extends LitElement {
-    render() {
+    render() {  
         return html`
             <main>
                 Welcome to the Voxetta app
             </main>
+
         `;
     }
 }
 
 customElements.define('vox-app', VoxettaApp);
-
-
-navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-    .then(function(stream) {
-
-        const recordButton = document.getElementById("recordButton");
-        const audioSave = document.getElementById("utterance");
-        let isRecording = false;
-        let recordedChunks = [];
-        const mediaRecorder = new MediaRecorder(stream);
-        
-        recordButton.addEventListener('click', (ev)=>{
-            if(!isRecording){
-                isRecording = true;
-                mediaRecorder.start();
-            }else{
-                isRecording = false;
-                mediaRecorder.stop();
-                audioSave.style.display = "block";
-            }
-        })
-
-        mediaRecorder.ondataavailable = function(ev) {
-            recordedChunks.push(ev.data);
-        }
-
-        mediaRecorder.onstop = (ev)=>{
-            let blob = new Blob(recordedChunks, { 'type' : 'audio/mp3;' });
-            recordedChunks = [];
-            let recordingURL = window.URL.createObjectURL(blob);
-            audioSave.src = recordingURL;
-        }
-    });
