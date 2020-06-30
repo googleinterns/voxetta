@@ -78,7 +78,7 @@ public final class UtteranceUploadServletTest extends Mockito {
     System.out.println(stringWriter.toString());
 
     // Assert that the function printed a JSON indicating success
-    Assert.assertTrue(stringWriter.toString().contains(StatusResponse.convertToJson(new StatusResponse(true))));
+    Assert.assertTrue(stringWriter.toString().contains(new StatusResponse(true).toJson()));
   }
 
   @Test
@@ -102,6 +102,6 @@ public final class UtteranceUploadServletTest extends Mockito {
 
     // Assert that the function printed a JSON indicating failure containing the appropriate error message
     Assert.assertTrue(stringWriter.toString().contains(
-        StatusResponse.convertToJson(new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore."))));
+        new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore.").toJson()));
   }
 }

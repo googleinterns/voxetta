@@ -42,11 +42,11 @@ public class BlobstoreLinkServlet extends HttpServlet {
     // Create and return a Blobstore Upload URL  
     try {
       String uploadUrl = service.getAudioBlobUploadUrl();
-      String successJson = StatusResponse.convertToJson(new UrlResponse(true, uploadUrl));
+      String successJson = new UrlResponse(true, uploadUrl).toJson();
       response.getWriter().println(successJson); 
     } catch (BlobstoreFailureException e) {
-      String failureJson = ErrorResponse.convertToJson(
-          new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore."));
+      String failureJson = 
+          new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore.").toJson();
       response.getWriter().println(failureJson);
     }
   }

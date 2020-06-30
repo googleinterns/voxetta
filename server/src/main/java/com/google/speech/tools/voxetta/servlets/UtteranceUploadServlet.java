@@ -57,11 +57,11 @@ public class UtteranceUploadServlet extends HttpServlet {
 
     try {
       service.saveUtterance(utterance);
-      String successJson = StatusResponse.convertToJson(new StatusResponse(true));
+      String successJson = new StatusResponse(true).toJson();
       response.getWriter().println(successJson); 
     } catch (DatastoreFailureException e) {
-      String failureJson = ErrorResponse.convertToJson(
-          new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore."));
+      String failureJson = 
+          new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore.").toJson();
       response.getWriter().println(failureJson);
     }
   }

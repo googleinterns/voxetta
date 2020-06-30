@@ -73,9 +73,10 @@ public final class BlobstoreLinkServletTest extends Mockito {
     // Verify that the 'setContentType' function was truly called
     verify(response, atLeast(1)).setContentType("application/json"); 
 
+    System.out.println(stringWriter.toString());
+
     // Assert that the function printed a JSON indicating success containing the appropriate URL 
-    Assert.assertTrue(stringWriter.toString().contains(
-        StatusResponse.convertToJson(new UrlResponse(true, "url"))));
+    Assert.assertTrue(stringWriter.toString().contains(new UrlResponse(true, "url").toJson()));
   }
 
   @Test
@@ -95,7 +96,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating failure containing the appropriate error message
-    Assert.assertTrue(stringWriter.toString().contains(ErrorResponse.convertToJson(
-          new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore."))));
+    Assert.assertTrue(stringWriter.toString().contains(
+        new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore.").toJson()));
   }
 }

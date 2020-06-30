@@ -35,9 +35,8 @@ public class StatusResponse {
   /** 
    * Returns a JSON representation of a StatusResponse.  
    */
-  public static String convertToJson(StatusResponse response) {
+  public String toJson() {
     Gson gson = new Gson();
-    String json = gson.toJson(response);
-    return json;
+    return gson.toJson(this);
   }
 }
