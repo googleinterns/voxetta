@@ -16,8 +16,10 @@ package com.google.speech.tools.voxetta.servlets;
  
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
 import com.google.appengine.api.datastore.DatastoreFailureException;
+import com.google.common.annotations.VisibleForTesting; 
 import com.google.speech.tools.voxetta.data.Utterance; 
 import com.google.speech.tools.voxetta.services.DatastoreUtteranceService; 
+import com.google.speech.tools.voxetta.services.UtteranceService; 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/upload-utterance")
 public class UtteranceUploadServlet extends HttpServlet {
 
-  private DatastoreUtteranceService service = new DatastoreUtteranceService(); 
+  private UtteranceService service = new DatastoreUtteranceService(); 
   private String audio;
 
   @Override
@@ -38,18 +40,24 @@ public class UtteranceUploadServlet extends HttpServlet {
     response.setContentType("application/json");
 
     // Get the BlobKey of the audio file that has been uploaded to Blobstore
-    try {
-      audio = service.getAudio(request);
-    } catch (IllegalStateException impossible) {
-      throw new AssertionError();
-    }
+    audio = service.getAudio(request);
 
     // Create and save Utterance to Datastore
-    Utterance utterance = new Utterance(audio, "FILLER", "FILLER", "FILLER", 100, "FILLER");
+    Utterance utterance = new Utterance.UtteranceBuilder()
+      .setAudio("FILLER")
+      .setUserId("FILLER")
+      .setPromptId("FILLER")
+      .setDevice("FILLER")
+      .setAge(100)
+      .setGender("FILLER")
+      .build();
+
     try {
       service.saveUtterance(utterance);
+      // TO DO (ASHLEY): refactor JSON in future pr
       response.getWriter().println("{ \"success\": true }"); 
     } catch (DatastoreFailureException e) {
+      // TO DO (ASHLEY): refactor JSON in future pr
       response.getWriter().println("{ \"success\": false, \"error\": \"Error: Failed to upload Utterance to Datastore.\" }");
     }
   }
@@ -57,7 +65,8 @@ public class UtteranceUploadServlet extends HttpServlet {
   /** 
    * Allow the servlet's Datastore Utterance Service to be set for mocking purposes.
    */
-  public void setService(DatastoreUtteranceService inputService) {
+  @VisibleForTesting
+  public void setService(UtteranceService inputService) {
     service = inputService; 
   }
 }
