@@ -62,7 +62,7 @@ public final class UtteranceUploadServletTest extends Mockito {
   @Test
   public void doPost_SuccessfulDatastoreUpload_ReturnsSuccess() throws Exception {
     // Return the string 'audioBlobKey' when the mocked Datastore Utterance Service is called
-    when(service.getAudio(request)).thenReturn("audioBlobKey");
+    when(service.getAudioBlob(request)).thenReturn("audioBlobKey");
 
     // Create a writer that will record the doPost function's printed text
     StringWriter stringWriter = new StringWriter();
@@ -84,7 +84,7 @@ public final class UtteranceUploadServletTest extends Mockito {
   @Test
   public void doPost_UnsuccessfulDatastoreUpload_ReturnsFailure() throws Exception {
     // Return the string 'audioBlobKey' when the mocked Datastore Utterance Service is called
-    when(service.getAudio(request)).thenReturn("audioBlobKey");
+    when(service.getAudioBlob(request)).thenReturn("audioBlobKey");
 
     // Throw a DatastoreFailureException when the saveUtterance() method is called
     Mockito.doThrow(DatastoreFailureException.class).when(service).saveUtterance(any(Utterance.class));

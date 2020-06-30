@@ -60,7 +60,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
   @Test
   public void doGet_SuccessfulUrlRetrieval_ReturnsUrl() throws Exception {
     // Return the string 'url' when the mocked Datastore Utterance Service is called 
-    when(service.getFormUrl()).thenReturn("url");
+    when(service.getAudioBlobUploadUrl()).thenReturn("url");
 
     // Create a writer that will record the doGet function's printed text
     StringWriter stringWriter = new StringWriter();
@@ -81,7 +81,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
   @Test
   public void doGet_UnsuccessfulUrlRetrieval_ReturnsFailure() throws Exception {
     // Throw a BlobstoreFailureException when the mocked Datastore Utterance Service is called 
-    when(service.getFormUrl()).thenThrow(BlobstoreFailureException.class);
+    when(service.getAudioBlobUploadUrl()).thenThrow(BlobstoreFailureException.class);
 
     // Create a writer that will record the doGet function's printed text
     StringWriter stringWriter = new StringWriter();

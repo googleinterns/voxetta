@@ -43,7 +43,7 @@ public class UtteranceUploadServlet extends HttpServlet {
     response.setContentType("application/json");
 
     // Get the BlobKey of the audio file that has been uploaded to Blobstore
-    audio = service.getAudio(request);
+    audio = service.getAudioBlob(request);
 
     // Create and save Utterance to Datastore
     Utterance utterance = new Utterance.UtteranceBuilder()
