@@ -14,7 +14,11 @@
 
 package com.google.speech.tools.voxetta.services;
 
-import com.google.speech.tools.voxetta.data.Utterance; 
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.common.annotations.VisibleForTesting; 
+import com.google.speech.tools.voxetta.data.Utterance;
+import javax.servlet.http.HttpServletRequest; 
 
 /** 
  * Functionality necessary to successfully upload Utterances to an external database.   
@@ -25,4 +29,14 @@ public interface UtteranceService {
    * Saves an Utterance to an external database.  
    */
   public void saveUtterance(Utterance utterance);
+
+  /** 
+   * Returns a reference to the just-uploaded audio file. 
+   */
+  public String getAudio(HttpServletRequest request);
+
+  /** 
+   * Return an upload URL that redirects to the Utterance Upload Servlet.
+   */
+  public String getFormUrl(); 
 }
