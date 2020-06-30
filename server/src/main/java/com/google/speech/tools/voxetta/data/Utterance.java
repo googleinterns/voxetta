@@ -19,6 +19,9 @@ package com.google.speech.tools.voxetta.data;
  */
 public final class Utterance {
 
+  private static final int MIN_ALLOWED_AGE = 1;
+  private static final int MAX_ALLOWED_AGE = 120;
+
   private String audio;
   private String userId;
   private String promptId;
@@ -35,20 +38,20 @@ public final class Utterance {
    * @param device The name of the device the speaker is using to record audio files. Must be non-null.
    * @param age The age of the speaker. Must be a positive integer between 1 and 120, inclusive. 
    * @param gender The gender of the speaker. Must be non-null.
-   */
+   */ 
   public Utterance(String audio, String userId, String promptId, String device, int age, String gender) {
-    verifyConstructorLegality(audio, userId, promptId, device, age, gender);
-
     this.audio = audio; 
     this.userId = userId; 
     this.promptId = promptId;
     this.device = device; 
     this.age = age; 
     this.gender = gender; 
+
+    verifyConstructorLegality();
   }
 
   // Ensure the legality of the Utterance constructor's arguments
-  private void verifyConstructorLegality(String audio, String userId, String promptId, String device, int age, String gender) {
+  private void verifyConstructorLegality() {
     // Ensure no applicable argument is null
     if (audio == null) { throw new IllegalArgumentException("audio cannot be null"); }
     if (userId == null) { throw new IllegalArgumentException("userId cannot be null"); }
@@ -57,7 +60,7 @@ public final class Utterance {
     if (gender == null) { throw new IllegalArgumentException("gender cannot be null"); }
 
     // Ensure age is between 1 and 120, inclusive
-    if (!(1 <= age && age <= 120)) { throw new IllegalArgumentException("age must be between 1 and 120, inclusive"); }
+    if (!(MIN_ALLOWED_AGE <= age && age <= MAX_ALLOWED_AGE)) { throw new IllegalArgumentException("age must be between 1 and 120, inclusive"); }
   }
 
   /**
@@ -96,9 +99,78 @@ public final class Utterance {
   }
 
   /**
-   * Return gender of the speaker.
+   * Return the gender of the speaker.
    */
   public String getGender() {
     return gender;
+  }
+
+  /**
+   * A builder for the Utterance object. 
+   */
+  public static class UtteranceBuilder {
+    private String audio;
+    private String userId;
+    private String promptId;
+    private String device; 
+    private int age;
+    private String gender; 
+
+    public UtteranceBuilder() {}
+
+    /**
+     * Set the reference to the audio file.
+     */
+    public UtteranceBuilder setAudio(String audio) {
+      this.audio = audio;
+      return this;
+    }
+
+    /**
+     * Set the id of the speaker.
+     */
+    public UtteranceBuilder setUserId(String userId) {
+      this.userId = userId;
+      return this;
+    }
+
+    /**
+     * Set the id of the prompt the audio file is responding to.
+     */
+    public UtteranceBuilder setPromptId(String promptId) {
+      this.promptId = promptId;
+      return this;
+    }
+
+    /**
+     * Set the name of the device the speaker is using to record audio files.
+     */
+    public UtteranceBuilder setDevice(String device) {
+      this.device = device;
+      return this;
+    }
+
+    /**
+     * Set the age of the speaker.
+     */
+    public UtteranceBuilder setAge(int age) {
+      this.age = age;
+      return this;
+    }
+
+    /**
+     * Set the gender of the speaker.
+     */
+    public UtteranceBuilder setGender(String gender) {
+      this.gender = gender;
+      return this;
+    }
+
+    /**
+     * Return a newly built Utterance.
+     */
+    public Utterance build() {
+      return new Utterance(this.userId, this.audio, this.promptId, this.device, this.age, this.gender);
+    }
   }
 }
