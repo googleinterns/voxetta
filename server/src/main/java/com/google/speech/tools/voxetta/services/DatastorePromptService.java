@@ -46,13 +46,6 @@ public class DatastorePromptService implements PromptService {
     public DatastorePromptService() {
     }
 
-    /**
-     * Adds a prompt
-     *
-     * @param type Type of the prompt. Either "text" or "body".
-     * @param body The body of the prompt. Is either a phrase or image link.
-     * @return a boolean denoting success or failure.
-     */
     @Override
     public boolean savePrompt(String type, String body) {
 
@@ -78,6 +71,7 @@ public class DatastorePromptService implements PromptService {
      *
      * @return one prompt from the Prompt database.
      */
+    @Override
     public String getOnePrompt() {
 
         // get the prompt

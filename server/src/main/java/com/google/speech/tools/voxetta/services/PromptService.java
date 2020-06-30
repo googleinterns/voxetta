@@ -16,7 +16,24 @@
 
 package com.google.speech.tools.voxetta.services;
 
+/**
+ * Outlines functions necessary to implement the Prompt Service.
+ */
 public interface PromptService {
-
+    
+    /**
+     * Adds a prompt to the database.
+     *
+     * @param type Type of the prompt. Either "text" or "body".
+     * @param body The body of the prompt. Is either a phrase or image link.
+     * @return a boolean denoting success or failure.
+     */
     public boolean savePrompt(String type, String body);
+
+    /**
+     * Retrieves one prompt from the database.
+     *
+     * @return one prompt from the Prompt database.
+     */
+    public String getOnePrompt();
 }
