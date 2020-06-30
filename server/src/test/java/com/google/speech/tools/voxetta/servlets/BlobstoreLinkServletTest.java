@@ -15,6 +15,9 @@
 package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
+import com.google.speech.tools.voxetta.data.ErrorResponse;
+import com.google.speech.tools.voxetta.data.StatusResponse;
+import com.google.speech.tools.voxetta.data.UrlResponse; 
 import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -71,7 +74,8 @@ public final class BlobstoreLinkServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating success containing the appropriate URL 
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": true, \"url\": \"url\" }"));
+    Assert.assertTrue(stringWriter.toString().contains(
+        StatusResponse.convertToJson(new UrlResponse(true, "url"))));
   }
 
   @Test
@@ -91,7 +95,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating failure containing the appropriate error message
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": false, " +
-        "\"error\": \"Error: Failed to upload audio file to Blobstore.\" }"));
+    Assert.assertTrue(stringWriter.toString().contains(ErrorResponse.convertToJson(
+          new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore."))));
   }
 }
