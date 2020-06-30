@@ -16,10 +16,13 @@
 
 package com.google.speech.tools.voxetta.data;
 
+/**
+ * Client-facing schema for Prompts.
+ */
 public class Prompt {
 
     private final long id;
-//    private final VendorName;
+    //    private final VendorName;
 //    private final ProjectId;
     private final String type;
     private final String body;

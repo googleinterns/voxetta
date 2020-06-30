@@ -18,6 +18,10 @@ package com.google.speech.tools.voxetta.data;
 
 import com.google.appengine.api.datastore.Entity;
 
+
+/**
+ * Builder pattern for Prompts.
+ */
 public class PromptBuilder {
 
     private long id;
@@ -42,6 +46,12 @@ public class PromptBuilder {
         return this;
     }
 
+    /**
+     * Builds a Prompt instance with the properties of a Prompt entity.
+     *
+     * @param entity Datastore entity.
+     * @return a Prompt instnace with the properties of the entity.
+     */
     public Prompt buildFromEntity(Entity entity) {
         return this
             .setId((long) entity.getKey().getId())
