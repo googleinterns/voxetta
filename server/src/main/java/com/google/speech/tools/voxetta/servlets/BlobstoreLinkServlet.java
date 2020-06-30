@@ -15,7 +15,9 @@
 package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
+import com.google.common.annotations.VisibleForTesting; 
 import com.google.speech.tools.voxetta.services.DatastoreUtteranceService;
+import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/blobstore-utterance-upload-link")
 public class BlobstoreLinkServlet extends HttpServlet {
 
-  private DatastoreUtteranceService service = new DatastoreUtteranceService(); 
+  private UtteranceService service = new DatastoreUtteranceService(); 
  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,6 +41,7 @@ public class BlobstoreLinkServlet extends HttpServlet {
       String uploadUrl = service.getFormUrl();
       response.getWriter().println("{ \"success\": true, \"url\": \"" + uploadUrl + "\" }"); 
     } catch (BlobstoreFailureException e) {
+      // TO DO (ASHLEY): refactor JSON in future pr
       response.getWriter().println("{ \"success\": false, \"error\": \"Error: Failed to upload audio file to Blobstore.\" }");
     }
   }
@@ -46,7 +49,8 @@ public class BlobstoreLinkServlet extends HttpServlet {
   /** 
    * Allow the servlet's Datastore Utterance Service to be set for mocking purposes.
    */
-  public void setService(DatastoreUtteranceService inputService) {
+  @VisibleForTesting
+  public void setService(UtteranceService inputService) {
     service = inputService; 
   }
 }
