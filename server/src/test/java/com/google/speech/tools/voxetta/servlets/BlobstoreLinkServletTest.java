@@ -73,8 +73,6 @@ public final class BlobstoreLinkServletTest extends Mockito {
     // Verify that the 'setContentType' function was truly called
     verify(response, atLeast(1)).setContentType("application/json"); 
 
-    System.out.println(stringWriter.toString());
-
     // Assert that the function printed a JSON indicating success containing the appropriate URL 
     Assert.assertTrue(stringWriter.toString().contains(new UrlResponse(true, "url").toJson()));
   }
