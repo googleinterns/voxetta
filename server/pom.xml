@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.google.speech.tools.voxetta</groupId>
-    <artifactId>Voxetta</artifactId>
-    <version>1</version>
-    <packaging>war</packaging>
-    <properties>
-        <!-- Configured for 1.8 (for now); compiled on 11 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-    </properties>
-
-    <dependencies>
-        <dependency>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.google.sps</groupId>
+	<artifactId>Voxetta</artifactId>
+	<version>1</version>
+	<packaging>war</packaging>
+	<properties>
+		<!-- Configured for 1.8 (for now); compiled on 11 -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+	<dependencies>
+		<dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-labs</artifactId>
             <version>1.9.60</version>
@@ -71,21 +72,54 @@
             <version>2.17.0</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
-
-    <build>
-        <!-- TODO(eldrickb): import UI on build -->
-        <plugins>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<configuration>
+					<!-- TODO(eldrickb): set project ID. -->
+					<deploy.projectId>VOXETTA PROJECT ID</deploy.projectId>
+					<deploy.version>1</deploy.version>
+				</configuration>
+			</plugin>
             <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>appengine-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <!-- TODO: set project ID. -->
-                    <deploy.projectId>VOXETTA PROJECT ID</deploy.projectId>
-                    <deploy.version>1</deploy.version>
+                    <warSourceDirectory>../ui/dist/</warSourceDirectory>
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+                    <execution>
+						<id>npm run build (compile)</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>compile</phase>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+                <configuration>
+                    <workingDirectory>
+                        ../ui
+                    </workingDirectory>
+                </configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
