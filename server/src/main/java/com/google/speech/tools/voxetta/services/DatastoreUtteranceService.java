@@ -22,6 +22,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.common.annotations.VisibleForTesting; 
 import com.google.speech.tools.voxetta.data.Utterance; 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class DatastoreUtteranceService implements UtteranceService {
   private DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
   private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
+  @Override 
   public void saveUtterance(Utterance utterance) {
     // Create and initialize a new Utterance Entity
     Entity utteranceEntity = new Entity("Utterance");
@@ -49,10 +51,8 @@ public class DatastoreUtteranceService implements UtteranceService {
     // Store the Utterance Entity in Datastore 
     datastoreService.put(utteranceEntity); 
   }
-
-  /** 
-   * Returns the BlobKey of the just-uploaded audio file. 
-   */
+  
+  @Override
   public String getAudio(HttpServletRequest request) {
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get("audio");
@@ -66,9 +66,7 @@ public class DatastoreUtteranceService implements UtteranceService {
     return blobKeys.get(0).getKeyString();
   }
 
-  /** 
-   * Return a Blobstore Upload URL that redirects to the Utterance Upload Servlet.
-   */
+  @Override
   public String getFormUrl() {
     return blobstoreService.createUploadUrl("/upload-utterance"); 
   }
@@ -76,6 +74,7 @@ public class DatastoreUtteranceService implements UtteranceService {
   /** 
    * Allow the servlet's Datastore service to be set for mocking purposes.
    */
+  @VisibleForTesting
   public void setDatastoreService(DatastoreService inputService) {
     datastoreService = inputService; 
   }
@@ -83,6 +82,7 @@ public class DatastoreUtteranceService implements UtteranceService {
   /** 
    * Allow the servlet's Blobstore service to be set for mocking purposes.
    */
+  @VisibleForTesting
   public void setBlobstoreService(BlobstoreService inputService) {
     blobstoreService = inputService; 
   }
