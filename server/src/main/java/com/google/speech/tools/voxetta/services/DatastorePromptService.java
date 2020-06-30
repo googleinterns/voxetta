@@ -1,0 +1,138 @@
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.google.speech.tools.voxetta.services;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
+import com.google.appengine.api.datastore.FetchOptions.Builder;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+
+
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.gson.Gson;
+
+import com.google.speech.tools.voxetta.data.Prompt;
+import com.google.speech.tools.voxetta.data.PromptBuilder;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Implements prompt service using Google Datastore API.
+ */
+public class DatastorePromptService implements PromptService {
+
+    private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    private Gson gson = new Gson();
+
+    public DatastorePromptService() {
+    }
+
+    /**
+     * Adds a prompt
+     *
+     * @param type Type of the prompt. Either "text" or "body".
+     * @param body The body of the prompt. Is either a phrase or image link.
+     * @return a boolean denoting success or failure.
+     */
+    @Override
+    public boolean savePrompt(String type, String body) {
+
+        // TODO: validation
+
+        Entity promptEntity = new Entity("Prompt");
+
+        promptEntity.setProperty("type", type);
+        promptEntity.setProperty("body", body);
+
+        promptEntity.setProperty("read", 0);
+
+        datastore.put(promptEntity);
+
+        return true;
+    }
+
+    /**
+     * Returns one prompt from the database.
+     * <p>
+     * When it is retrieved, its "read" property is updated to 1. Once that happens, it can no
+     * longer be retrieved via this function.
+     *
+     * @return one prompt from the Prompt database.
+     */
+    public String getOnePrompt() {
+
+        // get the prompt
+        Filter unreadFilter = new FilterPredicate("read", FilterOperator.EQUAL, 0);
+        List<Entity> unreadQueries = datastore.prepare(new Query("Prompt")
+            .setFilter(unreadFilter))
+            .asList(Builder.withLimit(1));
+
+        // if none, return empty json
+        if (unreadQueries.size() < 1) {
+            return gson.toJson(unreadQueries);
+        }
+
+        Entity retrievedEntity = unreadQueries.get(0);
+
+        // set prompt as read
+        retrievedEntity.setProperty("read", 1);
+        datastore.put(retrievedEntity);
+
+        // return the prompt as JSON
+        Prompt retrievedPrompt = new PromptBuilder().buildFromEntity(retrievedEntity);
+        return gson.toJson(retrievedPrompt);
+    }
+
+    /**
+     * Resets the read status of all prompts to 0 so they can be used again. Primarily for testing.
+     *
+     * @return a boolean denoting success or failure.
+     */
+    public boolean resetAllToUnread() {
+
+        Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
+
+        for (Entity entity : iterableResults) {
+            entity.setProperty("read", 0);
+            datastore.put(entity);
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns all prompts as entities. Primarily for testing.
+     *
+     * @return JSON of all prompts as entities.
+     */
+    public String getAllPrompts() {
+
+        Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
+
+        LinkedList<Entity> prompts = new LinkedList<Entity>();
+        for (Entity entity : iterableResults) {
+            prompts.add(entity);
+        }
+
+        return gson.toJson(prompts);
+    }
+}
