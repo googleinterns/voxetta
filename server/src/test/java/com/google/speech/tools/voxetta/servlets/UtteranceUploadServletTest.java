@@ -16,7 +16,7 @@ package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.speech.tools.voxetta.data.Utterance; 
-import com.google.speech.tools.voxetta.services.DatastoreUtteranceService;
+import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +36,7 @@ import org.mockito.Mockito;
 @RunWith(JUnit4.class)
 public final class UtteranceUploadServletTest extends Mockito {
 
-  private DatastoreUtteranceService service; 
+  private UtteranceService service; 
   private UtteranceUploadServlet servlet; 
   private HttpServletRequest request; 
   private HttpServletResponse response;
@@ -45,7 +45,7 @@ public final class UtteranceUploadServletTest extends Mockito {
   @Before
   public void setUpMocksAndServletInstance() {
     // Mock the Datastore Utterance Service
-    service = Mockito.mock(DatastoreUtteranceService.class);
+    service = Mockito.mock(UtteranceService.class);
 
     // Create a new Blobstore Link Servlet & set its service 
     // to be the mocked Datastore Utterance Service
