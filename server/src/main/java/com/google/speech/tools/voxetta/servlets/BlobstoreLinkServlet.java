@@ -16,6 +16,9 @@ package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
 import com.google.common.annotations.VisibleForTesting; 
+import com.google.speech.tools.voxetta.data.ErrorResponse;
+import com.google.speech.tools.voxetta.data.StatusResponse;
+import com.google.speech.tools.voxetta.data.UrlResponse; 
 import com.google.speech.tools.voxetta.services.DatastoreUtteranceService;
 import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.IOException;
@@ -38,11 +41,13 @@ public class BlobstoreLinkServlet extends HttpServlet {
 
     // Create and return a Blobstore Upload URL  
     try {
-      String uploadUrl = service.getFormUrl();
-      response.getWriter().println("{ \"success\": true, \"url\": \"" + uploadUrl + "\" }"); 
+      String uploadUrl = service.getAudioBlobUploadUrl();
+      String successJson = new UrlResponse(true, uploadUrl).toJson();
+      response.getWriter().println(successJson); 
     } catch (BlobstoreFailureException e) {
-      // TO DO (ASHLEY): refactor JSON in future pr
-      response.getWriter().println("{ \"success\": false, \"error\": \"Error: Failed to upload audio file to Blobstore.\" }");
+      String failureJson = 
+          new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore.").toJson();
+      response.getWriter().println(failureJson);
     }
   }
 

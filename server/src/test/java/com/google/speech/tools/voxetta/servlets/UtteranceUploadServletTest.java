@@ -15,7 +15,9 @@
 package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.speech.tools.voxetta.data.Utterance; 
+import com.google.speech.tools.voxetta.data.Utterance;
+import com.google.speech.tools.voxetta.data.ErrorResponse; 
+import com.google.speech.tools.voxetta.data.StatusResponse;
 import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -60,7 +62,7 @@ public final class UtteranceUploadServletTest extends Mockito {
   @Test
   public void doPost_SuccessfulDatastoreUpload_ReturnsSuccess() throws Exception {
     // Return the string 'audioBlobKey' when the mocked Datastore Utterance Service is called
-    when(service.getAudio(request)).thenReturn("audioBlobKey");
+    when(service.getAudioBlob(request)).thenReturn("audioBlobKey");
 
     // Create a writer that will record the doPost function's printed text
     StringWriter stringWriter = new StringWriter();
@@ -73,14 +75,16 @@ public final class UtteranceUploadServletTest extends Mockito {
     // Verify that the 'setContentType' function was truly called
     verify(response, atLeast(1)).setContentType("application/json"); 
 
+    System.out.println(stringWriter.toString());
+
     // Assert that the function printed a JSON indicating success
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": true }"));
+    Assert.assertTrue(stringWriter.toString().contains(new StatusResponse(true).toJson()));
   }
 
   @Test
   public void doPost_UnsuccessfulDatastoreUpload_ReturnsFailure() throws Exception {
     // Return the string 'audioBlobKey' when the mocked Datastore Utterance Service is called
-    when(service.getAudio(request)).thenReturn("audioBlobKey");
+    when(service.getAudioBlob(request)).thenReturn("audioBlobKey");
 
     // Throw a DatastoreFailureException when the saveUtterance() method is called
     Mockito.doThrow(DatastoreFailureException.class).when(service).saveUtterance(any(Utterance.class));
@@ -97,7 +101,7 @@ public final class UtteranceUploadServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating failure containing the appropriate error message
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": false, "
-    + "\"error\": \"Error: Failed to upload Utterance to Datastore.\" }"));
+    Assert.assertTrue(stringWriter.toString().contains(
+        new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore.").toJson()));
   }
 }

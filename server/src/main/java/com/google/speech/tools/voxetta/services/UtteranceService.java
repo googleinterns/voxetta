@@ -33,10 +33,10 @@ public interface UtteranceService {
   /** 
    * Returns a reference to the just-uploaded audio file. 
    */
-  public String getAudio(HttpServletRequest request);
+  public String getAudioBlob(HttpServletRequest request);
 
   /** 
    * Return an upload URL that redirects to the Utterance Upload Servlet.
    */
-  public String getFormUrl(); 
+  public String getAudioBlobUploadUrl(); 
 }

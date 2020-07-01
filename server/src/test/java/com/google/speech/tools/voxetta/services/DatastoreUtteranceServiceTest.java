@@ -85,7 +85,7 @@ public final class DatastoreUtteranceServiceTest extends Mockito {
   }
 
   @Test 
-  public void getAudio_BlobUploadCallbackRequestValidUpload_ReturnsKey() throws Exception {
+  public void getAudioBlob_BlobUploadCallbackRequestValidUpload_ReturnsKey() throws Exception {
     // Create a list of BlobKeys 
     BlobKey blobKey = new BlobKey("BlobKey"); 
     List<BlobKey> blobKeys = new ArrayList<>();  
@@ -97,36 +97,36 @@ public final class DatastoreUtteranceServiceTest extends Mockito {
 
     // Ensure the correct key was returned
     when(blobstoreService.getUploads(any(HttpServletRequest.class))).thenReturn(blobs);
-    String key = service.getAudio(request);
+    String key = service.getAudioBlob(request);
     Assert.assertEquals(key, "BlobKey");
   }
 
   @Test 
-  public void getAudio_BlobUploadCallbackRequestInvalidUpload_ReturnsNull() throws Exception {
+  public void getAudioBlob_BlobUploadCallbackRequestInvalidUpload_ReturnsNull() throws Exception {
      // Create an empty map of blobs (no audio file was uploaded)
     Map<String, List<BlobKey>> blobs = new HashMap<>(); 
 
     // Ensure no key was returned
     when(blobstoreService.getUploads(any(HttpServletRequest.class))).thenReturn(blobs);
-    Assert.assertNull(service.getAudio(request));
+    Assert.assertNull(service.getAudioBlob(request));
   }
 
   @Test (expected = IllegalStateException.class)
-  public void getAudio_NotBlobUploadCallbackRequest_ThrowsIllegalStateException() throws Exception {
+  public void getAudioBlob_NotBlobUploadCallbackRequest_ThrowsIllegalStateException() throws Exception {
     when(blobstoreService.getUploads(any(HttpServletRequest.class))).thenThrow(IllegalStateException.class);
-    String audio = service.getAudio(request);
+    String audio = service.getAudioBlob(request);
   }
 
   @Test 
-  public void getFormUrl_BlobstoreConnectionSuccess_ReturnsUrl() throws Exception {
+  public void getAudioBlobUploadUrl_BlobstoreConnectionSuccess_ReturnsUrl() throws Exception {
     when(blobstoreService.createUploadUrl("/upload-utterance")).thenReturn("url");
-    String url = service.getFormUrl();
+    String url = service.getAudioBlobUploadUrl();
     Assert.assertEquals("url", url);
   }
 
   @Test (expected = BlobstoreFailureException.class)
-  public void getFormUrl_BlobstoreConnectionFailure_ThrowsBlobstoreFailureException() throws Exception {
+  public void getAudioBlobUploadUrl_BlobstoreConnectionFailure_ThrowsBlobstoreFailureException() throws Exception {
     when(blobstoreService.createUploadUrl("/upload-utterance")).thenThrow(BlobstoreFailureException.class);
-    String url = service.getFormUrl();
+    String url = service.getAudioBlobUploadUrl();
   }
 }

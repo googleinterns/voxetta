@@ -53,7 +53,7 @@ public class DatastoreUtteranceService implements UtteranceService {
   }
   
   @Override
-  public String getAudio(HttpServletRequest request) {
+  public String getAudioBlob(HttpServletRequest request) {
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get("audio");
 
@@ -67,7 +67,7 @@ public class DatastoreUtteranceService implements UtteranceService {
   }
 
   @Override
-  public String getFormUrl() {
+  public String getAudioBlobUploadUrl() {
     return blobstoreService.createUploadUrl("/upload-utterance"); 
   }
 

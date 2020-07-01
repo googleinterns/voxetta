@@ -15,6 +15,9 @@
 package com.google.speech.tools.voxetta.servlets;
 
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
+import com.google.speech.tools.voxetta.data.ErrorResponse;
+import com.google.speech.tools.voxetta.data.StatusResponse;
+import com.google.speech.tools.voxetta.data.UrlResponse; 
 import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -57,7 +60,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
   @Test
   public void doGet_SuccessfulUrlRetrieval_ReturnsUrl() throws Exception {
     // Return the string 'url' when the mocked Datastore Utterance Service is called 
-    when(service.getFormUrl()).thenReturn("url");
+    when(service.getAudioBlobUploadUrl()).thenReturn("url");
 
     // Create a writer that will record the doGet function's printed text
     StringWriter stringWriter = new StringWriter();
@@ -71,13 +74,13 @@ public final class BlobstoreLinkServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating success containing the appropriate URL 
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": true, \"url\": \"url\" }"));
+    Assert.assertTrue(stringWriter.toString().contains(new UrlResponse(true, "url").toJson()));
   }
 
   @Test
   public void doGet_UnsuccessfulUrlRetrieval_ReturnsFailure() throws Exception {
     // Throw a BlobstoreFailureException when the mocked Datastore Utterance Service is called 
-    when(service.getFormUrl()).thenThrow(BlobstoreFailureException.class);
+    when(service.getAudioBlobUploadUrl()).thenThrow(BlobstoreFailureException.class);
 
     // Create a writer that will record the doGet function's printed text
     StringWriter stringWriter = new StringWriter();
@@ -91,7 +94,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
     verify(response, atLeast(1)).setContentType("application/json"); 
 
     // Assert that the function printed a JSON indicating failure containing the appropriate error message
-    Assert.assertTrue(stringWriter.toString().contains("{ \"success\": false, " +
-        "\"error\": \"Error: Failed to upload audio file to Blobstore.\" }"));
+    Assert.assertTrue(stringWriter.toString().contains(
+        new ErrorResponse(false, "Error: Failed to upload audio file to Blobstore.").toJson()));
   }
 }

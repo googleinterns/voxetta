@@ -18,6 +18,8 @@ import com.google.appengine.api.blobstore.BlobstoreFailureException;
 import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.common.annotations.VisibleForTesting; 
 import com.google.speech.tools.voxetta.data.Utterance; 
+import com.google.speech.tools.voxetta.data.ErrorResponse;
+import com.google.speech.tools.voxetta.data.StatusResponse; 
 import com.google.speech.tools.voxetta.services.DatastoreUtteranceService; 
 import com.google.speech.tools.voxetta.services.UtteranceService; 
 import java.io.IOException;
@@ -33,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UtteranceUploadServlet extends HttpServlet {
 
   private UtteranceService service = new DatastoreUtteranceService(); 
+  private StatusResponse statusResponse; 
   private String audio;
 
   @Override
@@ -40,7 +43,7 @@ public class UtteranceUploadServlet extends HttpServlet {
     response.setContentType("application/json");
 
     // Get the BlobKey of the audio file that has been uploaded to Blobstore
-    audio = service.getAudio(request);
+    audio = service.getAudioBlob(request);
 
     // Create and save Utterance to Datastore
     Utterance utterance = new Utterance.UtteranceBuilder()
@@ -54,11 +57,12 @@ public class UtteranceUploadServlet extends HttpServlet {
 
     try {
       service.saveUtterance(utterance);
-      // TO DO (ASHLEY): refactor JSON in future pr
-      response.getWriter().println("{ \"success\": true }"); 
+      String successJson = new StatusResponse(true).toJson();
+      response.getWriter().println(successJson); 
     } catch (DatastoreFailureException e) {
-      // TO DO (ASHLEY): refactor JSON in future pr
-      response.getWriter().println("{ \"success\": false, \"error\": \"Error: Failed to upload Utterance to Datastore.\" }");
+      String failureJson = 
+          new ErrorResponse(false, "Error: Failed to upload Utterance to Datastore.").toJson();
+      response.getWriter().println(failureJson);
     }
   }
 
