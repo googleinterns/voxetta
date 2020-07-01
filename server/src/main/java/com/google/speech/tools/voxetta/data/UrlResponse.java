@@ -22,7 +22,7 @@ public class UrlResponse extends StatusResponse {
   private String url; 
 
   /**
-   * Creates a new ErrorResponse.
+   * Creates a new UrlResponse.
    *
    * @param success Represents if a backend fetch was successful or not. 
    * @param url The url associated with a given fetch response.
