@@ -20,7 +20,7 @@ package com.google.speech.tools.voxetta.services;
  * Outlines functions necessary to implement the Prompt Service.
  */
 public interface PromptService {
-    
+
     /**
      * Adds a prompt to the database.
      *
@@ -28,6 +28,8 @@ public interface PromptService {
      * @param body The body of the prompt. Is either a phrase or image link.
      * @return a boolean denoting success or failure.
      */
+
+    // TODO: change to StatusResponse object
     public boolean savePrompt(String type, String body);
 
     /**
@@ -36,4 +38,20 @@ public interface PromptService {
      * @return one prompt from the Prompt database.
      */
     public String getOnePrompt();
+
+    /**
+     * Retrieves all prompts in the database as Entities. Primarily for manual debugging.
+     *
+     * @return {String} JSON array of all Prompt Entities.
+     */
+    public String getAllPrompts();
+
+
+    /**
+     * Resets the read status of all prompts to 0 so they can be used again. Primarily for manual
+     * debugging.
+     *
+     * @return a boolean denoting success or failure.
+     */
+    public boolean resetAllToUnread();
 }

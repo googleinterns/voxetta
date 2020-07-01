@@ -16,6 +16,7 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
+import com.google.speech.tools.voxetta.services.PromptService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,12 +33,17 @@ import com.google.speech.tools.voxetta.services.DatastorePromptService;
 @WebServlet("/prompt")
 public class PromptServlet extends HttpServlet {
 
-    private final DatastorePromptService promptService = new DatastorePromptService();
+    private final PromptService promptService = new DatastorePromptService();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        response.getWriter().write(promptService.getOnePrompt());
+        try {
+            response.getWriter().write(promptService.getOnePrompt());
+        } catch (IOException e) {
+            response.setStatus(500);
+            response.getWriter().write("false");
+        }
     }
 
     @Override
@@ -49,6 +55,7 @@ public class PromptServlet extends HttpServlet {
 
         String boolResp = Boolean.toString(promptService.savePrompt(type, body));
 
+        // TODO: use StatusResponse
         response.getWriter().write(boolResp);
     }
 }

@@ -22,25 +22,48 @@ package com.google.speech.tools.voxetta.data;
 public class Prompt {
 
     private final long id;
-    //    private final VendorName;
-//    private final ProjectId;
-    private final String type;
+    private final Type type;
     private final String body;
 
-    public Prompt(long id, String type, String body) {
-        this.id = id;
-        this.type = type;
-        this.body = body;
+    enum Type {
+        TEXT,
+        IMAGE
     }
 
+    /**
+     * @param id   {long} database ID of the prompt. param type {String} type of prompt.
+     * @param body {String} body (or content) of the prompt.
+     */
+    public Prompt(long id, String type, String body) throws IllegalArgumentException {
+        this.id = id;
+        this.body = body;
+
+        if (type.equalsIgnoreCase("text")) {
+            this.type = Type.TEXT;
+        } else if (type.equalsIgnoreCase("image")) {
+            this.type = Type.IMAGE;
+        } else {
+            throw new IllegalArgumentException("Prompt is incorrectly defined");
+        }
+    }
+
+    /**
+     * @return {long} database ID of the prompt.
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * @return {String} type of the prompt.
+     */
     public String getType() {
-        return type;
+        return type.toString();
     }
 
+    /**
+     * @return {String} body (or content) of the prompt.
+     */
     public String getBody() {
         return body;
     }

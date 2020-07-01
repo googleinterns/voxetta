@@ -50,7 +50,7 @@ public class PromptBuilder {
      * Builds a Prompt instance with the properties of a Prompt entity.
      *
      * @param entity Datastore entity.
-     * @return a Prompt instnace with the properties of the entity.
+     * @return a Prompt instance with the properties of the entity.
      */
     public Prompt buildFromEntity(Entity entity) {
         return this

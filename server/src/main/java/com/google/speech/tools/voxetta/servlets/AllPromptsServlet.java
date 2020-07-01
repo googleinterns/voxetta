@@ -16,6 +16,7 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
+import com.google.speech.tools.voxetta.services.PromptService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,16 +27,33 @@ import static com.google.speech.tools.voxetta.utils.ParamParser.getParameter;
 
 import com.google.speech.tools.voxetta.services.DatastorePromptService;
 
+/**
+ * Servlet for seeing / resetting all prompts; used for manual debugging for now
+ */
 @WebServlet("/prompt/all")
 public class AllPromptsServlet extends HttpServlet {
 
-    private final DatastorePromptService promptService = new DatastorePromptService();
+    private final PromptService promptService = new DatastorePromptService();
 
+    /**
+     * gets all prompts via PromptService.getAllPrompts()
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.getWriter().write(promptService.getAllPrompts());
     }
 
+    /**
+     * resets the read status of all prompts.
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException {

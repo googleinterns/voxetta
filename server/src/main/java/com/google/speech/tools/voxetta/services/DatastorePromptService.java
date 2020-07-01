@@ -47,6 +47,8 @@ public class DatastorePromptService implements PromptService {
     }
 
     @Override
+
+    // TODO: change to StatusResponse object
     public boolean savePrompt(String type, String body) {
 
         // TODO: validation
@@ -85,6 +87,7 @@ public class DatastorePromptService implements PromptService {
             return gson.toJson(unreadQueries);
         }
 
+        // TODO: transactionize
         Entity retrievedEntity = unreadQueries.get(0);
 
         // set prompt as read
@@ -96,11 +99,8 @@ public class DatastorePromptService implements PromptService {
         return gson.toJson(retrievedPrompt);
     }
 
-    /**
-     * Resets the read status of all prompts to 0 so they can be used again. Primarily for testing.
-     *
-     * @return a boolean denoting success or failure.
-     */
+    // TODO: change to StatusResponse object
+    @Override
     public boolean resetAllToUnread() {
 
         Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
@@ -113,11 +113,7 @@ public class DatastorePromptService implements PromptService {
         return true;
     }
 
-    /**
-     * Returns all prompts as entities. Primarily for testing.
-     *
-     * @return JSON of all prompts as entities.
-     */
+    @Override
     public String getAllPrompts() {
 
         Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
