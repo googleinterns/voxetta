@@ -1,2 +1,27 @@
-node_modules
-target
+# Server
+
+/server/target
+
+# UI
+
+## editors
+/ui/.idea
+/ui/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/ui/node_modules/
+/ui/npm-debug.log
+
+## testing
+/ui/coverage/
+
+## temp folders
+/ui/.tmp/
+
+# build
+/ui/_site/
+/ui/dist/
+/ui/out-tsc/
