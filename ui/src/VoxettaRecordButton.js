@@ -30,12 +30,12 @@ export class VoxettaRecordButton extends LitElement {
     }
     render() {  
         return html`
-            <button @click=${this.clickHandler}>Record Voice</button>
+            <button @click=${this.recordHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
         `;
     }
 
-     async clickHandler(e){
+     async recordHandler(e){
         if (!this.isRecording) {
             this.isRecording = true;
             this.audioRecorder.startRecording();

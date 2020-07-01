@@ -5,7 +5,7 @@ export class AudioRecorder {
     * @param {Object} allows access to Web Audio API
     */
     constructor() {
-        this.recordingUrl = "";
+        this.recordingUrl;
         this.mediaRecorder;
     }
     /**
@@ -13,14 +13,14 @@ export class AudioRecorder {
     */
     startRecording() {
         navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then((stream) => {
-            const mediaRecorder = new MediaRecorder(stream);
-            this.mediaRecorder = mediaRecorder;
-            mediaRecorder.start();
-        }).catch(function(err) {
-            console.log(err.name, err.message); // Is this good to have or is just the alert fine?
-            alert("need access to microphone to record");
-        });
+            .then((stream) => {
+                const mediaRecorder = new MediaRecorder(stream);
+                this.mediaRecorder = mediaRecorder;
+                mediaRecorder.start();
+            }).catch(function(err) {
+                console.log(err.name, err.message); // Is this good to have or is just the alert fine?
+                alert("need access to microphone to record");
+            });
     }
     /**
     * Stops recording and stores utterance data in Url if recording
