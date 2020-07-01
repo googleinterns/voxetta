@@ -34,6 +34,8 @@ public class StatusResponse {
 
   /** 
    * Returns a JSON representation of a StatusResponse.  
+   *
+   * @return a JSON representation.
    */
   public String toJson() {
     Gson gson = new Gson();

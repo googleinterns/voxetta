@@ -27,16 +27,23 @@ public interface UtteranceService {
 
   /** 
    * Saves an Utterance to an external database.  
+   *
+   * @param utterance The Utterance to be saved to an external database. 
    */
   public void saveUtterance(Utterance utterance);
 
   /** 
-   * Returns a reference to the just-uploaded audio file. 
+   * Return a reference to the just-uploaded audio file. 
+   *
+   * @param request The backend request that contains an audio file.
+   * @return an audio file reference.
    */
   public String getAudioBlob(HttpServletRequest request);
 
   /** 
    * Return an upload URL that redirects to the Utterance Upload Servlet.
+   *
+   * @return an upload URL.
    */
   public String getAudioBlobUploadUrl(); 
 }
