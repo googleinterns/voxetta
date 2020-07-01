@@ -16,36 +16,39 @@ limitations under the License. */
 import {AudioRecorder} from './AudioRecorder';
 import {LitElement, html, css} from 'lit-element';
 
-export class RecordButton extends LitElement {
+export class VoxettaRecordButton extends LitElement {
+    static get properties() {
+        return {
+            isRecording: {type: Boolean},
+            audioRecorder: {type: Object},
+        };
+    }
+    constructor() {
+        super();
+        this.isRecording = false;
+        this.audioRecorder = new AudioRecorder();
+    }
     render() {  
         return html`
-
-            <button id="recordButton">Record Voice</button>
+            <button @click=${this.clickHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
-
         `;
     }
 
-    firstUpdated() {
-
-        let isRecording = false;
-        const recordButton = this.shadowRoot.getElementById("recordButton");
-        const audioSave = this.shadowRoot.getElementById("utterance");
-        let audioRecorder = new AudioRecorder();
-
-        recordButton.addEventListener('click', async (e) => {
-            if (!isRecording) {
-                isRecording = true;
-                audioRecorder.startRecording();
-            } else {
-                isRecording = false;
-                const recordingUrl = await audioRecorder.stopRecording();
+     async clickHandler(e){
+        if (!this.isRecording) {
+            this.isRecording = true;
+            this.audioRecorder.startRecording();
+        } else {
+            const audioSave = this.shadowRoot.getElementById("utterance");
+            this.isRecording = false;
+            const recordingUrl = await this.audioRecorder.stopRecording();
+            if(recordingUrl != null){
                 audioSave.src = recordingUrl;
                 audioSave.style.display = "block";
             }
-        });
-        
+        }
     }
 }
 
-customElements.define('record-button', RecordButton);
+customElements.define('vox-record-button', VoxettaRecordButton);

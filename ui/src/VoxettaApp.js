@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {AudioRecorder} from './AudioRecorder';
+import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {LitElement, html, css} from 'lit-element';
 
 export class VoxettaApp extends LitElement {
@@ -22,7 +22,7 @@ export class VoxettaApp extends LitElement {
             <main>
                 Welcome to the Voxetta app
             </main>
-
+            <vox-record-button></vox-record-button>
         `;
     }
 }
