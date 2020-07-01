@@ -73,6 +73,8 @@ public class DatastoreUtteranceService implements UtteranceService {
 
   /** 
    * Allow the servlet's Datastore service to be set for mocking purposes.
+   *
+   * @param inputService The service to serve as the DatastoreService.
    */
   @VisibleForTesting
   public void setDatastoreService(DatastoreService inputService) {
@@ -81,6 +83,8 @@ public class DatastoreUtteranceService implements UtteranceService {
 
   /** 
    * Allow the servlet's Blobstore service to be set for mocking purposes.
+   *
+   * @param inputService The service to serve as the BlobstoreService.
    */
   @VisibleForTesting
   public void setBlobstoreService(BlobstoreService inputService) {
