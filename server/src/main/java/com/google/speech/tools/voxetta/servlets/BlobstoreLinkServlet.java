@@ -53,6 +53,8 @@ public class BlobstoreLinkServlet extends HttpServlet {
 
   /** 
    * Allow the servlet's Datastore Utterance Service to be set for mocking purposes.
+   *
+   * @param inputService The service to serve as the UtteranceService.
    */
   @VisibleForTesting
   public void setService(UtteranceService inputService) {
