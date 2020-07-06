@@ -1,6 +1,8 @@
 # Server
 
 /server/target
+.idea
+/server/.idea
 
 # UI
 
