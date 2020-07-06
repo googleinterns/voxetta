@@ -17,6 +17,7 @@
 package com.google.speech.tools.voxetta.data;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.speech.tools.voxetta.data.Prompt.Type;
 
 
 /**
@@ -25,7 +26,7 @@ import com.google.appengine.api.datastore.Entity;
 public class PromptBuilder {
 
     private long id;
-    private String type;
+    private Type type;
     private String body;
 
     public PromptBuilder() {
@@ -36,8 +37,16 @@ public class PromptBuilder {
         return this;
     }
 
-    public PromptBuilder setType(String type) {
-        this.type = type;
+    public PromptBuilder setType(String type) throws IllegalArgumentException {
+
+        if (type.equalsIgnoreCase("text")) {
+            this.type = Type.TEXT;
+        } else if (type.equalsIgnoreCase("image")) {
+            this.type = Type.IMAGE;
+        } else {
+            throw new IllegalArgumentException("Prompt is incorrectly defined");
+        }
+
         return this;
     }
 

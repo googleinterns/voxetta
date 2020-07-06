@@ -38,20 +38,4 @@ public interface PromptService {
      * @return one prompt from the Prompt database.
      */
     public String getOnePrompt();
-
-    /**
-     * Retrieves all prompts in the database as Entities. Primarily for manual debugging.
-     *
-     * @return {String} JSON array of all Prompt Entities.
-     */
-    public String getAllPrompts();
-
-
-    /**
-     * Resets the read status of all prompts to 0 so they can be used again. Primarily for manual
-     * debugging.
-     *
-     * @return a boolean denoting success or failure.
-     */
-    public boolean resetAllToUnread();
 }

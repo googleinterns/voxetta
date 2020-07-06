@@ -16,7 +16,7 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
-import com.google.speech.tools.voxetta.services.PromptService;
+import com.google.speech.tools.voxetta.services.DatastorePromptDebugService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +33,7 @@ import com.google.speech.tools.voxetta.services.DatastorePromptService;
 @WebServlet("/prompt/all")
 public class AllPromptsServlet extends HttpServlet {
 
-    private final PromptService promptService = new DatastorePromptService();
+    private final DatastorePromptDebugService promptService = new DatastorePromptDebugService();
 
     /**
      * gets all prompts via PromptService.getAllPrompts()

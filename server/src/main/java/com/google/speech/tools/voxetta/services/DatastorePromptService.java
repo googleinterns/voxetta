@@ -48,11 +48,10 @@ public class DatastorePromptService implements PromptService {
 
     @Override
 
-    // TODO: change to StatusResponse object
+    // TODO(eldrickb): change to StatusResponse object
     public boolean savePrompt(String type, String body) {
 
-        // TODO: validation
-
+        // TODO(eldrickb): validation
         Entity promptEntity = new Entity("Prompt");
 
         promptEntity.setProperty("type", type);
@@ -87,7 +86,7 @@ public class DatastorePromptService implements PromptService {
             return gson.toJson(unreadQueries);
         }
 
-        // TODO: transactionize
+        // TODO(eldrickb): transactionize
         Entity retrievedEntity = unreadQueries.get(0);
 
         // set prompt as read
@@ -97,32 +96,5 @@ public class DatastorePromptService implements PromptService {
         // return the prompt as JSON
         Prompt retrievedPrompt = new PromptBuilder().buildFromEntity(retrievedEntity);
         return gson.toJson(retrievedPrompt);
-    }
-
-    // TODO: change to StatusResponse object
-    @Override
-    public boolean resetAllToUnread() {
-
-        Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
-
-        for (Entity entity : iterableResults) {
-            entity.setProperty("read", 0);
-            datastore.put(entity);
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getAllPrompts() {
-
-        Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
-
-        LinkedList<Entity> prompts = new LinkedList<Entity>();
-        for (Entity entity : iterableResults) {
-            prompts.add(entity);
-        }
-
-        return gson.toJson(prompts);
     }
 }

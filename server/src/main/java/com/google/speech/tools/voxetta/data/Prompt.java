@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LCENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,11 @@ public class Prompt {
     private final Type type;
     private final String body;
 
+    /**
+     * Determines the "type" of prompt and dictates what to expect in the prompt body.
+     * TEXT = body will be an excerpt to be read out
+     * IMAGE = body will be a URL to an image to be described
+     */
     enum Type {
         TEXT,
         IMAGE
@@ -32,19 +37,13 @@ public class Prompt {
 
     /**
      * @param id   {long} database ID of the prompt. param type {String} type of prompt.
+     * @param type {Type} type of prompt this is.
      * @param body {String} body (or content) of the prompt.
      */
-    public Prompt(long id, String type, String body) throws IllegalArgumentException {
+    public Prompt(long id, Type type, String body) throws IllegalArgumentException {
         this.id = id;
         this.body = body;
-
-        if (type.equalsIgnoreCase("text")) {
-            this.type = Type.TEXT;
-        } else if (type.equalsIgnoreCase("image")) {
-            this.type = Type.IMAGE;
-        } else {
-            throw new IllegalArgumentException("Prompt is incorrectly defined");
-        }
+        this.type = type;
     }
 
     /**
@@ -55,10 +54,10 @@ public class Prompt {
     }
 
     /**
-     * @return {String} type of the prompt.
+     * @return {Type} type of the prompt.
      */
-    public String getType() {
-        return type.toString();
+    public Type getType() {
+        return type;
     }
 
     /**
@@ -67,5 +66,4 @@ public class Prompt {
     public String getBody() {
         return body;
     }
-
 }

@@ -38,12 +38,7 @@ public class PromptServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        try {
-            response.getWriter().write(promptService.getOnePrompt());
-        } catch (IOException e) {
-            response.setStatus(500);
-            response.getWriter().write("false");
-        }
+        response.getWriter().write(promptService.getOnePrompt());
     }
 
     @Override
@@ -55,7 +50,7 @@ public class PromptServlet extends HttpServlet {
 
         String boolResp = Boolean.toString(promptService.savePrompt(type, body));
 
-        // TODO: use StatusResponse
+        // TODO(eldrickb): use StatusResponse
         response.getWriter().write(boolResp);
     }
 }
