@@ -24,8 +24,8 @@ jobs:
       name: Set up NodeJS v12
       with:
         node-version: '12'
-    - run: cd ui
     - run: npm install
-    - run: cd ../server
+      working-directory: ./ui
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      working-directory: ./server
