@@ -170,7 +170,7 @@ public final class Utterance {
      * Return a newly built Utterance.
      */
     public Utterance build() {
-      return new Utterance(this.userId, this.audio, this.promptId, this.device, this.age, this.gender);
+      return new Utterance(this.audio, this.userId, this.promptId, this.device, this.age, this.gender);
     }
   }
 }
