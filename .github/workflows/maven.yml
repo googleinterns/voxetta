@@ -20,5 +20,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - uses: actions/setup-node@v2
+      name: Set up NodeJS v12
+      with:
+        node-version: '12'
+    - run: npm install
     - name: Build with Maven
-      run: cd server; mvn -B package --file pom.xml
+    - run: cd server
+    - run: mvn -B package --file pom.xml
