@@ -1,28 +1,49 @@
+/*
+Copyright 2020 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. */
+
+/**
+ * Responsible for enabling and recording via the Web Audio API.  
+ */
 export class AudioRecorder {
+    
     /**
-     * Creates an AudioRecorder that can record utterances
-     * @param {String} recordingUrl - A URL that allows access to an audio file after recording.
-     * @param {Blob} blob - An audio recording file. 
-     * @param {Object} mediaRecorder - Allows access to Web Audio API.
+     * Create an AudioRecorder that can record utterances.
      */
     constructor() {
-        this.recordingUrl;
-        this.blob;
+        // Allows access to Web Audio API.
         this.mediaRecorder;
+        this.success;
     }
 
     /**
      * Prompts user for access to Microphone Component and begins recording if access is granted.
+     * @returns {Boolean} Denotes whether or not the recording successfully began.
      */
     startRecording() {
+        const success = true; 
         navigator.mediaDevices.getUserMedia({ audio: true, video: false })
             .then((stream) => {
                 const mediaRecorder = new MediaRecorder(stream);
-                this.mediaRecorder = mediaRecorder;
+                this.mediaRecorder = mediaRecorder; 
                 mediaRecorder.start();
-            }).catch(function(err) {
-                alert("Error: Need access to microphone to record.");
+            }).catch(function() {
+                alert(`Error: Microphone access is currently blocked for this site. To unblock, please navigate to 
+                    chrome://settings/content/microphone and remove this site from the 'Block' section.`);
+                success = false; 
             });
+        return success;  
     }
 
     /**
@@ -30,14 +51,13 @@ export class AudioRecorder {
      * @returns {Object} Audio object containing an audio Blob and its corresponding URL.
      */
     stopRecording() {
-        if(this.mediaRecorder != null) {
+        if(this.mediaRecorder) {
             this.mediaRecorder.stop();
-
             return new Promise(resolve => {
                 this.mediaRecorder.ondataavailable = (e) => {
-                    this.blob = new Blob([e.data], { type : 'audio/webm;' });
-                    this.recordingUrl = window.URL.createObjectURL(this.blob);
-                    const audio = {blob: this.blob, recordingUrl: this.recordingUrl};
+                    const blob = new Blob([e.data], { type : 'audio/webm;' });
+                    const recordingUrl = window.URL.createObjectURL(blob);
+                    const audio = {blob: blob, recordingUrl: recordingUrl};
                     resolve(audio);
                 };
             });
