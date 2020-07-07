@@ -22,9 +22,11 @@ export class AudioRecorder {
      * Create an AudioRecorder that can record utterances.
      */
     constructor() {
-        // Allows access to Web Audio API.
+        /**
+         * Allows access to Web Audio API.
+         * @private
+         */
         this.mediaRecorder;
-        this.success;
     }
 
     /**
