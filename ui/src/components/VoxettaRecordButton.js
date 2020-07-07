@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {AudioRecorder} from './AudioRecorder';
+import {AudioRecorder} from '../utils/AudioRecorder';
 import {LitElement, html, css} from 'lit-element';
 
 export class VoxettaRecordButton extends LitElement {
@@ -28,24 +28,24 @@ export class VoxettaRecordButton extends LitElement {
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
     }
-    render() {  
+    render() {
         return html`
             <button @click=${this.recordHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
         `;
     }
 
-     async recordHandler(e){
+    async recordHandler(e) {
         if (!this.isRecording) {
             this.isRecording = true;
             this.audioRecorder.startRecording();
         } else {
-            const audioSave = this.shadowRoot.getElementById("utterance");
+            const audioSave = this.shadowRoot.getElementById('utterance');
             this.isRecording = false;
             const recordingUrl = await this.audioRecorder.stopRecording();
-            if(recordingUrl != null){
+            if (recordingUrl != null) {
                 audioSave.src = recordingUrl;
-                audioSave.style.display = "block";
+                audioSave.style.display = 'block';
             }
         }
     }
