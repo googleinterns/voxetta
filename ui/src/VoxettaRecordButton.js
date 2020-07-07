@@ -24,9 +24,7 @@ import {UtteranceApiService} from './UtteranceApiService';
 export class VoxettaRecordButton extends LitElement {
     static get properties() {
         return {
-            isRecording: {type: Boolean},
-            audioRecorder: {type: Object},
-            utteranceService: {type: Object}
+            isRecording: {type: Boolean}
         };
     }
 
@@ -45,8 +43,9 @@ export class VoxettaRecordButton extends LitElement {
     }
 
     /**
-     * If the user is not currently recording, begin recording using the Microphone component. Otherwise,
-     * stop recording and save and display the just-recorded audio file.
+     * If the user is not currently recording, begin recording using the Microphone 
+     * component. Otherwise, stop recording and save and display the just-recorded 
+     * audio file.
      */
     async recordHandler(){
         if (!this.isRecording) {

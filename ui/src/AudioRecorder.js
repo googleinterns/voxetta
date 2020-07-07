@@ -37,9 +37,9 @@ export class AudioRecorder {
         const success = true; 
         navigator.mediaDevices.getUserMedia({ audio: true, video: false })
             .then((stream) => {
-                const mediaRecorder = new MediaRecorder(stream);
-                this.mediaRecorder = mediaRecorder; 
-                mediaRecorder.start();
+                const mediaRecorder_ = new MediaRecorder(stream);
+                this.mediaRecorder_ = mediaRecorder_; 
+                mediaRecorder_.start();
             }).catch(function() {
                 alert(`Error: Microphone access is currently blocked for this site. To unblock, please navigate to 
                     chrome://settings/content/microphone and remove this site from the 'Block' section.`);
@@ -53,16 +53,16 @@ export class AudioRecorder {
      * @returns {Object} Audio object containing an audio Blob and its corresponding URL.
      */
     stopRecording() {
-        if(this.mediaRecorder) {
-            this.mediaRecorder.stop();
+        if(this.mediaRecorder_) {
+            this.mediaRecorder_.stop();
             return new Promise(resolve => {
-                this.mediaRecorder.ondataavailable = (e) => {
+                this.mediaRecorder_.ondataavailable = (e) => {
                     const blob = new Blob([e.data], { type : 'audio/webm;' });
                     const recordingUrl = window.URL.createObjectURL(blob);
                     const audio = {blob: blob, recordingUrl: recordingUrl};
                     resolve(audio);
-                };
-            });
+            };
+        });
         } else {
             alert("Error: Could not record successfully.");
             return null;
