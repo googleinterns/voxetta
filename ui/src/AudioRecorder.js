@@ -26,7 +26,7 @@ export class AudioRecorder {
          * Allows access to Web Audio API.
          * @private
          */
-        this.mediaRecorder;
+        this.mediaRecorder_;
     }
 
     /**

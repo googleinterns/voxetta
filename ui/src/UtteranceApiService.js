@@ -26,7 +26,7 @@ export class UtteranceApiService {
          * A Blobstore upload link.
          * @private
          */
-        this.blobUrl; 
+        this.blobUrl_; 
         this.getUploadUrl();
     }
 
