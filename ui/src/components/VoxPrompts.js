@@ -56,6 +56,9 @@ export class VoxPrompts extends LitElement {
             ${this.determinePromptType()}
 
             <button @click="${this.handleSkip}">skip</button>
+            <button @click="${promptApi.resetAllPromptsUnread}">
+                reset all prompts to unread
+            </button>
         `;
     }
 }

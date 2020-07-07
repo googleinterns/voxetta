@@ -33,6 +33,12 @@ class PromptApi {
                 }
             });
     }
+
+    resetAllPromptsUnread() {
+        return fetch('/prompt/all', {method: 'POST'}).then((resp) =>
+            resp.body()
+        );
+    }
 }
 
 const promptApi = new PromptApi();
