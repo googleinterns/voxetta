@@ -38,11 +38,13 @@ export class VoxettaRecordButton extends LitElement {
      async recordHandler(e){
         if (!this.isRecording) {
             this.isRecording = true;
+            await this.audioRecorder.initRecorder();
             this.audioRecorder.startRecording();
         } else {
             const audioSave = this.shadowRoot.getElementById("utterance");
             this.isRecording = false;
-            const recordingUrl = await this.audioRecorder.stopRecording();
+            const obj = await this.audioRecorder.stopRecording();
+            const recordingUrl = obj[0];
             if(recordingUrl != null){
                 audioSave.src = recordingUrl;
                 audioSave.style.display = "block";

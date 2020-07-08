@@ -1,20 +1,36 @@
+import {StubMediaRecorder} from '../../src/StubMediaRecorder.js';
 import {AudioRecorder} from '../../src/AudioRecorder.js';
 
-describe("Testing the Audio Recorder methods", function() {
+describe('Testing the Audio Recorder methods', function() {
 
-    it("Start recording called", function(){
-        let audioRecorder = new AudioRecorder();
-        spyOn(audioRecorder, "startRecording");
-        audioRecorder.startRecording();
-        expect(audioRecorder.startRecording).toHaveBeenCalled();
+    let audioStream;
+
+    beforeEach(() => {
+        audioStream = jasmine.createSpyObj('audioStream', ['active']);
+        let promise = Promise.resolve(audioStream);
+        spyOn(navigator.mediaDevices, 'getUserMedia').and.returnValue(promise);
     });
 
-    it("Stop recording called", function(){
-        let audioRecorder = new AudioRecorder();
-        spyOn(audioRecorder, "stopRecording");
-        let Url = audioRecorder.stopRecording();
-        expect(audioRecorder.stopRecording).toHaveBeenCalled();
-        expect(Url).toBe(audioRecorder.recordingUrl);
+    it('asks for mic', async () => {
+        const audioRecorder = new AudioRecorder();
+        await audioRecorder.initRecorder();
+        expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalled();
+    });
+    
+    it('records audio', async () => {
+        const audioRecorder = new AudioRecorder();
+        await audioRecorder.initRecorder();
+        audioRecorder.startRecording();
+        expect(audioRecorder.mediaRecorder.start).toHaveBeenCalled();
+    });
+
+    it('Stops recording', async () => {
+        const audioRecorder = new AudioRecorder();
+        await audioRecorder.initRecorder();
+        audioRecorder.startRecording();
+        let obj = audioRecorder.stopRecording();
+        expect(audioRecorder.mediaRecorder.stop).toHaveBeenCalled();
+        expect(obj[0]).toBe(audioRecorder.recordingUrl);
     });
 
 });
