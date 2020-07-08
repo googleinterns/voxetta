@@ -1,5 +1,5 @@
 import {JSDOM} from 'jsdom';
-import {StubMediaRecorder} from '../../../src/StubMediaRecorder.js';
+import {StubMediaRecorder} from './stubs/StubMediaRecorder.js';
 
 
 

@@ -1,4 +1,3 @@
-import {StubMediaRecorder} from '../../src/StubMediaRecorder.js';
 import {AudioRecorder} from '../../src/AudioRecorder.js';
 
 describe('Testing the Audio Recorder methods', function() {
@@ -24,7 +23,7 @@ describe('Testing the Audio Recorder methods', function() {
         expect(audioRecorder.mediaRecorder.start).toHaveBeenCalled();
     });
 
-    it('Stops recording', async () => {
+    it('stops recording', async () => {
         const audioRecorder = new AudioRecorder();
         await audioRecorder.initRecorder();
         audioRecorder.startRecording();
