@@ -47,7 +47,7 @@ export class VoxettaRecordButton extends LitElement {
      * component. Otherwise, stop recording and save and display the just-recorded 
      * audio file.
      */
-    async recordHandler(){
+    async recordHandler() {
         if (!this.isRecording) {
             await this.audioRecorder.initRecorder();
             if (this.audioRecorder.startRecording()) {
