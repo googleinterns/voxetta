@@ -51,7 +51,7 @@ export class AudioRecorder {
                 this.mediaRecorder.ondataavailable = (e) => {
                     const blob = new Blob([e.data], { type : 'audio/webm;' });
                     this.recordingUrl = window.URL.createObjectURL(blob);
-                    const obj = [this.recordingUrl, blob];
+                    const obj = {url: this.recordingUrl, blob};
                     resolve(obj);
                 };
             });
