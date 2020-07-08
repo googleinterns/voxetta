@@ -1,7 +1,5 @@
-// var jsdom = require("jsdom");
 import {JSDOM} from 'jsdom';
 import {StubMediaRecorder} from '../../../src/StubMediaRecorder.js';
-import {StubSoundWave} from '../../../src/StubSoundWave.js';
 
 
 
