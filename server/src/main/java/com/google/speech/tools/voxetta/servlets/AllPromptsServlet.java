@@ -57,6 +57,6 @@ public class AllPromptsServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-        response.getWriter().write(String.valueOf(promptService.resetAllToUnread()));
+        response.getWriter().write(promptService.resetAllToUnread().toJson());
     }
 }
