@@ -16,6 +16,8 @@
 
 package com.google.speech.tools.voxetta.services;
 
+import com.google.speech.tools.voxetta.data.StatusResponse;
+
 /**
  * Outlines functions necessary to implement the Prompt Service.
  */
@@ -29,8 +31,7 @@ public interface PromptService {
      * @return a boolean denoting success or failure.
      */
 
-    // TODO: change to StatusResponse object
-    public boolean savePrompt(String type, String body);
+    public StatusResponse savePrompt(String type, String body);
 
     /**
      * Retrieves one prompt from the database.

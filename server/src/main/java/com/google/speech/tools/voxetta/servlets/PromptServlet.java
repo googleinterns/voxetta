@@ -16,6 +16,7 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
+import com.google.speech.tools.voxetta.data.StatusResponse;
 import com.google.speech.tools.voxetta.services.PromptService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -48,9 +49,8 @@ public class PromptServlet extends HttpServlet {
         final String type = getParameter(request, "type", "");
         final String body = getParameter(request, "body", "");
 
-        String boolResp = Boolean.toString(promptService.savePrompt(type, body));
+        StatusResponse promptServiceResponse = promptService.savePrompt(type, body);
 
-        // TODO(eldrickb): use StatusResponse
-        response.getWriter().write(boolResp);
+        response.getWriter().write(promptServiceResponse.toJson());
     }
 }
