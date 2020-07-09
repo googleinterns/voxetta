@@ -29,7 +29,6 @@ const getNewPrompt = async () => {
     const prompt = await resp.json();
 
     if (Object.keys(prompt).length === 0) {
-        console.log(prompt);
         return {
             status: 'EMPTY',
         };
