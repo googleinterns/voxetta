@@ -29,6 +29,9 @@ export class VoxPrompts extends LitElement {
     constructor() {
         super();
         this.state = 'NOT_ASKED';
+    }
+
+    firstUpdated() {
         this.getNewPrompt();
     }
 
