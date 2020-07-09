@@ -16,44 +16,70 @@
 
 import {LitElement, html} from 'lit-element';
 
-import promptApi from '../utils/PromptApi';
+import * as promptApi from '../utils/PromptApiService';
 
 export class VoxPrompts extends LitElement {
     static get properties() {
         return {
             prompt: {type: String},
+            state: {type: String},
         };
     }
+
     constructor() {
         super();
+        this.state = 'NOT_ASKED';
         this.getNewPrompt();
     }
 
-    getNewPrompt() {
-        promptApi
-            .getNewPrompt()
-            .then((nextPrompt) => (this.prompt = nextPrompt));
-    }
+    async getNewPrompt() {
+        this.state = 'LOADING';
+        const promptRequest = await promptApi.getNewPrompt();
 
-    handleSkip(e) {
-        this.getNewPrompt();
-    }
-
-    determinePromptType() {
-        if (this.prompt.type === 'TEXT') {
-            return html`<p>${this.prompt.body}</p>`;
-        } else if (this.prompt.type === 'IMAGE') {
-            return html`<img src="${this.prompt.body}" alt="Prompt Image" />`;
-        } else if (this.prompt.type === 'EMPTY') {
-            return html`<p><i>No more prompts...</i></p>`;
+        if (promptRequest.status === 'SUCCESS') {
+            this.state = 'SUCCESS';
+            this.prompt = promptRequest.prompt;
+        } else if (promptRequest.status === 'EMPTY') {
+            this.state = 'FINISHED';
         } else {
-            throw console.error('Invalid prompt type');
+            this.state = 'FAILURE';
+        }
+    }
+
+    handleSkip() {
+        this.getNewPrompt();
+    }
+
+    renderPromptType() {
+        switch (this.prompt.type) {
+            case 'TEXT':
+                return html`<p>${this.prompt.body}</p>`;
+            case 'IMAGE':
+                return html`<img
+                    src="${this.prompt.body}"
+                    alt="Prompt Image"
+                />`;
+        }
+    }
+
+    renderPromptState() {
+        switch (this.state) {
+            case 'NOT_ASKED':
+                return html`<p>haven't asked yet</p>`;
+            case 'LOADING':
+                return html`<p>Loading</p>`;
+            case 'SUCCESS':
+                return this.renderPromptType();
+            case 'FAILURE':
+                return html`<p><b>Prompt failed to load.</b></p>`;
+            case 'FINISHED':
+                return html`<p><i>No more prompts...</i></p>`;
         }
     }
 
     render() {
         return html`
-            ${this.determinePromptType()}
+            ${this.renderPromptState()}
 
             <button @click="${this.handleSkip}">skip</button>
             <button @click="${promptApi.resetAllPromptsUnread}">
