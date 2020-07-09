@@ -68,8 +68,8 @@ export class VoxettaUserForm extends LitElement {
                 --mdc-theme-primary: white;
                 --mdc-theme-on-primary: #1a73e8;
             }
-    `;
-  }
+        `;
+    }
 
     constructor() {
         super();
@@ -131,7 +131,8 @@ export class VoxettaUserForm extends LitElement {
                 <mwc-button 
                     class="cancel"
                     unelevated 
-                    label="Cancel">
+                    label="Cancel"
+                    @click=${this.handleCancelClick}>
                 </mwc-button>
             </section>
         `;
@@ -195,6 +196,19 @@ export class VoxettaUserForm extends LitElement {
             input.reportValidity();
             return true; 
         }
+    }
+
+    /**
+     * Emits an event that causes the form page to close and the record
+     * page to appear. 
+     */
+    handleCancelClick() {
+        let event = new CustomEvent('exit-form', {
+            detail: {
+                state: 'RECORD-PAGE'
+            }
+        });
+        this.dispatchEvent(event);
     }
 }
  
