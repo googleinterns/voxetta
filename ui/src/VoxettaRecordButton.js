@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
-
 import {AudioRecorder} from './AudioRecorder';
 import {UtteranceApiService} from './UtteranceApiService';
 
@@ -24,7 +23,7 @@ import {UtteranceApiService} from './UtteranceApiService';
 export class VoxettaRecordButton extends LitElement {
     static get properties() {
         return {
-            isRecording: {type: Boolean}
+            isRecording: {type: Boolean},
         };
     }
 
@@ -49,7 +48,11 @@ export class VoxettaRecordButton extends LitElement {
      */
     async recordHandler() {
         if (!this.isRecording) {
-            await this.audioRecorder.initRecorder();
+            try { 
+                await this.audioRecorder.initRecorder();
+            } catch(e) { 
+                console.log("Microphone blocked"); 
+            }
             if (this.audioRecorder.startRecording()) {
                 this.isRecording = true;
             }

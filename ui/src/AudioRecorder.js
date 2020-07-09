@@ -70,7 +70,7 @@ export class AudioRecorder {
                 this.mediaRecorder.ondataavailable = (e) => {
                     const blob = new Blob([e.data], { type : 'audio/webm;' });
                     const recordingUrl = window.URL.createObjectURL(blob);
-                    const audio = {blob: blob, recordingUrl: recordingUrl};
+                    const audio = {blob, recordingUrl};
                     resolve(audio);
                 };
             });
