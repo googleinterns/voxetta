@@ -16,6 +16,7 @@
 
 package com.google.speech.tools.voxetta.services;
 
+import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -30,6 +31,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 
+import com.google.speech.tools.voxetta.data.ErrorResponse;
 import com.google.speech.tools.voxetta.data.Prompt;
 import com.google.speech.tools.voxetta.data.PromptBuilder;
 
@@ -58,7 +60,11 @@ public class DatastorePromptService implements PromptService {
 
         promptEntity.setProperty("read", 0);
 
-        datastoreService.put(promptEntity);
+        try {
+            datastoreService.put(promptEntity);
+        } catch (DatastoreFailureException e) {
+            return new ErrorResponse(false, "Error: Unknown Datastore Failure Exception");
+        }
 
         return new StatusResponse(true);
     }
