@@ -8,6 +8,7 @@
     "helpers/**/*.js",
     "./jsdom_init.js"
 
+
   ],
   "stopSpecOnExpectationFailure": false,
   "random": true
