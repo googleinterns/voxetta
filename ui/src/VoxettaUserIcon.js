@@ -15,6 +15,7 @@ limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
 
+import {Icon} from '@material/mwc-icon';
 import {IconButton} from '@material/mwc-icon-button';
 
 /**
@@ -26,7 +27,7 @@ export class VoxettaUserIcon extends LitElement {
         // TO DO (ashley) : stylize and add an actual icon
         return html`
             <mwc-icon-button 
-                icon="filler"
+                icon="account_circle"
                 @click=${this.handleUserIconClick}
             </button>
         `;

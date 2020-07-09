@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@material/mwc-button": "^0.17.2",
+        "@material/mwc-icon": "^0.17.2",
         "@material/mwc-icon-button": "^0.17.2",
         "@material/mwc-select": "^0.17.2",
         "@material/mwc-textfield": "^0.17.2",
