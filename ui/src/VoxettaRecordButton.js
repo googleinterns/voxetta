@@ -13,39 +13,54 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {AudioRecorder} from './AudioRecorder';
 import {LitElement, html, css} from 'lit-element';
 
+import {AudioRecorder} from './AudioRecorder';
+import {UtteranceApiService} from './UtteranceApiService';
+
+/**
+ * Button responsible for enabling the user to record and upload audio files. 
+ */
 export class VoxettaRecordButton extends LitElement {
     static get properties() {
         return {
-            isRecording: {type: Boolean},
-            audioRecorder: {type: Object},
+            isRecording: {type: Boolean}
         };
     }
+
     constructor() {
         super();
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
+        this.utteranceService = new UtteranceApiService(); 
     }
+  
     render() {
         return html`
             <button @click=${this.recordHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
         `;
     }
-
-    async recordHandler(e) {
+    /**
+     * If the user is not currently recording, begin recording using the Microphone 
+     * component. Otherwise, stop recording and save and display the just-recorded 
+     * audio file.
+     */
+    async recordHandler(){
         if (!this.isRecording) {
-            this.isRecording = true;
-            this.audioRecorder.startRecording();
+            if (this.audioRecorder.startRecording()) {
+                this.isRecording = true;
+            }
         } else {
-            const audioSave = this.shadowRoot.getElementById('utterance');
             this.isRecording = false;
-            const recordingUrl = await this.audioRecorder.stopRecording();
-            if (recordingUrl != null) {
-                audioSave.src = recordingUrl;
-                audioSave.style.display = 'block';
+            const audioSave = this.shadowRoot.getElementById("utterance");
+            const audio = await this.audioRecorder.stopRecording();
+            
+            // If non-empty, save and display the just-recorded audio file
+            if (audio.recordingUrl) {
+                audioSave.src = audio.recordingUrl;
+                audioSave.style.display = "block";
+                this.utteranceService.saveAudio(audio);
             }
         }
     }

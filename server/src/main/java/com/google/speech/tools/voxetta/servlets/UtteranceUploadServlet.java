@@ -13,7 +13,7 @@
 // limitations under the License.
  
 package com.google.speech.tools.voxetta.servlets;
- 
+
 import com.google.appengine.api.blobstore.BlobstoreFailureException;
 import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.common.annotations.VisibleForTesting; 
@@ -27,7 +27,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
 /** 
  * Servlet that uploads Utterance Entities. 
  */
@@ -47,12 +47,12 @@ public class UtteranceUploadServlet extends HttpServlet {
 
     // Create and save Utterance to Datastore
     Utterance utterance = new Utterance.UtteranceBuilder()
-      .setAudio("FILLER")
-      .setUserId("FILLER")
-      .setPromptId("FILLER")
-      .setDevice("FILLER")
+      .setAudio(audio)
+      .setUserId("USERID")
+      .setPromptId("PROMPTID")
+      .setDevice("DEVICE")
       .setAge(100)
-      .setGender("FILLER")
+      .setGender("GENDER")
       .build();
 
     try {
