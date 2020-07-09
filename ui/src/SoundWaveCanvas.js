@@ -38,11 +38,11 @@ export class SoundWaveCanvas extends LitElement {
     }
 
     updated(changedProperties){
-        if(this.audioStream != changedProperties.get("audioStream") && this.isRecording){
+        if(this.audioStream != changedProperties.get("audioStream") && this.isRecording) {
             this.canvas = this.shadowRoot.getElementById(this.canvasId);
             this.soundWave = new SoundWave(this.canvas, this.audioStream);
             this.soundWave.createSoundWave();
-        } else if (!this.isRecording && this.soundWave != undefined){
+        } else if (!this.isRecording && this.soundWave != undefined) {
             this.soundWave.stopSoundWave();
         }
     }
