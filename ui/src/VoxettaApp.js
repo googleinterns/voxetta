@@ -13,17 +13,52 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {LitElement, html, css} from 'lit-element';
 
+import {VoxettaRecordButton} from './VoxettaRecordButton';
+import {VoxettaUserForm} from './VoxettaUserForm';
+import {VoxettaUserIcon} from './VoxettaUserIcon';
+
 export class VoxettaApp extends LitElement {
+
+    static get properties() {
+        return {
+            state: {type: String}
+        };
+    }
+
+    constructor() {
+        super();
+        this.state = 'RECORD-PAGE'; 
+    }
+
     render() {  
         return html`
-            <main>
-                Welcome to the Voxetta app
-            </main>
-            <vox-record-button></vox-record-button>
+            ${this.displayComponents()}
+            
         `;
+    }
+
+    /**
+     * Returns the appropriate components based upon the current state of the 
+     * application. 
+     * @returns {HTML} The HTML containing the appropriate components to render.
+     */
+    displayComponents() {
+        switch (this.state) {
+            case 'RECORD-PAGE':
+                return html`
+                    <vox-user-icon 
+                        @enter-form="${(e) => { this.state = e.detail.state }}"
+                        ></vox-user-icon>
+                    <vox-record-button></vox-record-button>
+                `;
+            case 'USER-FORM':
+                 return html`
+                    <vox-user-form @exit-form="${(e) => { this.state = e.detail.state }}">
+                        </vox-user-form>
+                `;
+        }       
     }
 }
 
