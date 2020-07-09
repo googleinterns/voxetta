@@ -13,16 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {LitElement, html, css} from 'lit-element';
 
+import {VoxettaRecordButton} from './VoxettaRecordButton';
+import {VoxPrompts} from './components/VoxPrompts';
+
 export class VoxettaApp extends LitElement {
-    render() {  
+    render() {
         return html`
             <main>
                 Welcome to the Voxetta app
             </main>
             <vox-record-button></vox-record-button>
+            <vox-prompts></vox-prompts>
         `;
     }
 }

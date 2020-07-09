@@ -33,14 +33,13 @@ export class VoxettaRecordButton extends LitElement {
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService(); 
     }
-
+  
     render() {
         return html`
             <button @click=${this.recordHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
         `;
     }
-
     /**
      * If the user is not currently recording, begin recording using the Microphone 
      * component. Otherwise, stop recording and save and display the just-recorded 

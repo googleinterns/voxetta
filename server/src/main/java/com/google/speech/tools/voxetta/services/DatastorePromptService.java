@@ -83,7 +83,7 @@ public class DatastorePromptService implements PromptService {
 
         // if none, return empty json
         if (unreadQueries.size() < 1) {
-            return gson.toJson(unreadQueries);
+            return gson.toJson(new Object());
         }
 
         // TODO(eldrickb): transactionize
