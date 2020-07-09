@@ -15,7 +15,7 @@ limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
 
-import {VoxettaRecordButton} from './components/VoxettaRecordButton';
+import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {VoxPrompts} from './components/VoxPrompts';
 
 export class VoxettaApp extends LitElement {
