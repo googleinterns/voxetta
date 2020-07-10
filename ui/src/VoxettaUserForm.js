@@ -108,6 +108,11 @@ export class VoxettaUserForm extends LitElement {
             }
         `;
     }
+
+    constructor() {
+        super();
+        this.addEventListener('input', this.formIsValid);
+    }
  
     render() {
         return html`
@@ -122,7 +127,7 @@ export class VoxettaUserForm extends LitElement {
                 </div>
                 <h2 class="description">
                     Your recording will be tagged with the following:</h2>
-                <article id="user-form" class="container">
+                <form id="user-form" class="container">
                     <mwc-textfield 
                         id="user-id"
                         outlined 
@@ -168,12 +173,14 @@ export class VoxettaUserForm extends LitElement {
                         value=${this.deviceType}>
                     </mwc-textfield>
                     <mwc-button 
+                        id="save-button"
                         class="save"
                         unelevated 
+                        disabled
                         label="Save"
                         @click=${this.processForm}>
                     </mwc-button>
-                </article>
+                </form>
                 <mwc-button 
                     class="cancel"
                     unelevated 
@@ -194,21 +201,19 @@ export class VoxettaUserForm extends LitElement {
         this.userAge = this.shadowRoot.getElementById('user-age').value;
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
-        if (formIsValid()) {
-            const userInfo = {
-                userId: this.userId, 
-                gender: this.gender,
-                userAge: this.userAge,
-                deviceType: this.deviceType
-            };
-            this.handleFormSubmission(userInfo);
-            this.handleExitForm(); 
-        }
+        const userInfo = {
+            userId: this.userId, 
+            gender: this.gender,
+            userAge: this.userAge,
+            deviceType: this.deviceType
+        };
+
+        this.handleFormSubmission(userInfo);
+        this.handleExitForm(); 
     }
 
     /**
-     * Determines if each input in the user form is valid. 
-     * @returns {Boolean} Denotes whether or not a submitted form is valid. 
+     * Determines if each input in the user form is valid and alters Save Button appropriately. 
      */
     formIsValid() {
         const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
@@ -216,7 +221,10 @@ export class VoxettaUserForm extends LitElement {
         const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
         const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
 
-        return userIdValidity && genderValidity && userAgeValidity && deviceTypeValiditiy;
+        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
+        
+        const saveButton = this.shadowRoot.getElementById('save-button');
+        formValidity ? saveButton.disabled  = false : saveButton.disabled = true; 
     }
 
     /**

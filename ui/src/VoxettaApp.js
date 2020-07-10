@@ -73,11 +73,24 @@ export class VoxettaApp extends LitElement {
                         .gender = ${this.gender}
                         .userAge = ${this.userAge}
                         .deviceType = ${this.deviceType}
-                        @update-user-info="${(e) => { this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
+                        @update-user-info="${(e) => { 
+                            this.updateUserInformation(e.detail.userInfo);
+                            this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
                         @exit-form="${() => { this.state = States.RECORD_PAGE }}">
                     </vox-user-form>
                 `;
         }     
+    }
+
+    /**
+     * Updates user-related fields with the approriate values.
+     * @param {Object} userInfo - The information entered on the user form.
+     */
+    updateUserInformation(userInfo) {
+        this.userId = userInfo.userId;
+        this.gender = userInfo.gender;
+        this.userAge = userInfo.userAge;
+        this.deviceType = userInfo.deviceType;
     }
 }
 
