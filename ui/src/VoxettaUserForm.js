@@ -15,7 +15,6 @@ limitations under the License. */
  
 import {LitElement, html, css} from 'lit-element';
 
-import {CookieService} from './CookieService';
 import {TextField} from '@material/mwc-textfield';
 import {Select} from '@material/mwc-select';
 import {ListItem} from '@material/mwc-list/mwc-list-item';
@@ -27,6 +26,15 @@ import {Icon} from '@material/mwc-icon'
  * their personal information. 
  */
 export class VoxettaUserForm extends LitElement {
+
+    static get properties() {
+        return {
+            userId: {type: String},
+            gender: {type: String},
+            userAge: {type: String},
+            deviceType: {type: String}
+        };
+    }
 
     static get styles() {
         return css`
@@ -100,15 +108,6 @@ export class VoxettaUserForm extends LitElement {
             }
         `;
     }
-
-    constructor() {
-        super();
-        this.cookieService = new CookieService();
-        this.userId = this.cookieService.getCookieValue("userId");
-        this.gender = this.cookieService.getCookieValue("gender");
-        this.userAge = this.cookieService.getCookieValue("userAge");
-        this.deviceType = this.cookieService.getCookieValue("deviceType"); 
-    }
  
     render() {
         return html`
@@ -127,6 +126,8 @@ export class VoxettaUserForm extends LitElement {
                     <mwc-textfield 
                         id="user-id"
                         outlined 
+                        required
+                        validationMessage="This field is required."
                         label="User identifier"
                         value=${this.userId}>
                     </mwc-textfield>
@@ -134,6 +135,8 @@ export class VoxettaUserForm extends LitElement {
                         <mwc-select
                             id="gender-list" 
                             outlined 
+                            required
+                            validationMessage="This field is required."
                             label="Gender" 
                             placeholder="Select your gender"
                             value=${this.gender}>
@@ -147,6 +150,8 @@ export class VoxettaUserForm extends LitElement {
                         id="user-age"
                         type="number"
                         outlined 
+                        required
+                        validationMessage="This field is required."
                         label="Age" 
                         placeholder="Enter your age"
                         min=0
@@ -156,6 +161,8 @@ export class VoxettaUserForm extends LitElement {
                     <mwc-textfield 
                         id="device-type"
                         outlined 
+                        required
+                        validationMessage="This field is required."
                         label="Device" 
                         placeholder="Device type"
                         value=${this.deviceType}>
@@ -187,55 +194,29 @@ export class VoxettaUserForm extends LitElement {
         this.userAge = this.shadowRoot.getElementById('user-age').value;
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
-        if (this.ensureFormCompleteness()) {
+        if (formIsValid()) {
             const userInfo = {
                 userId: this.userId, 
                 gender: this.gender,
                 userAge: this.userAge,
                 deviceType: this.deviceType
             };
-            this.cookieService.makeUserInfoCookie(userInfo);
+            this.handleFormSubmission(userInfo);
             this.handleExitForm(); 
-        } 
-    }
-
-    /**
-     * Ensures the validity of a submitted form in regards to completeness. 
-     * @returns {Boolean} Denotes if the submitted form was fully completed.
-     */
-    ensureFormCompleteness() {
-        const idComplete = 
-            this.ensureInputCompleteness('user-id', 'Please enter a valid user id.');
-        const genderComplete =
-            this.ensureInputCompleteness('gender-list', 'Please select a gender.');
-        const ageComplete =
-            this.ensureInputCompleteness('user-age', 
-                'Please enter a valid age between 0 and 120.');
-        const deviceComplete =
-            this.ensureInputCompleteness('device-type', 'Please enter a device name.');
-
-        return idComplete && genderComplete && ageComplete && deviceComplete;  
-    }
-
-    /**
-     * Ensures that a given input was complete when submitted. If not, it triggers an
-     * incompleteness-related error message for the given input. 
-     * @param {String} id - The HTML ID of the input whose completeness needs checked.
-     * @param {String} errMsg - The message to display if an input was 
-     *  submitted incomplete.
-     * @returns {Boolean} Denotes if a submitted input was complete.
-     */
-    ensureInputCompleteness(id, errMsg) {
-        const input = this.shadowRoot.getElementById(id);
-        if (!input.value) {
-            input.setCustomValidity(errMsg);
-            input.reportValidity();
-            return false; 
-        } else {
-            input.setCustomValidity('');
-            input.reportValidity();
-            return true; 
         }
+    }
+
+    /**
+     * Determines if each input in the user form is valid. 
+     * @returns {Boolean} Denotes whether or not a submitted form is valid. 
+     */
+    formIsValid() {
+        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
+        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
+        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
+        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
+
+        return userIdValidity && genderValidity && userAgeValidity && deviceTypeValiditiy;
     }
 
     /**
@@ -243,13 +224,22 @@ export class VoxettaUserForm extends LitElement {
      * page to appear. 
      */
     handleExitForm() {
-        let event = new CustomEvent('exit-form', {
+        const event = new CustomEvent('exit-form', {});
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Emits an event that causes the user infomration to update. 
+     * @param {Object} userInfo - The information entered on the user form.
+     */
+    handleFormSubmission(userInfo) {
+        const event = new CustomEvent('update-user-info', {
             detail: {
-                state: 'RECORD-PAGE'
+                userInfo: userInfo
             }
         });
         this.dispatchEvent(event);
-    }
+  }
 }
  
 customElements.define('vox-user-form', VoxettaUserForm);

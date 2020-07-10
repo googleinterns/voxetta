@@ -24,7 +24,6 @@ import {IconButton} from '@material/mwc-icon-button';
 export class VoxettaUserIcon extends LitElement {
 
     render() {
-        // TO DO (ashley) : stylize and add an actual icon
         return html`
             <mwc-icon-button 
                 icon="account_circle"
@@ -38,11 +37,7 @@ export class VoxettaUserIcon extends LitElement {
      * form to appear. 
      */
     handleUserIconClick() {
-        let event = new CustomEvent('enter-form', {
-            detail: {
-                state: 'USER-FORM'
-            }
-        });
+        const event = new CustomEvent('enter-form', {});
         this.dispatchEvent(event);
     }
 }

@@ -15,9 +15,18 @@ limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
 
+import {CookieService} from './CookieService';
 import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {VoxettaUserForm} from './VoxettaUserForm';
 import {VoxettaUserIcon} from './VoxettaUserIcon';
+
+/**
+ * Possible app states.
+ */
+const States = {
+  RECORD_PAGE: 'record_page',
+  USER_FORM: 'user_form',
+}
 
 export class VoxettaApp extends LitElement {
 
@@ -29,13 +38,17 @@ export class VoxettaApp extends LitElement {
 
     constructor() {
         super();
-        this.state = 'RECORD-PAGE'; 
+        this.cookieService = new CookieService();
+        this.state = States.RECORD_PAGE; 
+        this.userId = this.cookieService.getCookieValue("userId");
+        this.gender = this.cookieService.getCookieValue("gender");
+        this.userAge = this.cookieService.getCookieValue("userAge");
+        this.deviceType = this.cookieService.getCookieValue("deviceType");    
     }
 
     render() {  
         return html`
             ${this.displayComponents()}
-            
         `;
     }
 
@@ -46,19 +59,25 @@ export class VoxettaApp extends LitElement {
      */
     displayComponents() {
         switch (this.state) {
-            case 'RECORD-PAGE':
+            case States.RECORD_PAGE:
                 return html`
                     <vox-user-icon 
-                        @enter-form="${(e) => { this.state = e.detail.state }}"
-                        ></vox-user-icon>
+                        @enter-form="${() => { this.state = States.USER_FORM }}">
+                    </vox-user-icon>
                     <vox-record-button></vox-record-button>
                 `;
-            case 'USER-FORM':
+            case States.USER_FORM:
                  return html`
-                    <vox-user-form @exit-form="${(e) => { this.state = e.detail.state }}">
-                        </vox-user-form>
+                    <vox-user-form
+                        .userId = ${this.userId}
+                        .gender = ${this.gender}
+                        .userAge = ${this.userAge}
+                        .deviceType = ${this.deviceType}
+                        @update-user-info="${(e) => { this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
+                        @exit-form="${() => { this.state = States.RECORD_PAGE }}">
+                    </vox-user-form>
                 `;
-        }       
+        }     
     }
 }
 

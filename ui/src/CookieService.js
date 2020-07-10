@@ -38,7 +38,7 @@ export class CookieService {
      */
     getCookieValue(key) {
         const cookie = document.cookie; 
-        if (cookie.includes(key+"=")) {
+        if (cookie.includes(key + '=')) {
             return cookie
                 .split('; ')
                 .find(entry => entry.startsWith(key))
