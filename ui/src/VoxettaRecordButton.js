@@ -36,7 +36,7 @@ export class VoxettaRecordButton extends LitElement {
         this.utteranceService = new UtteranceApiService();
         this.audioStream; 
     }
-
+  
     /**
      * If the user is not currently recording, begin recording using the Microphone 
      * component. Otherwise, stop recording and save and display the just-recorded 
