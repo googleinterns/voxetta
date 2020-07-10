@@ -7,14 +7,12 @@
     "scripts": {
         "start": "es-dev-server --app-index index.html --node-resolve --open --watch",
         "build": "rimraf dist && rollup -c rollup.config.js",
-        "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --compatibility none --open",
+        "serve": "npm run build && es-dev-server --root-dir dist --app-index index.html --compatibility none --open",
         "format": "prettier src/* --write",
         "lint": "eslint src/*",
-        "test": "babel-node jasmine_test/spec/run.js"
+        "test": "babel-node jasmine_test/spec/run.js --config-file ./jasmine_test/babel-config.json"
     },
     "dependencies": {
-        "jasmine-node": "^3.0.0",
-        "jsdom": "^16.2.2",
         "lit-element": "^2.0.1",
         "lit-html": "^1.0.0"
     },
@@ -34,6 +32,8 @@
         "eslint-plugin-lit": "^1.2.0",
         "eslint-plugin-prettier": "^3.1.4",
         "jasmine": "^3.5.0",
+        "jasmine-node": "^3.0.0",
+        "jsdom": "^16.2.2",
         "jasmine-core": "^3.5.0",
         "prettier": "^2.0.5",
         "rimraf": "^3.0.2",
