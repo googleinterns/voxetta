@@ -20,6 +20,7 @@ import {TextField} from '@material/mwc-textfield';
 import {Select} from '@material/mwc-select';
 import {ListItem} from '@material/mwc-list/mwc-list-item';
 import {Button} from '@material/mwc-button';
+import {Icon} from '@material/mwc-icon'
  
 /**
  * Component responsible for providing users a means to provide
@@ -31,20 +32,49 @@ export class VoxettaUserForm extends LitElement {
         return css`
             .container {
                 align-items: center; 
+                color: #3c4043;
                 display: flex; 
                 flex-direction: column; 
                 flex-wrap: wrap;
                 justify-content: center; 
                 text-align: center;  
-                width: 100%; 
+                width: 400px; 
+            }
+            .header-container {
+                align-items: center;
+                display: flex; 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                justify-content: center; 
+                width: 270x; 
+            }
+            .title-container {
+                width: 250px; 
+            }
+            .icon-container {
+                width: 20px; 
+            }
+            h1, h2 { 
+                font-family: 'Roboto';
+                font-weight: normal; 
+                margin-top: 5px;
+                margin-left: 0px;
+                margin-right: 0px; 
+                width: 270px; 
             }
             h1.title {
-                font-family: 'Roboto';
                 font-size: 30px;
+                margin-bottom: 5px; 
+                padding-left: 5px; 
             }
             h2.description {
-                font-family: 'Roboto';
-                font-size: 20px;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            mwc-icon {
+                --mdc-icon-size: 40px; 
+                float: left;
+                position: relative;
             }
             mwc-textfield {
                 --mdc-theme-primary: #1a73e8;
@@ -54,11 +84,11 @@ export class VoxettaUserForm extends LitElement {
             mwc-select {
                 --mdc-theme-primary: #1a73e8;
                 padding: 10px; 
-                widith: 300px;
+                width: 300px;
             }
             mwc-button {
                 padding: 10px;
-                width: 300px; 
+                width: 250px; 
             }
             mwc-button.save {
                 --mdc-theme-primary: #1a73e8;
@@ -83,9 +113,16 @@ export class VoxettaUserForm extends LitElement {
     render() {
         return html`
             <section class="container">
-                <h1 class="title">User information</h1>
+                <div class="header-container">
+                    <div class="icon-container">
+                        <mwc-icon>account_circle</mwc-icon>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="title">User information</h1>
+                    </div>
+                </div>
                 <h2 class="description">
-                    Your recording will be tagged with the following</h2>
+                    Your recording will be tagged with the following:</h2>
                 <article id="user-form" class="container">
                     <mwc-textfield 
                         id="user-id"
@@ -93,17 +130,19 @@ export class VoxettaUserForm extends LitElement {
                         label="User identifier"
                         value=${this.userId}>
                     </mwc-textfield>
-                    <mwc-select
-                        id="gender-list" 
-                        outlined 
-                        label="Gender" 
-                        placeholder="Select your gender"
-                        value=${this.gender}>
-                            <mwc-list-item disabled></mwc-list-item>
-                            <mwc-list-item value="Female">Female</mwc-list-item>
-                            <mwc-list-item value="Male">Male</mwc-list-item>  
-                            <mwc-list-item value="Other">Other</mwc-list-item>     
-                    </mwc-select>
+                    <div class="mwc-select">
+                        <mwc-select
+                            id="gender-list" 
+                            outlined 
+                            label="Gender" 
+                            placeholder="Select your gender"
+                            value=${this.gender}>
+                                <mwc-list-item disabled></mwc-list-item>
+                                <mwc-list-item value="Female">Female</mwc-list-item>
+                                <mwc-list-item value="Male">Male</mwc-list-item>  
+                                <mwc-list-item value="Other">Other</mwc-list-item>     
+                        </mwc-select>
+                    <div>
                     <mwc-textfield 
                         id="user-age"
                         type="number"
@@ -132,7 +171,7 @@ export class VoxettaUserForm extends LitElement {
                     class="cancel"
                     unelevated 
                     label="Cancel"
-                    @click=${this.handleCancelClick}>
+                    @click=${this.handleExitForm}>
                 </mwc-button>
             </section>
         `;
@@ -156,6 +195,7 @@ export class VoxettaUserForm extends LitElement {
                 deviceType: this.deviceType
             };
             this.cookieService.makeUserInfoCookie(userInfo);
+            this.handleExitForm(); 
         } 
     }
 
@@ -202,7 +242,7 @@ export class VoxettaUserForm extends LitElement {
      * Emits an event that causes the form page to close and the record
      * page to appear. 
      */
-    handleCancelClick() {
+    handleExitForm() {
         let event = new CustomEvent('exit-form', {
             detail: {
                 state: 'RECORD-PAGE'
