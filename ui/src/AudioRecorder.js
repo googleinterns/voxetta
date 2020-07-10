@@ -20,8 +20,8 @@ export class AudioRecorder {
     
    /**
     * Creates an AudioRecorder that can record utterances
-    * @param {Object} allows access to Web Audio API
-    * @param {Object} Stores the recorded stream of the utterance 
+    * @private {Object} allows access to Web Audio API
+    * @readonly {Object} Stores the recorded stream of the utterance 
     */
     constructor() {
         this.mediaRecorder = undefined;
