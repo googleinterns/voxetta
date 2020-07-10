@@ -37,14 +37,6 @@ export class VoxettaRecordButton extends LitElement {
         this.audioStream; 
     }
 
-    render() {
-        return html`
-            <vox-sound-wave .isRecording=${this.isRecording} .audioStream=${this.audioStream}></vox-sound-wave>
-            <button @click=${this.recordHandler}>Record Voice</button>
-            <audio id="utterance" controls src="" style="display: none"></audio>
-        `;
-    }
-
     /**
      * If the user is not currently recording, begin recording using the Microphone 
      * component. Otherwise, stop recording and save and display the just-recorded 
@@ -71,6 +63,14 @@ export class VoxettaRecordButton extends LitElement {
                 this.utteranceService.saveAudio(audio);
             }
         }
+    }
+    
+    render() {
+        return html`
+            <vox-sound-wave .isRecording=${this.isRecording} .audioStream=${this.audioStream}></vox-sound-wave>
+            <button @click=${this.recordHandler}>Record Voice</button>
+            <audio id="utterance" controls src="" style="display: none"></audio>
+        `;
     }
 }
 
