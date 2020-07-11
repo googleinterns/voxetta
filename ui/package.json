@@ -13,6 +13,12 @@
         "test": "babel-node jasmine_test/spec/run.js --config-file ./jasmine_test/babel-config.json"
     },
     "dependencies": {
+        "@material/mwc-button": "^0.17.2",
+        "@material/mwc-icon": "^0.17.2",
+        "@material/mwc-icon-button": "^0.17.2",
+        "@material/mwc-select": "^0.17.2",
+        "@material/mwc-textfield": "^0.17.2",
+        "@webcomponents/webcomponentsjs": "^2.4.3",
         "lit-element": "^2.0.1",
         "lit-html": "^1.0.0"
     },
