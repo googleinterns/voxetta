@@ -16,6 +16,7 @@ limitations under the License. */
 import {LitElement, html, css} from 'lit-element';
 
 import {CookieService} from './CookieService';
+import {VoxPrompts} from './components/VoxPrompts';
 import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {VoxettaUserForm} from './VoxettaUserForm';
 import {VoxettaUserIcon} from './VoxettaUserIcon';
@@ -64,6 +65,7 @@ export class VoxettaApp extends LitElement {
                     <vox-user-icon 
                         @enter-form="${() => { this.state = States.USER_FORM }}">
                     </vox-user-icon>
+                    <vox-prompts></vox-prompts>
                     <vox-record-button></vox-record-button>
                 `;
             case States.USER_FORM:
