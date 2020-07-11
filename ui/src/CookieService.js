@@ -47,4 +47,40 @@ export class CookieService {
             return '';
         }
     }
+
+    /**
+     * Retrieves the user's id from a cookie, if it exists.  
+     * @returns {String} The user id stored in a cookie, or an empty string 
+     * if such a cookie does not exist.
+     */
+    getUserId() {
+        return this.getCookieValue('userId');
+    }
+
+    /**
+     * Retrieves the user's gender from a cookie, if it exists.  
+     * @returns {String} The gender type stored in a cookie, or an empty string 
+     * if such a cookie does not exist.
+     */
+    getGender() {
+        return this.getCookieValue('gender');
+    }
+
+    /**
+     * Retrieves the user's age from a cookie, if it exists.  
+     * @returns {Number} The user age stored in a cookie, or an empty string 
+     * if such a cookie does not exist.
+     */
+    getUserAge() {
+        return this.getCookieValue('userAge');
+    }
+
+    /**
+     * Retrieves the user's device type from a cookie, if it exists.  
+     * @returns {String} The device type stored in a cookie, or an empty string 
+     * if such a cookie does not exist.
+     */
+    getDeviceType() {
+        return this.getCookieValue('deviceType');
+    }
 }

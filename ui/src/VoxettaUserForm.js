@@ -31,7 +31,7 @@ export class VoxettaUserForm extends LitElement {
         return {
             userId: {type: String},
             gender: {type: String},
-            userAge: {type: String},
+            userAge: {type: Number},
             deviceType: {type: String}
         };
     }
@@ -112,6 +112,7 @@ export class VoxettaUserForm extends LitElement {
     constructor() {
         super();
         this.addEventListener('input', this.formIsValid);
+        this.addEventListener('click', this.formIsValid);
     }
  
     render() {
@@ -216,6 +217,7 @@ export class VoxettaUserForm extends LitElement {
      * Determines if each input in the user form is valid and alters Save Button appropriately. 
      */
     formIsValid() {
+        console.log("hiiii");
         const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
         const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
         const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
@@ -224,7 +226,7 @@ export class VoxettaUserForm extends LitElement {
         const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
         
         const saveButton = this.shadowRoot.getElementById('save-button');
-        formValidity ? saveButton.disabled  = false : saveButton.disabled = true; 
+        saveButton.disabled = !formValidity;
     }
 
     /**
@@ -242,9 +244,7 @@ export class VoxettaUserForm extends LitElement {
      */
     handleFormSubmission(userInfo) {
         const event = new CustomEvent('update-user-info', {
-            detail: {
-                userInfo: userInfo
-            }
+            detail: { userInfo }
         });
         this.dispatchEvent(event);
   }

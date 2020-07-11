@@ -42,10 +42,10 @@ export class UtteranceApiService {
 
         const formData = new FormData();
         formData.append('audio', audio.blob, 'blob');
-        formData.append('userId', this.cookieService.getCookieValue("userId"));
-        formData.append('gender', this.cookieService.getCookieValue("gender"));
-        formData.append('userAge', this.cookieService.getCookieValue("userAge"));
-        formData.append('deviceType', this.cookieService.getCookieValue("deviceType"));
+        formData.append('userId', this.cookieService.getUserId());
+        formData.append('gender', this.cookieService.getGender());
+        formData.append('userAge', this.cookieService.getUserAge());
+        formData.append('deviceType', this.cookieService.getDeviceType());
         
         const response = await fetch(this.blobUrl_, { 
             method: 'POST',
