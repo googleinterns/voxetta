@@ -15,11 +15,14 @@ limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
 
-import {CookieService} from './CookieService';
-import {VoxPrompts} from './components/VoxPrompts';
-import {VoxettaRecordButton} from './VoxettaRecordButton';
-import {VoxettaUserForm} from './VoxettaUserForm';
-import {VoxettaUserIcon} from './VoxettaUserIcon';
+import {CookieService} from './utils/CookieService';
+
+import {VoxettaWaveCanvas} from './components/VoxettaWaveCanvas';
+import {VoxettaPrompts} from './components/VoxettaPrompts';
+import {VoxettaRecordButton} from './components/VoxettaRecordButton';
+import {VoxettaSkipButton} from './components/VoxettaSkipButton';
+import {VoxettaUserForm} from './components/VoxettaUserForm';
+import {VoxettaUserIcon} from './components/VoxettaUserIcon';
 
 /**
  * Possible app states.
@@ -33,14 +36,52 @@ export class VoxettaApp extends LitElement {
 
     static get properties() {
         return {
-            state: {type: String}
+            state: {type: String},
+            promptState: {type: Boolean},
+            isRecording: {type: Boolean},
+            audioStream: {type: Object}
         };
+    }
+
+    static get styles() {
+        return css`
+            div {
+                align-items: center; 
+                display: flex; 
+                flex-direction: column; 
+                flex-wrap: wrap;
+                justify-content: center; 
+            }
+            div.header {
+                align-items: flex-start; 
+                box-shadow: 0 3px 1px -1px #dcdcdc;
+                height: 10vh;
+                width: 100vw;
+            }
+            div.prompts {
+                height: 60vh;
+                width: 100vw;
+            }
+            div.buttons {
+                height: 30vh; 
+                width: 100vw;
+            }
+            div.record-button-container {
+                height: 100%;
+                width: 20vw;
+            }
+            div.button-container {
+                height: 100%;
+                width: 40vw;
+            }
+        `;
     }
 
     constructor() {
         super();
         this.cookieService = new CookieService();
         this.state = States.RECORD_PAGE; 
+        this.promptState = true; 
         this.userId = this.cookieService.getCookieValue("userId");
         this.gender = this.cookieService.getCookieValue("gender");
         this.userAge = this.cookieService.getCookieValue("userAge");
@@ -62,11 +103,35 @@ export class VoxettaApp extends LitElement {
         switch (this.state) {
             case States.RECORD_PAGE:
                 return html`
-                    <vox-user-icon 
-                        @enter-form="${() => { this.state = States.USER_FORM }}">
-                    </vox-user-icon>
-                    <vox-prompts></vox-prompts>
-                    <vox-record-button></vox-record-button>
+                    <div class="header">
+                        <vox-user-icon 
+                            @enter-form="${() => { this.state = States.USER_FORM }}">
+                        </vox-user-icon>
+                    </div>
+                    <div class="prompts">
+                        <vox-prompts
+                            .promptState=${this.prompt}></vox-prompts>
+                        <vox-sound-wave 
+                            .isRecording=${this.isRecording} 
+                            .audioStream=${this.audioStream}>
+                        </vox-sound-wave>
+                    </div>
+                    <div class="buttons">
+                        <div class="button-container"></div>
+                        <div class="record-button-container">
+                            <vox-record-button
+                                @record-state-change="${(e) => { 
+                                    this.isRecording = e.detail.isRecording;
+                                    this.audioStream = e.detail.audioStream; }}"
+                                @next-prompt="${() => { this.promptState = !this.promptState }}">
+                            </vox-record-button>
+                        </div>
+                        <div class="button-container">
+                            <vox-skip-button
+                                @skip-button="${() => { this.promptState = !this.promptState }}">
+                            </vox-skip-button>
+                        </div>
+                    </div>
                 `;
             case States.USER_FORM:
                  return html`
