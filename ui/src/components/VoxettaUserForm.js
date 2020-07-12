@@ -46,7 +46,7 @@ export class VoxettaUserForm extends LitElement {
                 flex-wrap: wrap;
                 justify-content: center; 
                 text-align: center;  
-                width: 300px; 
+                width: 100vw; 
             }
             .header-container {
                 align-items: center;
