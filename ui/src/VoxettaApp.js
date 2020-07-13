@@ -34,6 +34,15 @@ const States = {
 
 export class VoxettaApp extends LitElement {
 
+    /**
+     * @property state - The current state of the application.
+     * @property promptState - Is negated whenever a new prompt is 
+     * to be displayed. 
+     * @property isRecording - Whether or not the application is 
+     *  actively recording.
+     * @property audioStream - The stream of audio that is being
+     *  actively recorded, if applicable.
+     */
     static get properties() {
         return {
             state: {type: String},
@@ -110,7 +119,7 @@ export class VoxettaApp extends LitElement {
                     </div>
                     <div class="prompts">
                         <vox-prompts
-                            .promptState=${this.prompt}></vox-prompts>
+                            .promptState=${this.promptState}></vox-prompts>
                         <vox-sound-wave 
                             .isRecording=${this.isRecording} 
                             .audioStream=${this.audioStream}>
@@ -120,15 +129,15 @@ export class VoxettaApp extends LitElement {
                         <div class="button-container"></div>
                         <div class="record-button-container">
                             <vox-record-button
-                                @record-state-change="${(e) => { 
+                                @update-wave="${(e) => { 
                                     this.isRecording = e.detail.isRecording;
                                     this.audioStream = e.detail.audioStream; }}"
-                                @next-prompt="${() => { this.promptState = !this.promptState }}">
+                                @change-prompt="${() => { this.promptState = !this.promptState }}">
                             </vox-record-button>
                         </div>
                         <div class="button-container">
                             <vox-skip-button
-                                @skip-button="${() => { this.promptState = !this.promptState }}">
+                                @skip-prompt="${() => { this.promptState = !this.promptState }}">
                             </vox-skip-button>
                         </div>
                     </div>

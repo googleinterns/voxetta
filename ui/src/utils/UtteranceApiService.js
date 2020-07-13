@@ -54,7 +54,7 @@ export class UtteranceApiService {
         const query = await response.json(); 
 
         if (!query.success) {
-            alert("Error: Unable to upload file.");
+            alert('Error: Unable to upload file.');
         } 
     }
 

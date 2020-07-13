@@ -14,11 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 import {LitElement, html, css} from 'lit-element';
+import {styleMap} from 'lit-html/directives/style-map.js';
 
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 
 import {Icon} from '@material/mwc-icon';
+
+// Styling for the button when the user is not recording
+let nonRecordingStyle = { 
+    backgroundColor: 'white', 
+    color: '#3c4043' 
+};
+
+// Styling for the button when the user is recording
+let recordingStyle = { 
+    backgroundColor: 'red', 
+    color: 'white' 
+};
 
 /**
  * Button responsible for enabling the user to record and upload audio files. 
@@ -58,6 +71,10 @@ export class VoxettaRecordButton extends LitElement {
         this.utteranceService = new UtteranceApiService();
         this.audioStream; 
     }
+
+    updated() {
+        this.handleWaveCanvas();
+    }
   
     /**
      * If the user is not currently recording, begin recording using the Microphone 
@@ -78,49 +95,23 @@ export class VoxettaRecordButton extends LitElement {
                  return; 
             }
             this.isRecording = true;
-            this.styleOnButton();
             this.audioStream = this.audioRecorder.stream;
         } else {
             this.isRecording = false;
-            this.styleOffButton();
             this.handleFinish();
             const audio = await this.audioRecorder.stopRecording();
             if (audio.recordingUrl) {
-                // NOTE: removed for Monday presentation
-                //const audioSave = this.shadowRoot.getElementById("utterance");
-                //audioSave.src = audio.recordingUrl;            
-                //audioSave.style.display = "block";
                 this.utteranceService.saveAudio(audio);
             }
         }
     }
 
     /**
-     * Styles the recording button to its recording-state style.
-     */
-    styleOnButton() {
-        const button = this.shadowRoot.getElementById('record-button');
-        button.icon = 'stop';
-        button.style.color = 'white';
-        button.style.backgroundColor = 'red';
-    }
-
-    /**
-     * Styles the recording button to its non-recording-state style.
-     */
-    styleOffButton() {
-        const button = this.shadowRoot.getElementById('record-button');
-        button.icon = 'mic';
-        button.style.color = '#3c4043';
-        button.style.backgroundColor = 'white';
-    }
-
-    /**
      * Emits an event that causes the application to render a sound
      * wave that corresponds to the current audio stream. 
      */
-    handleStateChange() {
-        const event = new CustomEvent('record-state-change', {
+    handleWaveCanvas() {
+        const event = new CustomEvent('update-wave', {
             detail: { 
                 isRecording: this.isRecording,
                 audioStream: this.audioStream
@@ -134,19 +125,18 @@ export class VoxettaRecordButton extends LitElement {
      * on the recording page. 
      */
     handleFinish() {
-        const event = new CustomEvent('next-prompt', {});
+        const event = new CustomEvent('change-prompt', {});
         this.dispatchEvent(event);
     }
     
     render() {
-        this.handleStateChange();
         return html`
             <mwc-icon-button 
                 id="record-button"
-                icon="mic"
+                icon=${this.isRecording ? "stop" : "mic"}
+                style=${styleMap(this.isRecording ? recordingStyle : nonRecordingStyle)}
                 @click=${this.recordHandler}>
             </mwc-icon-button>
-            <!-- <audio id="utterance" controls src="" style="display: none"></audio> -->
         `;
     }
 }

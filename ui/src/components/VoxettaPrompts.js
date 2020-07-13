@@ -23,8 +23,7 @@ import {Icon} from '@material/mwc-icon';
 export class VoxettaPrompts extends LitElement {
     static get properties() {
         return {
-            prompt: {type: String},
-            state: {type: String}
+            promptState: {type: Boolean}
         };
     }
 
@@ -57,6 +56,7 @@ export class VoxettaPrompts extends LitElement {
 
     constructor() {
         super();
+        this.prompt;
         this.state = 'NOT_ASKED';
     }
 
@@ -78,7 +78,7 @@ export class VoxettaPrompts extends LitElement {
         }
     }
 
-    handleSkip() {
+    updated() {
         this.getNewPrompt();
     }
 
@@ -97,7 +97,7 @@ export class VoxettaPrompts extends LitElement {
     renderPromptState() {
         switch (this.state) {
             case 'NOT_ASKED':
-                return html`<p>haven't asked yet</p>`;
+                return html`<p>here is a prompt</p>`;
             case 'LOADING':
                 return html`<p>Loading</p>`;
             case 'SUCCESS':
@@ -109,7 +109,7 @@ export class VoxettaPrompts extends LitElement {
         }
     }
 
-    render() {
+    render() { 
         return html`
             <div id="prompt-screen">
                 ${this.renderPromptState()}

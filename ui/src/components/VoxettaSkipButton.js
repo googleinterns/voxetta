@@ -47,7 +47,7 @@ export class VoxettaSkipButton extends LitElement {
         return html`
             <button @click="${this.handleSkip}">
                 <mwc-icon>skip_next</mwc-icon>
-                skip
+                SKIP
             </button>
         `;
     }
@@ -57,7 +57,7 @@ export class VoxettaSkipButton extends LitElement {
      * on the recording page. 
      */
     handleSkip() {
-        const event = new CustomEvent('skip-button', {});
+        const event = new CustomEvent('skip-prompt', {});
         this.dispatchEvent(event);
     }
 }
