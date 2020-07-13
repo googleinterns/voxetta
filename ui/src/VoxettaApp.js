@@ -13,17 +13,86 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {VoxettaRecordButton} from './VoxettaRecordButton';
 import {LitElement, html, css} from 'lit-element';
 
+import {CookieService} from './CookieService';
+import {VoxPrompts} from './components/VoxPrompts';
+import {VoxettaRecordButton} from './VoxettaRecordButton';
+import {VoxettaUserForm} from './VoxettaUserForm';
+import {VoxettaUserIcon} from './VoxettaUserIcon';
+
+/**
+ * Possible app states.
+ */
+const States = {
+  RECORD_PAGE: 'record_page',
+  USER_FORM: 'user_form',
+}
+
 export class VoxettaApp extends LitElement {
+
+    static get properties() {
+        return {
+            state: {type: String}
+        };
+    }
+
+    constructor() {
+        super();
+        this.cookieService = new CookieService();
+        this.state = States.RECORD_PAGE; 
+        this.userId = this.cookieService.getCookieValue("userId");
+        this.gender = this.cookieService.getCookieValue("gender");
+        this.userAge = this.cookieService.getCookieValue("userAge");
+        this.deviceType = this.cookieService.getCookieValue("deviceType");    
+    }
+
     render() {  
         return html`
-            <main>
-                Welcome to the Voxetta app
-            </main>
-            <vox-record-button></vox-record-button>
+            ${this.displayComponents()}
         `;
+    }
+
+    /**
+     * Returns the appropriate components based upon the current state of the 
+     * application. 
+     * @returns {HTML} The HTML containing the appropriate components to render.
+     */
+    displayComponents() {
+        switch (this.state) {
+            case States.RECORD_PAGE:
+                return html`
+                    <vox-user-icon 
+                        @enter-form="${() => { this.state = States.USER_FORM }}">
+                    </vox-user-icon>
+                    <vox-prompts></vox-prompts>
+                    <vox-record-button></vox-record-button>
+                `;
+            case States.USER_FORM:
+                 return html`
+                    <vox-user-form
+                        .userId = ${this.userId}
+                        .gender = ${this.gender}
+                        .userAge = ${this.userAge}
+                        .deviceType = ${this.deviceType}
+                        @update-user-info="${(e) => { 
+                            this.updateUserInformation(e.detail.userInfo);
+                            this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
+                        @exit-form="${() => { this.state = States.RECORD_PAGE }}">
+                    </vox-user-form>
+                `;
+        }     
+    }
+
+    /**
+     * Updates user-related fields with the approriate values.
+     * @param {Object} userInfo - The information entered on the user form.
+     */
+    updateUserInformation(userInfo) {
+        this.userId = userInfo.userId;
+        this.gender = userInfo.gender;
+        this.userAge = userInfo.userAge;
+        this.deviceType = userInfo.deviceType;
     }
 }
 

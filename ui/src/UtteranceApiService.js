@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
+import {CookieService} from './CookieService';
+
 /**
  * Service responsible for saving audio files to an external database. 
  */
@@ -27,7 +29,7 @@ export class UtteranceApiService {
          * @private
          */
         this.blobUrl_; 
-        
+        this.cookieService = new CookieService();
     }
 
     /**
@@ -40,7 +42,11 @@ export class UtteranceApiService {
 
         const formData = new FormData();
         formData.append('audio', audio.blob, 'blob');
-
+        formData.append('userId', this.cookieService.getUserId());
+        formData.append('gender', this.cookieService.getGender());
+        formData.append('userAge', this.cookieService.getUserAge());
+        formData.append('deviceType', this.cookieService.getDeviceType());
+        
         const response = await fetch(this.blobUrl_, { 
             method: 'POST',
             body: formData 

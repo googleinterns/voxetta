@@ -35,6 +35,7 @@ import org.mockito.Mockito;
 /**  
  * Verifies the intended behavior of UtteranceUploadServlet.java. 
  */
+ 
 @RunWith(JUnit4.class)
 public final class UtteranceUploadServletTest extends Mockito {
 
@@ -57,6 +58,12 @@ public final class UtteranceUploadServletTest extends Mockito {
     // Mock the request and response 
     request = mock(HttpServletRequest.class);       
     response = mock(HttpServletResponse.class);
+
+    // Return example data when request parameters are fetched
+    when(request.getParameter("userId")).thenReturn("123456");
+    when(request.getParameter("gender")).thenReturn("Female");
+    when(request.getParameter("userAge")).thenReturn("100");
+    when(request.getParameter("deviceType")).thenReturn("Pixelbook");
   }
 
   @Test
