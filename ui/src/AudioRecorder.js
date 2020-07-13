@@ -18,54 +18,65 @@ limitations under the License. */
  */
 export class AudioRecorder {
     
-    /**
-     * Create an AudioRecorder that can record utterances.
-     */
+   /**
+    * Creates an AudioRecorder that can record utterances
+    * @private {Object} allows access to Web Audio API
+    * @readonly {Object} Stores the recorded stream of the utterance 
+    */
     constructor() {
-        /**
-         * Allows access to Web Audio API.
-         * @private
-         */
-        this.mediaRecorder_;
+        this.mediaRecorder = undefined;
+        this.stream = undefined;
     }
-
+    
+   /**
+    * Prompts user for access to Microphone using API
+    */
+    initRecorder() {
+      return new Promise(async (resolve, reject) => {
+          try {
+            this.stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            this.mediaRecorder = new MediaRecorder(this.stream);
+          } catch(err) {
+            console.log(err.name, err.message); 
+            window.alert(`Error: Microphone access is currently blocked for this site. 
+              To unblock, please navigate to chrome://settings/content/microphone and 
+              remove this site from the 'Block' section.`);
+            reject();
+          }
+          resolve();
+      });
+    }
     /**
-     * Prompts user for access to Microphone Component and begins recording if access is granted.
+     * Begins recording if access is granted.
      * @returns {Boolean} Denotes whether or not the recording successfully began.
      */
     startRecording() {
-        const success = true; 
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-            .then((stream) => {
-                const mediaRecorder_ = new MediaRecorder(stream);
-                this.mediaRecorder_ = mediaRecorder_; 
-                mediaRecorder_.start();
-            }).catch(function() {
-                alert(`Error: Microphone access is currently blocked for this site. To unblock, please navigate to 
-                    chrome://settings/content/microphone and remove this site from the 'Block' section.`);
-                success = false; 
-            });
-        return success;  
+      if (!this.stream) {
+        return false;
+      }
+      
+      this.mediaRecorder.start();
+      return true;
     }
-
-    /**
-     * Stops Microphone recording and obtains the relevant audio Blob and corresponding URL. 
-     * @returns {Object} Audio object containing an audio Blob and its corresponding URL.
-     */
+    
+   /**
+    * Stops recording and stores utterance data in Url if recording
+    * @returns {Object} Url to access utterance on the front end, and blob to access utterance in the back end
+    */
     stopRecording() {
-        if(this.mediaRecorder_) {
-            this.mediaRecorder_.stop();
+        if(this.mediaRecorder) {
+            this.mediaRecorder.stop();
             return new Promise(resolve => {
-                this.mediaRecorder_.ondataavailable = (e) => {
+                this.mediaRecorder.ondataavailable = (e) => {
                     const blob = new Blob([e.data], { type : 'audio/webm;' });
                     const recordingUrl = window.URL.createObjectURL(blob);
-                    const audio = {blob: blob, recordingUrl: recordingUrl};
+                    const audio = {blob, recordingUrl};
                     resolve(audio);
-            };
-        });
+                };
+            });
         } else {
             alert("Error: Could not record successfully.");
             return null;
         }
-    }   
+    }
 }

@@ -48,11 +48,11 @@ public class UtteranceUploadServlet extends HttpServlet {
     // Create and save Utterance to Datastore
     Utterance utterance = new Utterance.UtteranceBuilder()
       .setAudio(audio)
-      .setUserId("USERID")
+      .setUserId(request.getParameter("userId"))
       .setPromptId("PROMPTID")
-      .setDevice("DEVICE")
-      .setAge(100)
-      .setGender("GENDER")
+      .setDevice(request.getParameter("deviceType"))
+      .setAge(Integer.parseInt(request.getParameter("userAge")))
+      .setGender(request.getParameter("gender"))
       .build();
 
     try {
