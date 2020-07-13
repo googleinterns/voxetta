@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import static com.google.speech.tools.voxetta.testUtils.StringWriterStub.stubStringWriter;
 
 public class PromptServletTest extends Mockito {
 
@@ -46,9 +47,7 @@ public class PromptServletTest extends Mockito {
         when(promptService.getOnePrompt()).thenReturn(mockedPrompt);
 
         // mock writer
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+        StringWriter stringWriter = stubStringWriter(response);
 
         // call doGet
         servlet.doGet(request, response);
@@ -68,9 +67,7 @@ public class PromptServletTest extends Mockito {
         when(promptService.getOnePrompt()).thenReturn(mockedPrompt);
 
         // mock writer
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+        StringWriter stringWriter = stubStringWriter(response);
 
         // call doGet
         servlet.doGet(request, response);
@@ -88,9 +85,7 @@ public class PromptServletTest extends Mockito {
         when(promptService.savePrompt(any(String.class), any(String.class))).thenReturn(new StatusResponse(true));
 
         // mock writer
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+        StringWriter stringWriter = stubStringWriter(response);
 
         servlet.doPost(request, response);
 
@@ -107,9 +102,7 @@ public class PromptServletTest extends Mockito {
         when(promptService.savePrompt(any(String.class), any(String.class))).thenReturn(new StatusResponse(false));
 
         // mock writer
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+        StringWriter stringWriter = stubStringWriter(response);
 
         servlet.doPost(request, response);
 
