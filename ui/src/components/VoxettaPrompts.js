@@ -113,10 +113,6 @@ export class VoxettaPrompts extends LitElement {
         return html`
             <div id="prompt-screen">
                 ${this.renderPromptState()}
-                <!-- <button @click="${this.handleSkip}">
-                    <mwc-icon>skip_next</mwc-icon>
-                    SKIP
-                </button> -->
                 <button @click="${promptApi.resetAllPromptsUnread}">
                     reset all prompts to unread
                 </button> 

@@ -69,12 +69,16 @@ export class VoxettaRecordButton extends LitElement {
             try { 
                 await this.audioRecorder.initRecorder();
             } catch(e) { 
-                console.log("Microphone blocked"); 
+                console.log('Microphone blocked.'); 
+                return;
             }
-            if (this.audioRecorder.startRecording()) {
-                this.isRecording = true;
-                this.styleOnButton(); 
+
+            if (!this.audioRecorder.startRecording()) {
+                 console.log('Failed to start recording.')
+                 return; 
             }
+            this.isRecording = true;
+            this.styleOnButton();
             this.audioStream = this.audioRecorder.stream;
         } else {
             this.isRecording = false;
@@ -95,20 +99,20 @@ export class VoxettaRecordButton extends LitElement {
      * Styles the recording button to its recording-state style.
      */
     styleOnButton() {
-        const button = this.shadowRoot.getElementById("record-button");
-        button.icon = "stop";
-        button.style.color = "white";
-        button.style.backgroundColor = "red";
+        const button = this.shadowRoot.getElementById('record-button');
+        button.icon = 'stop';
+        button.style.color = 'white';
+        button.style.backgroundColor = 'red';
     }
 
     /**
      * Styles the recording button to its non-recording-state style.
      */
     styleOffButton() {
-        const button = this.shadowRoot.getElementById("record-button");
-        button.icon = "mic";
-        button.style.color = "#3c4043";
-        button.style.backgroundColor = "white";
+        const button = this.shadowRoot.getElementById('record-button');
+        button.icon = 'mic';
+        button.style.color = '#3c4043';
+        button.style.backgroundColor = 'white';
     }
 
     /**

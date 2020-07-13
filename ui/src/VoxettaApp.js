@@ -82,10 +82,10 @@ export class VoxettaApp extends LitElement {
         this.cookieService = new CookieService();
         this.state = States.RECORD_PAGE; 
         this.promptState = true; 
-        this.userId = this.cookieService.getCookieValue("userId");
-        this.gender = this.cookieService.getCookieValue("gender");
-        this.userAge = this.cookieService.getCookieValue("userAge");
-        this.deviceType = this.cookieService.getCookieValue("deviceType");    
+        this.userId = this.cookieService.getCookieValue('userId');
+        this.gender = this.cookieService.getCookieValue('gender');
+        this.userAge = this.cookieService.getCookieValue('userAge');
+        this.deviceType = this.cookieService.getCookieValue('deviceType');    
     }
 
     render() {  

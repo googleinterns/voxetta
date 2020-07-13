@@ -111,7 +111,6 @@ export class VoxettaUserForm extends LitElement {
 
     constructor() {
         super();
-        this.width = 400; 
         this.addEventListener('input', this.formIsValid);
         this.addEventListener('click', this.formIsValid);
     }

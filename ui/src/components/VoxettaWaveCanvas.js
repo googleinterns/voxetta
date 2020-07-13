@@ -34,7 +34,7 @@ export class VoxettaWaveCanvas extends LitElement {
     constructor() {
         super();
         this.soundWave;
-        this.canvasId = "myCanvas";
+        this.canvasId = 'myCanvas';
         this.canvas;
         this.width = this.getWidth();
         this.height = 250;
@@ -45,11 +45,7 @@ export class VoxettaWaveCanvas extends LitElement {
      */
     getWidth(){
         const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        if (width > 400) {
-            return 400;
-        } else {
-            return width - 100;
-        }
+        return Math.min(400, width - 100);
     }
 
     /**
@@ -66,7 +62,7 @@ export class VoxettaWaveCanvas extends LitElement {
      * the soundwave on the canvas.
      */
     updated(changedProperties){
-        if (this.audioStream != changedProperties.get("audioStream") && this.isRecording) {
+        if (this.audioStream != changedProperties.get('audioStream') && this.isRecording) {
             this.soundWave.setStream(this.audioStream);
             this.soundWave.createSoundWave();
         } else if (!this.isRecording && this.soundWave != undefined) {

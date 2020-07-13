@@ -16,8 +16,6 @@
 
 import {LitElement, html, css} from 'lit-element';
 
-import * as promptApi from '../utils/PromptApiService';
-
 import {Icon} from '@material/mwc-icon';
 
 export class VoxettaSkipButton extends LitElement {
@@ -36,6 +34,7 @@ export class VoxettaSkipButton extends LitElement {
                 color: #a0a0a0;
                 cursor: pointer;
                 font-family: 'Roboto';
+                text-transform: capitalize;
                 width: 50px; 
             }
             button:hover {
@@ -48,7 +47,7 @@ export class VoxettaSkipButton extends LitElement {
         return html`
             <button @click="${this.handleSkip}">
                 <mwc-icon>skip_next</mwc-icon>
-                SKIP
+                skip
             </button>
         `;
     }

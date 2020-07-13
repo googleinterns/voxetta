@@ -32,7 +32,7 @@ export class SoundWave {
     * Creates and uses the analyser node to start analysing the stream as it's coming in
     */
     createSoundWave() {
-        this.ctx = this.canvas.getContext("2d");
+        this.ctx = this.canvas.getContext('2d');
         const context = new (window.AudioContext || window.webkitAudioContext)();
         this.analyser = context.createAnalyser();
         const source = context.createMediaStreamSource(this.stream);
