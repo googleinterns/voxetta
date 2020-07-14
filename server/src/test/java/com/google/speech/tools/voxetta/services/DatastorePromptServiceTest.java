@@ -56,21 +56,21 @@ public class DatastorePromptServiceTest extends Mockito {
     @Test
     public void getOnePrompt_DatastorePromptRetrieval_ReturnsPrompt() {
 
-        // mock entity
+        // Mock entity
         Entity mockEntity = new Entity(KeyFactory.createKey("Prompt", 7823648));
         mockEntity.setProperty("type", "text");
         mockEntity.setProperty("body", "dummy prompt");
         String mockEntityAsPromptJson = gson.toJson(new PromptBuilder().buildFromEntity(mockEntity));
 
-        // mock entityList
+        // Mock entityList
         List<Entity> entityList = new LinkedList<Entity>();
         entityList.add(mockEntity);
 
-        // prepare mocked responses
+        // Prepare mocked responses
         when(datastoreService.prepare(any(Query.class))).thenReturn(preparedQuery);
         when(preparedQuery.asList(any(FetchOptions.class))).thenReturn(entityList);
 
-        // assert equal
+        // Assert equal
         String retrievedPrompt = service.getOnePrompt();
         Assert.assertEquals(mockEntityAsPromptJson, retrievedPrompt);
     }
@@ -78,14 +78,14 @@ public class DatastorePromptServiceTest extends Mockito {
     @Test
     public void getOnePrompt_DatastorePromptRetrieval_ReturnsEmptyPrompt() {
 
-        // mock empty entityList
+        // Mock empty entityList
         List<Entity> entityList = new LinkedList<Entity>();
 
-        // prepare mocked responses
+        // Prepare mocked responses
         when(datastoreService.prepare(any(Query.class))).thenReturn(preparedQuery);
         when(preparedQuery.asList(any(FetchOptions.class))).thenReturn(entityList);
 
-        // assert empty JSON is returned
+        // Assert empty JSON is returned
         String retrievedPrompt = service.getOnePrompt();
         Assert.assertEquals(gson.toJson(new Object()), retrievedPrompt);
     }

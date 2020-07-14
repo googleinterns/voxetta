@@ -42,74 +42,74 @@ public class PromptServletTest extends Mockito {
     @Test
     public void doGet_GetOnePrompt_ReturnsPrompt() throws IOException {
 
-        // mock prompt response
+        // Mock prompt response
         String mockedPrompt = gson.toJson(new Prompt(42312, Type.TEXT, "mocked body"));
         when(promptService.getOnePrompt()).thenReturn(mockedPrompt);
 
-        // mock writer
+        // Mock writer
         StringWriter stringWriter = stubStringWriter(response);
 
-        // call doGet
+        // Call doGet
         servlet.doGet(request, response);
 
-        // verify response was called at least once
+        // Verify response was called at least once
         verify(response, atLeast(1)).setContentType("application/json");
 
-        // assert that prompt JSON is included in response
+        // Assert that prompt JSON is included in response
         Assert.assertTrue(stringWriter.toString().contains(mockedPrompt));
     }
 
     @Test
     public void doGet_GetOneEmptyPrompt_ReturnsEmptyPrompt() throws IOException {
 
-        // mock prompt response
+        // Mock prompt response
         String mockedPrompt = gson.toJson(new Object());
         when(promptService.getOnePrompt()).thenReturn(mockedPrompt);
 
-        // mock writer
+        // Mock writer
         StringWriter stringWriter = stubStringWriter(response);
 
-        // call doGet
+        // Call doGet
         servlet.doGet(request, response);
 
-        // verify response was called at least once
+        // Verify response was called at least once
         verify(response, atLeast(1)).setContentType("application/json");
 
-        // assert that empty prompt JSON is included in response
+        // Assert that empty prompt JSON is included in response
         Assert.assertTrue(stringWriter.toString().contains(mockedPrompt));
     }
 
     @Test
     public void doPost_SubmitOnePrompt_ReturnsTrue() throws IOException {
-        // mock prompt service
+        // Mock prompt service
         when(promptService.savePrompt(any(String.class), any(String.class))).thenReturn(new StatusResponse(true));
 
-        // mock writer
+        // Mock writer
         StringWriter stringWriter = stubStringWriter(response);
 
         servlet.doPost(request, response);
 
-        // verify response was called at least once
+        // Verify response was called at least once
         verify(response, atLeast(1)).setContentType("application/json");
 
-        // assert that status response JSON is included in response
+        // Assert that status response JSON is included in response
         Assert.assertTrue(stringWriter.toString().contains(new StatusResponse(true).toJson()));
     }
 
     @Test
     public void doPost_SubmitOnePrompt_ReturnsFalse() throws IOException {
-        // mock prompt service
+        // Mock prompt service
         when(promptService.savePrompt(any(String.class), any(String.class))).thenReturn(new StatusResponse(false));
 
-        // mock writer
+        // Mock writer
         StringWriter stringWriter = stubStringWriter(response);
 
         servlet.doPost(request, response);
 
-        // verify response was called at least once
+        // Verify response was called at least once
         verify(response, atLeast(1)).setContentType("application/json");
 
-        // assert that status response JSON is included in response
+        // Assert that status response JSON is included in response
         Assert.assertTrue(stringWriter.toString().contains(new StatusResponse(false).toJson()));
     }
 
