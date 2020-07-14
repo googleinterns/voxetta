@@ -33,15 +33,6 @@ export class VoxettaUserIcon extends LitElement {
         `;
     }
 
-    render() {
-        return html`
-            <mwc-icon-button 
-                icon="account_circle"
-                @click=${this.handleUserIconClick}
-            </button>
-        `;
-    }
-
     /**
      * Emits an event that causes the record page to close and the user
      * form to appear. 
@@ -49,6 +40,15 @@ export class VoxettaUserIcon extends LitElement {
     handleUserIconClick() {
         const event = new CustomEvent('enter-form', {});
         this.dispatchEvent(event);
+    }
+
+    render() {
+        return html`
+            <mwc-icon-button 
+                icon="account_circle"
+                @click=${this.handleUserIconClick}
+            </button>
+        `;
     }
 }
 

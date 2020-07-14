@@ -23,7 +23,8 @@ import {Icon} from '@material/mwc-icon';
 export class VoxettaPrompts extends LitElement {
     static get properties() {
         return {
-            promptState: {type: Boolean}
+            prompt: {type: Object},
+            state: {type: String}
         };
     }
 
@@ -57,15 +58,18 @@ export class VoxettaPrompts extends LitElement {
     constructor() {
         super();
         this.prompt;
-        this.state = 'NOT_ASKED';
+        this.state = 'Loading';
     }
 
     firstUpdated() {
         this.getNewPrompt();
     }
 
+    /**
+     * Emits an event that causes audio-recording related components
+     * to disappear. 
+     */
     async getNewPrompt() {
-        this.state = 'LOADING';
         const promptRequest = await promptApi.getNewPrompt();
 
         if (promptRequest.status === 'SUCCESS') {
@@ -78,10 +82,10 @@ export class VoxettaPrompts extends LitElement {
         }
     }
 
-    updated() {
-        this.getNewPrompt();
-    }
-
+    /**
+     * Determines the approriate method of rendering the current prompt.
+     * @returns {HTML} The HTML associated with the current prompt. 
+     */
     renderPromptType() {
         switch (this.prompt.type) {
             case 'TEXT':
@@ -94,19 +98,32 @@ export class VoxettaPrompts extends LitElement {
         }
     }
 
+    /**
+     * Determines the approriate rendering action based on the current
+     * prompt state.
+     * @returns {HTML} The HTML associated with the current state. 
+     */
     renderPromptState() {
         switch (this.state) {
-            case 'NOT_ASKED':
-                return html`<p>here is a prompt</p>`;
-            case 'LOADING':
-                return html`<p>Loading</p>`;
             case 'SUCCESS':
                 return this.renderPromptType();
+            case 'LOADING':
+                return html`<p>Loading...</p>`;
             case 'FAILURE':
                 return html`<p><b>Prompt failed to load.</b></p>`;
             case 'FINISHED':
-                return html`<p><i>No more prompts...</i></p>`;
+                this.handleSessionEnd();
+                return html`<p>Your work session is finished.</p>`;
         }
+    }
+
+    /**
+     * Emits an event that causes audio-recording related components
+     * to disappear. 
+     */
+    handleSessionEnd() {
+        const event = new CustomEvent('end-session', {});
+        this.dispatchEvent(event);
     }
 
     render() { 

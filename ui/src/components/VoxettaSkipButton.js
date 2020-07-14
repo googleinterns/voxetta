@@ -21,8 +21,6 @@ import {Icon} from '@material/mwc-icon';
 export class VoxettaSkipButton extends LitElement {
     static get properties() {
         return {
-            prompt: {type: String},
-            state: {type: String},
         };
     }
 
@@ -43,15 +41,6 @@ export class VoxettaSkipButton extends LitElement {
         `;
     }
 
-    render() {
-        return html`
-            <button @click="${this.handleSkip}">
-                <mwc-icon>skip_next</mwc-icon>
-                skip
-            </button>
-        `;
-    }
-
     /**
      * Emits an event that causes a new prompt to be rendered
      * on the recording page. 
@@ -59,6 +48,15 @@ export class VoxettaSkipButton extends LitElement {
     handleSkip() {
         const event = new CustomEvent('skip-prompt', {});
         this.dispatchEvent(event);
+    }
+
+    render() {
+        return html`
+            <button @click="${this.handleSkip}">
+                <mwc-icon>skip_next</mwc-icon>
+                skip
+            </button>
+        `;
     }
 }
 

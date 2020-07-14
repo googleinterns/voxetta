@@ -28,7 +28,8 @@ import {VoxettaUserIcon} from './components/VoxettaUserIcon';
  * Possible app states.
  */
 const States = {
-  RECORD_PAGE: 'record_page',
+  ACTIVE_RECORD_PAGE: 'active_record_page',
+  UNACTIVE_RECORD_PAGE: 'unactive_record_page',
   USER_FORM: 'user_form',
 }
 
@@ -46,7 +47,6 @@ export class VoxettaApp extends LitElement {
     static get properties() {
         return {
             state: {type: String},
-            promptState: {type: Boolean},
             isRecording: {type: Boolean},
             audioStream: {type: Object}
         };
@@ -89,18 +89,12 @@ export class VoxettaApp extends LitElement {
     constructor() {
         super();
         this.cookieService = new CookieService();
-        this.state = States.RECORD_PAGE; 
+        this.state = States.ACTIVE_RECORD_PAGE; 
         this.promptState = true; 
         this.userId = this.cookieService.getCookieValue('userId');
         this.gender = this.cookieService.getCookieValue('gender');
         this.userAge = this.cookieService.getCookieValue('userAge');
-        this.deviceType = this.cookieService.getCookieValue('deviceType');    
-    }
-
-    render() {  
-        return html`
-            ${this.displayComponents()}
-        `;
+        this.deviceType = this.cookieService.getCookieValue('deviceType'); 
     }
 
     /**
@@ -110,52 +104,102 @@ export class VoxettaApp extends LitElement {
      */
     displayComponents() {
         switch (this.state) {
-            case States.RECORD_PAGE:
+            case States.ACTIVE_RECORD_PAGE:
                 return html`
-                    <div class="header">
-                        <vox-user-icon 
-                            @enter-form="${() => { this.state = States.USER_FORM }}">
-                        </vox-user-icon>
-                    </div>
-                    <div class="prompts">
-                        <vox-prompts
-                            .promptState=${this.promptState}></vox-prompts>
-                        <vox-sound-wave 
-                            .isRecording=${this.isRecording} 
-                            .audioStream=${this.audioStream}>
-                        </vox-sound-wave>
-                    </div>
-                    <div class="buttons">
-                        <div class="button-container"></div>
-                        <div class="record-button-container">
-                            <vox-record-button
-                                @update-wave="${(e) => { 
-                                    this.isRecording = e.detail.isRecording;
-                                    this.audioStream = e.detail.audioStream; }}"
-                                @change-prompt="${() => { this.promptState = !this.promptState }}">
-                            </vox-record-button>
-                        </div>
-                        <div class="button-container">
-                            <vox-skip-button
-                                @skip-prompt="${() => { this.promptState = !this.promptState }}">
-                            </vox-skip-button>
-                        </div>
-                    </div>
+                    ${this.getActiveRecordTemplate()}
+                `;
+            case States.UNACTIVE_RECORD_PAGE:
+                return html`
+                    ${this.getUnactiveRecordTemplate()}
                 `;
             case States.USER_FORM:
-                 return html`
-                    <vox-user-form
-                        .userId = ${this.userId}
-                        .gender = ${this.gender}
-                        .userAge = ${this.userAge}
-                        .deviceType = ${this.deviceType}
-                        @update-user-info="${(e) => { 
-                            this.updateUserInformation(e.detail.userInfo);
-                            this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
-                        @exit-form="${() => { this.state = States.RECORD_PAGE }}">
-                    </vox-user-form>
+                return html`
+                    ${this.getUserFormTemplate()}
                 `;
-        }     
+        }      
+    }
+
+    /**
+     * The componenets associated with the active recording state. 
+     * @returns {HTML} The HTML template for the active recording state.
+     */
+    getActiveRecordTemplate() {
+        return html`
+            <div class="header">
+                <vox-user-icon 
+                    @enter-form="${() => {this.state = States.USER_FORM}}">
+                </vox-user-icon>
+            </div>
+            <div class="prompts">
+                <vox-prompts
+                    .promptState=${this.promptState}
+                    @end-session="${() => {this.state = States.UNACTIVE_RECORD_PAGE}}">
+                </vox-prompts>
+                <vox-sound-wave 
+                    .isRecording=${this.isRecording} 
+                    .audioStream=${this.audioStream}>
+                </vox-sound-wave>
+            </div>
+            <div class="buttons">
+                <div class="button-container"></div>
+                <div class="record-button-container">
+                    <vox-record-button
+                        @update-wave="${(e) => { 
+                            this.isRecording = e.detail.isRecording;
+                            this.audioStream = e.detail.audioStream; }}"
+                        @change-prompt="${this.handleChangePrompt}">
+                    </vox-record-button>
+                </div>
+                <div class="button-container">
+                    <vox-skip-button
+                        @skip-prompt="${this.handleChangePrompt}">
+                    </vox-skip-button>
+                </div>
+            </div>
+                `;
+    }
+
+    /**
+     * The componenets associated with the unactive recording state. 
+     * @returns {HTML} The HTML template for the unactive recording state.
+     */
+    getUnactiveRecordTemplate() {
+        return html`
+            <div class="header">
+                <vox-user-icon 
+                    @enter-form="${() => {this.state = States.USER_FORM}}">
+                </vox-user-icon>
+            </div>
+            <div class="prompts">
+                <vox-prompts
+                    .promptState=${this.promptState}
+                    @end-session="${() => {this.state = States.UNACTIVE_RECORD_PAGE}}">
+                </vox-prompts>
+                <vox-sound-wave 
+                    .isRecording=${this.isRecording} 
+                    .audioStream=${this.audioStream}>
+                </vox-sound-wave>
+            </div>
+        `;
+    }
+
+    /**
+     * The componenets associated with the user form state. 
+     * @returns {HTML} The HTML template for the user form state.
+     */
+    getUserFormTemplate() {
+        return html`
+            <vox-user-form
+                .userId = ${this.userId}
+                .gender = ${this.gender}
+                .userAge = ${this.userAge}
+                .deviceType = ${this.deviceType}
+                @update-user-info="${(e) => { 
+                    this.updateUserInformation(e.detail.userInfo);
+                    this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
+                @exit-form="${() => { this.state = States.ACTIVE_RECORD_PAGE }}">
+            </vox-user-form>
+        `;
     }
 
     /**
@@ -167,6 +211,20 @@ export class VoxettaApp extends LitElement {
         this.gender = userInfo.gender;
         this.userAge = userInfo.userAge;
         this.deviceType = userInfo.deviceType;
+    }
+
+    /**
+     * Causes a new prompt to render in the vox-prompts child component. 
+     */
+    handleChangePrompt() {
+        const promptComponent = this.shadowRoot.querySelector('vox-prompts');
+        promptComponent.getNewPrompt();   
+    }
+
+    render() {  
+        return html`
+            ${this.displayComponents()}
+        `;
     }
 }
 
