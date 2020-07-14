@@ -46,7 +46,7 @@ export class VoxettaUserForm extends LitElement {
                 flex-wrap: wrap;
                 justify-content: center; 
                 text-align: center;  
-                width: 400px; 
+                width: 100vw; 
             }
             .header-container {
                 align-items: center;
@@ -114,7 +114,63 @@ export class VoxettaUserForm extends LitElement {
         this.addEventListener('input', this.formIsValid);
         this.addEventListener('click', this.formIsValid);
     }
- 
+
+    /**
+     * Checks to see if the user submitted valid information, and if so,
+     * saves the user information in a cookie. 
+     */
+    processForm() {
+        this.userId = this.shadowRoot.getElementById('user-id').value;
+        this.gender = this.shadowRoot.getElementById('gender-list').value;
+        this.userAge = this.shadowRoot.getElementById('user-age').value;
+        this.deviceType = this.shadowRoot.getElementById('device-type').value;
+
+        const userInfo = {
+            userId: this.userId, 
+            gender: this.gender,
+            userAge: this.userAge,
+            deviceType: this.deviceType
+        };
+
+        this.handleFormSubmission(userInfo);
+        this.handleExitForm(); 
+    }
+
+    /**
+     * Determines if each input in the user form is valid and alters Save Button appropriately. 
+     */
+    formIsValid() {
+        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
+        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
+        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
+        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
+
+        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
+        
+        const saveButton = this.shadowRoot.getElementById('save-button');
+        saveButton.disabled = !formValidity;
+    }
+
+    /**
+     * Emits an event that causes the form page to close and the record
+     * page to appear. 
+     */
+    handleExitForm() {
+        const event = new CustomEvent('exit-form', {});
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Emits an event that causes the user infomration to update. 
+     * @param {Object} userInfo - The information entered on the user form.
+     */
+    handleFormSubmission(userInfo) {
+        const event = new CustomEvent('update-user-info', {
+            detail: { userInfo }
+        });
+        this.dispatchEvent(event);
+    }
+
     render() {
         return html`
             <section class="container">
@@ -191,63 +247,6 @@ export class VoxettaUserForm extends LitElement {
             </section>
         `;
     }
-
-    /**
-     * Checks to see if the user submitted valid information, and if so,
-     * saves the user information in a cookie. 
-     */
-    processForm() {
-        this.userId = this.shadowRoot.getElementById('user-id').value;
-        this.gender = this.shadowRoot.getElementById('gender-list').value;
-        this.userAge = this.shadowRoot.getElementById('user-age').value;
-        this.deviceType = this.shadowRoot.getElementById('device-type').value;
-
-        const userInfo = {
-            userId: this.userId, 
-            gender: this.gender,
-            userAge: this.userAge,
-            deviceType: this.deviceType
-        };
-
-        this.handleFormSubmission(userInfo);
-        this.handleExitForm(); 
-    }
-
-    /**
-     * Determines if each input in the user form is valid and alters Save Button appropriately. 
-     */
-    formIsValid() {
-        console.log("hiiii");
-        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
-        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
-        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
-        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
-
-        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
-        
-        const saveButton = this.shadowRoot.getElementById('save-button');
-        saveButton.disabled = !formValidity;
-    }
-
-    /**
-     * Emits an event that causes the form page to close and the record
-     * page to appear. 
-     */
-    handleExitForm() {
-        const event = new CustomEvent('exit-form', {});
-        this.dispatchEvent(event);
-    }
-
-    /**
-     * Emits an event that causes the user infomration to update. 
-     * @param {Object} userInfo - The information entered on the user form.
-     */
-    handleFormSubmission(userInfo) {
-        const event = new CustomEvent('update-user-info', {
-            detail: { userInfo }
-        });
-        this.dispatchEvent(event);
-  }
 }
  
 customElements.define('vox-user-form', VoxettaUserForm);

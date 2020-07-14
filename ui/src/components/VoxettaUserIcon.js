@@ -23,12 +23,13 @@ import {IconButton} from '@material/mwc-icon-button';
  */
 export class VoxettaUserIcon extends LitElement {
 
-    render() {
-        return html`
-            <mwc-icon-button 
-                icon="account_circle"
-                @click=${this.handleUserIconClick}
-            </button>
+    static get styles() {
+        return css`
+            mwc-icon-button {
+                --mdc-icon-button-size: 60px;
+                --mdc-icon-size: 30px; 
+                color: #3c4043;
+            }
         `;
     }
 
@@ -39,6 +40,15 @@ export class VoxettaUserIcon extends LitElement {
     handleUserIconClick() {
         const event = new CustomEvent('enter-form', {});
         this.dispatchEvent(event);
+    }
+
+    render() {
+        return html`
+            <mwc-icon-button 
+                icon="account_circle"
+                @click=${this.handleUserIconClick}
+            </button>
+        `;
     }
 }
 

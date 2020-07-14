@@ -21,18 +21,18 @@ export class SoundWave {
         this.ctx = undefined;
     }
 
-   /**
-    * Setter to update value of the constructor's stream property
-    */
+    /**
+     * Setter to update value of the constructor's stream property
+     */
     setStream(stream){
         this.stream = stream;
     }
 
-   /**
-    * Creates and uses the analyser node to start analysing the stream as it's coming in
-    */
+    /**
+     * Creates and uses the analyser node to start analysing the stream as it's coming in
+     */
     createSoundWave() {
-        this.ctx = this.canvas.getContext("2d");
+        this.ctx = this.canvas.getContext('2d');
         const context = new (window.AudioContext || window.webkitAudioContext)();
         this.analyser = context.createAnalyser();
         const source = context.createMediaStreamSource(this.stream);
@@ -41,22 +41,22 @@ export class SoundWave {
         this.stopId = requestAnimationFrame(() => this.draw());
     }
 
-   /**
-    * Stops the stream and soundwave from appearing on the canvas
-    */
+    /**
+     * Stops the stream and soundwave from appearing on the canvas.
+     */
     stopSoundWave() {
         this.stream = undefined;
         cancelAnimationFrame(this.stopId);
     }
 
-   /**
-    * Draws the soundwave to the canvas
-    */
+    /**
+     * Draws the soundwave to the canvas.
+     */
     draw() {
         const bars = 200;
         this.ctx.fillStyle = "white";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        if(!this.stream) {
+        if (!this.stream) {
             return;
         }
         this.analyser.getByteFrequencyData(this.freqs);

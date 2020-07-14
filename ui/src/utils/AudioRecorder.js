@@ -75,7 +75,7 @@ export class AudioRecorder {
                 };
             });
         } else {
-            alert("Error: Could not record successfully.");
+            alert('Error: Could not record successfully.');
             return null;
         }
     }
