@@ -16,7 +16,10 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.speech.tools.voxetta.data.StatusResponse;
 import com.google.speech.tools.voxetta.services.PromptService;
+import com.google.speech.tools.voxetta.services.UtteranceService;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,11 +36,12 @@ import com.google.speech.tools.voxetta.services.DatastorePromptService;
 @WebServlet("/prompt")
 public class PromptServlet extends HttpServlet {
 
-    private final PromptService promptService = new DatastorePromptService();
+    private PromptService promptService = new DatastorePromptService();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        response.setContentType("application/json");
         response.getWriter().write(promptService.getOnePrompt());
     }
 
@@ -48,9 +52,19 @@ public class PromptServlet extends HttpServlet {
         final String type = getParameter(request, "type", "");
         final String body = getParameter(request, "body", "");
 
-        String boolResp = Boolean.toString(promptService.savePrompt(type, body));
+        StatusResponse promptServiceResponse = promptService.savePrompt(type, body);
 
-        // TODO(eldrickb): use StatusResponse
-        response.getWriter().write(boolResp);
+        response.setContentType("application/json");
+        response.getWriter().write(promptServiceResponse.toJson());
+    }
+
+    /**
+     * Allow the servlet's Datastore Utterance Service to be set for mocking purposes.
+     *
+     * @param inputService The service to serve as the UtteranceService.
+     */
+    @VisibleForTesting
+    public void setService(PromptService inputService) {
+        promptService = inputService;
     }
 }

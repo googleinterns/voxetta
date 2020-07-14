@@ -16,6 +16,7 @@
 
 package com.google.speech.tools.voxetta.services;
 
+import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -27,12 +28,14 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 
 
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 
+import com.google.speech.tools.voxetta.data.ErrorResponse;
 import com.google.speech.tools.voxetta.data.Prompt;
 import com.google.speech.tools.voxetta.data.PromptBuilder;
 
-import java.util.LinkedList;
+import com.google.speech.tools.voxetta.data.StatusResponse;
 import java.util.List;
 
 /**
@@ -40,16 +43,14 @@ import java.util.List;
  */
 public class DatastorePromptService implements PromptService {
 
-    private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    private DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
     private Gson gson = new Gson();
 
     public DatastorePromptService() {
     }
 
     @Override
-
-    // TODO(eldrickb): change to StatusResponse object
-    public boolean savePrompt(String type, String body) {
+    public StatusResponse savePrompt(String type, String body) {
 
         // TODO(eldrickb): validation
         Entity promptEntity = new Entity("Prompt");
@@ -59,9 +60,13 @@ public class DatastorePromptService implements PromptService {
 
         promptEntity.setProperty("read", 0);
 
-        datastore.put(promptEntity);
+        try {
+            datastoreService.put(promptEntity);
+        } catch (DatastoreFailureException e) {
+            return new ErrorResponse(false, "Error: Unknown Datastore Failure Exception");
+        }
 
-        return true;
+        return new StatusResponse(true);
     }
 
     /**
@@ -77,7 +82,7 @@ public class DatastorePromptService implements PromptService {
 
         // get the prompt
         Filter unreadFilter = new FilterPredicate("read", FilterOperator.EQUAL, 0);
-        List<Entity> unreadQueries = datastore.prepare(new Query("Prompt")
+        List<Entity> unreadQueries = datastoreService.prepare(new Query("Prompt")
             .setFilter(unreadFilter))
             .asList(Builder.withLimit(1));
 
@@ -91,10 +96,20 @@ public class DatastorePromptService implements PromptService {
 
         // set prompt as read
         retrievedEntity.setProperty("read", 1);
-        datastore.put(retrievedEntity);
+        datastoreService.put(retrievedEntity);
 
         // return the prompt as JSON
         Prompt retrievedPrompt = new PromptBuilder().buildFromEntity(retrievedEntity);
         return gson.toJson(retrievedPrompt);
+    }
+
+    /**
+     * Allow the servlet's Datastore service to be set for mocking purposes.
+     *
+     * @param inputService The service to serve as the DatastoreService.
+     */
+    @VisibleForTesting
+    public void setDatastoreService(DatastoreService inputService) {
+        datastoreService = inputService;
     }
 }

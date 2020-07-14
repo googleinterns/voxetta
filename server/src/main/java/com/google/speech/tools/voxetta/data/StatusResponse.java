@@ -14,6 +14,7 @@
 
 package com.google.speech.tools.voxetta.data;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 
 /** 
@@ -40,5 +41,13 @@ public class StatusResponse {
   public String toJson() {
     Gson gson = new Gson();
     return gson.toJson(this);
+  }
+
+  /**
+   * Returns status of statusResponse
+   */
+  @VisibleForTesting
+  public boolean getSuccess() {
+    return success;
   }
 }

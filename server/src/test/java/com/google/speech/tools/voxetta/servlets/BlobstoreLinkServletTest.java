@@ -19,6 +19,7 @@ import com.google.speech.tools.voxetta.data.ErrorResponse;
 import com.google.speech.tools.voxetta.data.StatusResponse;
 import com.google.speech.tools.voxetta.data.UrlResponse; 
 import com.google.speech.tools.voxetta.services.UtteranceService;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
+import static com.google.speech.tools.voxetta.testUtils.StringWriterStub.stubStringWriter;
 
 /** 
  * Verifies the intended behavior of BlobstoreLinkServlet.java. 
@@ -63,9 +65,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
     when(service.getAudioBlobUploadUrl()).thenReturn("url");
 
     // Create a writer that will record the doGet function's printed text
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
+    StringWriter stringWriter = stubStringWriter(response);
     
     // Call the doGet function now that all mocks are in place
     servlet.doGet(request, response);
@@ -83,9 +83,7 @@ public final class BlobstoreLinkServletTest extends Mockito {
     when(service.getAudioBlobUploadUrl()).thenThrow(BlobstoreFailureException.class);
 
     // Create a writer that will record the doGet function's printed text
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
+    StringWriter stringWriter = stubStringWriter(response);
     
     // Call the doGet function now that all mocks are in place
     servlet.doGet(request, response);
