@@ -37,8 +37,6 @@ export class VoxettaApp extends LitElement {
 
     /**
      * @property state - The current state of the application.
-     * @property promptState - Is negated whenever a new prompt is 
-     * to be displayed. 
      * @property isRecording - Whether or not the application is 
      *  actively recording.
      * @property audioStream - The stream of audio that is being
