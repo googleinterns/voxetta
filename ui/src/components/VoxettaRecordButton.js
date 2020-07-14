@@ -86,12 +86,14 @@ export class VoxettaRecordButton extends LitElement {
             try { 
                 await this.audioRecorder.initRecorder();
             } catch(e) { 
-                console.log('Microphone blocked.'); 
+                alert(`Error: Microphone access is currently blocked for this site. 
+                    To unblock, please navigate to chrome://settings/content/microphone 
+                    and remove this site from the 'Block' section.`);
                 return;
             }
 
             if (!this.audioRecorder.startRecording()) {
-                 console.log('Failed to start recording.')
+                 alert('Failed to start recording.')
                  return; 
             }
             this.isRecording = true;

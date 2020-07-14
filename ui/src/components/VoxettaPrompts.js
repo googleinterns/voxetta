@@ -57,7 +57,6 @@ export class VoxettaPrompts extends LitElement {
 
     constructor() {
         super();
-        this.prompt;
         this.state = 'Loading';
     }
 
@@ -76,6 +75,7 @@ export class VoxettaPrompts extends LitElement {
             this.state = 'SUCCESS';
             this.prompt = promptRequest.prompt;
         } else if (promptRequest.status === 'EMPTY') {
+            this.handleSessionEnd();
             this.state = 'FINISHED';
         } else {
             this.state = 'FAILURE';
@@ -112,7 +112,6 @@ export class VoxettaPrompts extends LitElement {
             case 'FAILURE':
                 return html`<p><b>Prompt failed to load.</b></p>`;
             case 'FINISHED':
-                this.handleSessionEnd();
                 return html`<p>Your work session is finished.</p>`;
         }
     }

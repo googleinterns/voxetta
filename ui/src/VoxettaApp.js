@@ -29,7 +29,7 @@ import {VoxettaUserIcon} from './components/VoxettaUserIcon';
  */
 const States = {
   ACTIVE_RECORD_PAGE: 'active_record_page',
-  UNACTIVE_RECORD_PAGE: 'unactive_record_page',
+  INACTIVE_RECORD_PAGE: 'unactive_record_page',
   USER_FORM: 'user_form',
 }
 
@@ -106,9 +106,9 @@ export class VoxettaApp extends LitElement {
                 return html`
                     ${this.getActiveRecordTemplate()}
                 `;
-            case States.UNACTIVE_RECORD_PAGE:
+            case States.INACTIVE_RECORD_PAGE:
                 return html`
-                    ${this.getUnactiveRecordTemplate()}
+                    ${this.getInactiveRecordTemplate()}
                 `;
             case States.USER_FORM:
                 return html`
@@ -131,7 +131,7 @@ export class VoxettaApp extends LitElement {
             <div class="prompts">
                 <vox-prompts
                     .promptState=${this.promptState}
-                    @end-session="${() => {this.state = States.UNACTIVE_RECORD_PAGE}}">
+                    @end-session="${() => {this.state = States.INACTIVE_RECORD_PAGE}}">
                 </vox-prompts>
                 <vox-sound-wave 
                     .isRecording=${this.isRecording} 
@@ -158,10 +158,10 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * The componenets associated with the unactive recording state. 
-     * @returns {HTML} The HTML template for the unactive recording state.
+     * The componenets associated with the inactive recording state. 
+     * @returns {HTML} The HTML template for the inactive recording state.
      */
-    getUnactiveRecordTemplate() {
+    getInactiveRecordTemplate() {
         return html`
             <div class="header">
                 <vox-user-icon 
@@ -171,7 +171,7 @@ export class VoxettaApp extends LitElement {
             <div class="prompts">
                 <vox-prompts
                     .promptState=${this.promptState}
-                    @end-session="${() => {this.state = States.UNACTIVE_RECORD_PAGE}}">
+                    @end-session="${() => {this.state = States.INACTIVE_RECORD_PAGE}}">
                 </vox-prompts>
                 <vox-sound-wave 
                     .isRecording=${this.isRecording} 
