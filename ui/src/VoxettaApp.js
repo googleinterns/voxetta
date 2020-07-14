@@ -29,7 +29,7 @@ import {VoxettaUserIcon} from './components/VoxettaUserIcon';
  */
 const States = {
   ACTIVE_RECORD_PAGE: 'active_record_page',
-  INACTIVE_RECORD_PAGE: 'unactive_record_page',
+  INACTIVE_RECORD_PAGE: 'inactive_record_page',
   USER_FORM: 'user_form',
 }
 
@@ -168,7 +168,7 @@ export class VoxettaApp extends LitElement {
                 @update-user-info="${(e) => { 
                     this.updateUserInformation(e.detail.userInfo);
                     this.cookieService.makeUserInfoCookie(e.detail.userInfo); }}"
-                @exit-form="${() => { this.state = States.ACTIVE_RECORD_PAGE }}">
+                @exit-form="${this.handleExitForm}">
             </vox-user-form>
         `;
     }
@@ -199,6 +199,13 @@ export class VoxettaApp extends LitElement {
      */
     handleEnterForm() {
         this.state = States.USER_FORM;
+    }
+
+    /**
+     * Updates the state such that the user form closes and the record page appears. 
+     */
+    handleExitForm() {
+        this.state = States.ACTIVE_RECORD_PAGE
     }
     
     /**
