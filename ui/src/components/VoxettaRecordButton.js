@@ -109,6 +109,24 @@ export class VoxettaRecordButton extends LitElement {
     }
 
     /**
+     * Returns whether or not the application is actively recording. 
+     * @returns {Boolean} Whether or not the application is actively 
+     *  recording. 
+     */
+    getIsRecording() {
+        return this.isRecording;
+    }
+
+    /**
+     * Returns the current audio stream being recorded. 
+     * @returns {Object} The current audio stream being
+     *  recorded. 
+     */
+    getAudioStream() {
+        return this.audioStream; 
+    }
+
+    /**
      * Emits an event that causes the application to render a sound
      * wave that corresponds to the current audio stream. 
      */

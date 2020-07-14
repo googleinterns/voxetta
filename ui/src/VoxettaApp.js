@@ -88,7 +88,6 @@ export class VoxettaApp extends LitElement {
         super();
         this.cookieService = new CookieService();
         this.state = States.ACTIVE_RECORD_PAGE; 
-        this.promptState = true; 
         this.userId = this.cookieService.getCookieValue('userId');
         this.gender = this.cookieService.getCookieValue('gender');
         this.userAge = this.cookieService.getCookieValue('userAge');
@@ -96,42 +95,19 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * Returns the appropriate components based upon the current state of the 
-     * application. 
-     * @returns {HTML} The HTML containing the appropriate components to render.
-     */
-    displayComponents() {
-        switch (this.state) {
-            case States.ACTIVE_RECORD_PAGE:
-                return html`
-                    ${this.getActiveRecordTemplate()}
-                `;
-            case States.INACTIVE_RECORD_PAGE:
-                return html`
-                    ${this.getInactiveRecordTemplate()}
-                `;
-            case States.USER_FORM:
-                return html`
-                    ${this.getUserFormTemplate()}
-                `;
-        }      
-    }
-
-    /**
-     * The componenets associated with the active recording state. 
+     * Renders the componenets associated with the active recording state. 
      * @returns {HTML} The HTML template for the active recording state.
      */
-    getActiveRecordTemplate() {
+    renderActiveRecordTemplate() {
         return html`
             <div class="header">
                 <vox-user-icon 
-                    @enter-form="${() => {this.state = States.USER_FORM}}">
+                    @enter-form="${this.handleEnterForm}">
                 </vox-user-icon>
             </div>
             <div class="prompts">
                 <vox-prompts
-                    .promptState=${this.promptState}
-                    @end-session="${() => {this.state = States.INACTIVE_RECORD_PAGE}}">
+                    @end-session="${this.handleEndSession}">
                 </vox-prompts>
                 <vox-sound-wave 
                     .isRecording=${this.isRecording} 
@@ -142,9 +118,7 @@ export class VoxettaApp extends LitElement {
                 <div class="button-container"></div>
                 <div class="record-button-container">
                     <vox-record-button
-                        @update-wave="${(e) => { 
-                            this.isRecording = e.detail.isRecording;
-                            this.audioStream = e.detail.audioStream; }}"
+                        @update-wave="${this.handleUpdateWave}"
                         @change-prompt="${this.handleChangePrompt}">
                     </vox-record-button>
                 </div>
@@ -158,20 +132,19 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * The componenets associated with the inactive recording state. 
+     * Renders the componenets associated with the inactive recording state. 
      * @returns {HTML} The HTML template for the inactive recording state.
      */
-    getInactiveRecordTemplate() {
+    renderInactiveRecordTemplate() {
         return html`
             <div class="header">
                 <vox-user-icon 
-                    @enter-form="${() => {this.state = States.USER_FORM}}">
+                    @enter-form="${this.handleEnterForm}">
                 </vox-user-icon>
             </div>
             <div class="prompts">
                 <vox-prompts
-                    .promptState=${this.promptState}
-                    @end-session="${() => {this.state = States.INACTIVE_RECORD_PAGE}}">
+                    @end-session="${this.handleEndSession}">
                 </vox-prompts>
                 <vox-sound-wave 
                     .isRecording=${this.isRecording} 
@@ -182,10 +155,10 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * The componenets associated with the user form state. 
+     * Renders the componenets associated with the user form state. 
      * @returns {HTML} The HTML template for the user form state.
      */
-    getUserFormTemplate() {
+    renderUserFormTemplate() {
         return html`
             <vox-user-form
                 .userId = ${this.userId}
@@ -212,6 +185,23 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
+     * Updates the isRecording and audioStream properties with the most up-to-date
+     * data from the vox-record-button component. 
+     */
+    handleUpdateWave() {
+        const recordComponent = this.shadowRoot.querySelector('vox-record-button');
+        this.isRecording = recordComponent.getIsRecording();
+        this.audioStream = recordComponent.getAudioStream();
+    }
+
+    /**
+     * Updates the state such that the record page closes and the user form appears. 
+     */
+    handleEnterForm() {
+        this.state = States.USER_FORM;
+    }
+    
+    /**
      * Causes a new prompt to render in the vox-prompts child component. 
      */
     handleChangePrompt() {
@@ -219,10 +209,29 @@ export class VoxettaApp extends LitElement {
         promptComponent.getNewPrompt();   
     }
 
+    /**
+     * Updates the state such that all components related to audio collection
+     * are no longer visible. 
+     */
+    handleEndSession() {
+        this.state = States.INACTIVE_RECORD_PAGE;
+    }
+
     render() {  
-        return html`
-            ${this.displayComponents()}
-        `;
+        switch (this.state) {
+            case States.ACTIVE_RECORD_PAGE:
+                return html`
+                    ${this.renderActiveRecordTemplate()}
+                `;
+            case States.INACTIVE_RECORD_PAGE:
+                return html`
+                    ${this.renderInactiveRecordTemplate()}
+                `;
+            case States.USER_FORM:
+                return html`
+                    ${this.renderUserFormTemplate()}
+                `;
+        } 
     }
 }
 
