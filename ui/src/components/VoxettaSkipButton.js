@@ -34,7 +34,7 @@ export class VoxettaSkipButton extends LitElement {
                 color: #a0a0a0;
                 cursor: pointer;
                 font-family: 'Roboto';
-                text-transform: capitalize;
+                text-transform: uppercase;
                 width: 50px; 
             }
             button:hover {
@@ -47,7 +47,7 @@ export class VoxettaSkipButton extends LitElement {
         return html`
             <button @click="${this.handleSkip}">
                 <mwc-icon>skip_next</mwc-icon>
-                SKIP
+                skip
             </button>
         `;
     }
