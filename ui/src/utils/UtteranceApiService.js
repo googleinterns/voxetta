@@ -37,8 +37,8 @@ export class UtteranceApiService {
      * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
      */
     async saveAudio(audio) {
-        // Update Blobstore URL
-        await this.getUploadUrl();
+        // Get Blobstore URL
+        const url = await this.getUploadUrl();
 
         const formData = new FormData();
         formData.append('audio', audio.blob, 'blob');
@@ -47,28 +47,30 @@ export class UtteranceApiService {
         formData.append('userAge', this.cookieService.getUserAge());
         formData.append('deviceType', this.cookieService.getDeviceType());
         
-        const response = await fetch(this.blobUrl_, { 
+        const response = await fetch(url, { 
             method: 'POST',
             body: formData 
         });
         const query = await response.json(); 
 
         if (!query.success) {
-            alert('Error: Unable to upload file.');
+            window.alert('Error: Unable to upload file.');
         } 
     }
 
     /**
-     * Set the blobUrl_ property to be a Blobstore upload link. 
+     * Retrieve and return a Blobstore upload link. 
+     * @returns {String} A Blobstore URL>
      */
     async getUploadUrl() {
         const response = await fetch('/blobstore-utterance-upload-link');
         const query = await response.json();
 
         if (query.success) {
-            this.blobUrl_ = query.url; 
+            return query.url; 
         } else {
-            alert("Error: Unable to access database.");
+            window.alert("Error: Unable to access database.");
+            return null; 
         }
     } 
 }

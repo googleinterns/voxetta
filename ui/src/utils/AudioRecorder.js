@@ -29,7 +29,7 @@ export class AudioRecorder {
     }
     
    /**
-    * Prompts user for access to Microphone using API
+    * Prompts user for access to Microphone using API.
     */
     initRecorder() {
       return new Promise(async (resolve, reject) => {
@@ -37,7 +37,6 @@ export class AudioRecorder {
             this.stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
             this.mediaRecorder = new MediaRecorder(this.stream);
           } catch(err) {
-            console.log(err.name, err.message); 
             window.alert(`Error: Microphone access is currently blocked for this site. 
               To unblock, please navigate to chrome://settings/content/microphone and 
               remove this site from the 'Block' section.`);
@@ -46,6 +45,7 @@ export class AudioRecorder {
           resolve();
       });
     }
+
     /**
      * Begins recording if access is granted.
      * @returns {Boolean} Denotes whether or not the recording successfully began.
@@ -60,8 +60,9 @@ export class AudioRecorder {
     }
     
    /**
-    * Stops recording and stores utterance data in Url if recording
-    * @returns {Object} Url to access utterance on the front end, and blob to access utterance in the back end
+    * Stops recording and stores utterance data in URL if recording.
+    * @returns {Object} URL to access utterance on the front end, and blob to access utterance in 
+    *  the back end.
     */
     stopRecording() {
         if(this.mediaRecorder) {
