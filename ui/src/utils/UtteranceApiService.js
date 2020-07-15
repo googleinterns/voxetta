@@ -24,11 +24,6 @@ export class UtteranceApiService {
      * Create an UtteranceApiService that can externally save audio files.
      */
     constructor() {
-        /**
-         * A Blobstore upload link.
-         * @private
-         */
-        this.blobUrl_; 
         this.cookieService = new CookieService();
     }
 
