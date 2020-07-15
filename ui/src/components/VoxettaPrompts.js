@@ -20,44 +20,23 @@ import * as promptApi from '../utils/PromptApiService';
 
 import {Icon} from '@material/mwc-icon';
 
+import style from '/src/styles/VoxettaPrompts.css.js';
+
 export class VoxettaPrompts extends LitElement {
     static get properties() {
         return {
             prompt: {type: Object},
-            state: {type: String}
+            state: {type: String},
         };
     }
 
     static get styles() {
-        return css`
-            button {
-                background-color: white;
-                border: none;
-                color: #a0a0a0;
-                cursor: pointer;
-                font-family: 'Roboto';
-            }
-            button:hover {
-                background-color: #dcdcdc;
-            }
-            div {
-                align-items: center; 
-                display: flex; 
-                flex-direction: column; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                text-align: center;  
-            }
-            p {
-                font-family: 'Roboto';
-                font-size: 30px; 
-            }
-        `;
+        return style;
     }
 
     constructor() {
         super();
-        this.state = 'Loading';
+        this.state = 'NOT_ASKED';
     }
 
     firstUpdated() {
@@ -66,9 +45,10 @@ export class VoxettaPrompts extends LitElement {
 
     /**
      * Emits an event that causes audio-recording related components
-     * to disappear. 
+     * to disappear.
      */
     async getNewPrompt() {
+        this.state = 'LOADING';
         const promptRequest = await promptApi.getNewPrompt();
 
         if (promptRequest.status === 'SUCCESS') {
@@ -84,7 +64,7 @@ export class VoxettaPrompts extends LitElement {
 
     /**
      * Determines the approriate method of rendering the current prompt.
-     * @returns {HTML} The HTML associated with the current prompt. 
+     * @return {HTML} The HTML associated with the current prompt.
      */
     renderPromptType() {
         switch (this.prompt.type) {
@@ -101,7 +81,7 @@ export class VoxettaPrompts extends LitElement {
     /**
      * Determines the approriate rendering action based on the current
      * prompt state.
-     * @returns {HTML} The HTML associated with the current state. 
+     * @return {HTML} The HTML associated with the current state.
      */
     renderPromptState() {
         switch (this.state) {
@@ -116,23 +96,29 @@ export class VoxettaPrompts extends LitElement {
         }
     }
 
+    handleResetPrompts() {
+        promptApi.resetAllPromptsUnread();
+        // .then(() => this.getNewPrompt());
+    }
+
     /**
      * Emits an event that causes audio-recording related components
-     * to disappear. 
+     * to disappear.
      */
     handleSessionEnd() {
         const event = new CustomEvent('end-session', {});
         this.dispatchEvent(event);
     }
 
-    render() { 
+    // TODO: cleanup reset button methodology
+    render() {
         return html`
             <div id="prompt-screen">
                 ${this.renderPromptState()}
-                <button @click="${promptApi.resetAllPromptsUnread}">
-                    reset all prompts to unread
-                </button> 
             </div>
+            <button @click="${this.handleResetPrompts}">
+                reset all prompts to unread
+            </button>
         `;
     }
 }

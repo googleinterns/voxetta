@@ -18,24 +18,25 @@ import {LitElement, html, css} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {IconButton} from '@material/mwc-icon-button';
 
+import style from '/src/styles/user/VoxettaUserIcon.css.js';
+
 /**
- * Button responsible for enabling the user to record and upload audio files. 
+ * Button responsible for enabling the user to record and upload audio files.
  */
 export class VoxettaUserIcon extends LitElement {
+    static get properties() {
+        return {
+            userId: {type: Number},
+        };
+    }
 
     static get styles() {
-        return css`
-            mwc-icon-button {
-                --mdc-icon-button-size: 60px;
-                --mdc-icon-size: 30px; 
-                color: #3c4043;
-            }
-        `;
+        return style;
     }
 
     /**
      * Emits an event that causes the record page to close and the user
-     * form to appear. 
+     * form to appear.
      */
     handleUserIconClick() {
         const event = new CustomEvent('enter-form', {});
@@ -44,10 +45,15 @@ export class VoxettaUserIcon extends LitElement {
 
     render() {
         return html`
-            <mwc-icon-button 
-                icon="account_circle"
-                @click=${this.handleUserIconClick}
-            </button>
+            <div @click=${this.handleUserIconClick}>
+                <mwc-icon-button icon="account_circle"> </mwc-icon-button>
+
+                <span>
+                    ${this.userId}
+                </span>
+
+                <mwc-icon>keyboard_arrow_down</mwc-icon>
+            </div>
         `;
     }
 }

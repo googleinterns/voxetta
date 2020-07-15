@@ -17,7 +17,7 @@ import {SoundWave} from './SoundWave';
 import {LitElement, html, css} from 'lit-element';
 
 /**
- * Canvas responsible for holding soundwave once user starts recording 
+ * Canvas responsible for holding soundwave once user starts recording
  */
 export class VoxettaWaveCanvas extends LitElement {
     static get properties() {
@@ -27,7 +27,7 @@ export class VoxettaWaveCanvas extends LitElement {
             audioStream: {type: Object},
             isRecording: {type: Boolean},
             width: {type: Number},
-            height: {type: Number}
+            height: {type: Number},
         };
     }
 
@@ -37,32 +37,35 @@ export class VoxettaWaveCanvas extends LitElement {
         this.canvasId = 'myCanvas';
         this.canvas;
         this.width = this.getWidth();
-        this.height = 250;
+        this.height = 100;
     }
 
     /**
      * Changes the width of the canvas depending on device width.
      */
-    getWidth(){
-        const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    getWidth() {
+        const width = window.innerWidth > 0 ? window.innerWidth : screen.width;
         return Math.min(400, width - 100);
     }
 
     /**
      * Creates the instance of soundwave once canvas is created .
      */
-    firstUpdated(){
+    firstUpdated() {
         this.canvas = this.shadowRoot.getElementById(this.canvasId);
         this.soundWave = new SoundWave(this.canvas, this.audioStream);
     }
 
     /**
-     * Once the button is pressed and user starts recording, pass the stream and 
+     * Once the button is pressed and user starts recording, pass the stream and
      * canvas to create a soundwave. If the user stops recording, stop showing
      * the soundwave on the canvas.
      */
-    updated(changedProperties){
-        if (this.audioStream != changedProperties.get('audioStream') && this.isRecording) {
+    updated(changedProperties) {
+        if (
+            this.audioStream != changedProperties.get('audioStream') &&
+            this.isRecording
+        ) {
             this.soundWave.setStream(this.audioStream);
             this.soundWave.createSoundWave();
         } else if (!this.isRecording && this.soundWave != undefined) {
@@ -70,9 +73,13 @@ export class VoxettaWaveCanvas extends LitElement {
         }
     }
 
-    render() {  
+    render() {
         return html`
-            <canvas id=${this.canvasId} width="${this.width}" height="${this.height}"></canvas> 
+            <canvas
+                id=${this.canvasId}
+                width="${this.width}"
+                height="${this.height}"
+            ></canvas>
         `;
     }
 }
