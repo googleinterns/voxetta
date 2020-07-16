@@ -17,7 +17,7 @@
 import {CookieService} from '../../src/utils/CookieService';
 
 describe('Testing that the Cookie Service getCookieValue()', () => {
-    
+
     const cookieService = new CookieService(); 
     const userInfo = {
         userId: '291192',
@@ -29,46 +29,32 @@ describe('Testing that the Cookie Service getCookieValue()', () => {
     // Create a cookie with the example user information
     cookieService.makeUserInfoCookie(userInfo);
 
-    it('returns a value if a cookie for a given key exists', async () => {
+    it('returns a value if a cookie for a given key exists', () => {
         const value = cookieService.getCookieValue('userId');
         expect(value).toEqual('291192');
     });
 
-    it('returns an empty string if a cookie for a given key does not exist', async () => {
+    it('returns an empty string if a cookie for a given key does not exist', () => {
         const value = cookieService.getCookieValue('country');
         expect(value).toEqual('');
-    }); 
-});
+    });  
 
-describe('Testing that the Cookie Service getter functions', () => {
-    
-    const cookieService = new CookieService(); 
-    const userInfo = {
-        userId: '291192',
-        gender: 'Female',
-        userAge: 20,
-        deviceType: 'Pixelbook'
-    }
-
-    // Create a cookie with the example user information
-    cookieService.makeUserInfoCookie(userInfo);
-
-    it('properly retrieves userId via cookie', async () => {
+    it('properly retrieves userId via cookie', () => {
         const userId = cookieService.getUserId(); 
         expect(userId).toEqual('291192');
     }); 
 
-    it('properly retrieves gender via cookie', async () => {
+    it('properly retrieves gender via cookie', () => {
         const gender = cookieService.getGender(); 
         expect(gender).toEqual('Female');
     }); 
 
-    it('properly retrieves userAge via cookie', async () => {
+    it('properly retrieves userAge via cookie', () => {
         const userAge = cookieService.getUserAge(); 
         expect(userAge).toEqual('20');
     }); 
 
-    it('properly retrieves deviceType via cookie', async () => {
+    it('properly retrieves deviceType via cookie', () => {
         const deviceType = cookieService.getDeviceType(); 
         expect(deviceType).toEqual('Pixelbook');
     }); 
