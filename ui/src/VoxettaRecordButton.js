@@ -25,7 +25,8 @@ export class VoxettaRecordButton extends LitElement {
     static get properties() {
         return {
             isRecording: {type: Boolean},
-            audioStream: {type: Object}
+            audioStream: {type: Object},
+            context: {type: Object},
         };
     }
 
@@ -34,7 +35,8 @@ export class VoxettaRecordButton extends LitElement {
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
-        this.audioStream; 
+        this.audioStream;
+        this.context;
     }
   
     /**
@@ -53,6 +55,7 @@ export class VoxettaRecordButton extends LitElement {
                 this.isRecording = true;
             }
             this.audioStream = this.audioRecorder.stream;
+            this.context = new (window.AudioContext || window.webkitAudioContext)();
         } else {
             this.isRecording = false;
             const audio = await this.audioRecorder.stopRecording();
@@ -67,7 +70,7 @@ export class VoxettaRecordButton extends LitElement {
     
     render() {
         return html`
-            <vox-sound-wave .isRecording=${this.isRecording} .audioStream=${this.audioStream}></vox-sound-wave>
+            <vox-sound-wave .context=${this.context} .isRecording=${this.isRecording} .audioStream=${this.audioStream}></vox-sound-wave>
             <button @click=${this.recordHandler}>Record Voice</button>
             <audio id="utterance" controls src="" style="display: none"></audio>
         `;

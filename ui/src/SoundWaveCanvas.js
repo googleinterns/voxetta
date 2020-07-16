@@ -27,7 +27,8 @@ export class SoundWaveCanvas extends LitElement {
             audioStream: {type: Object},
             isRecording: {type: Boolean},
             width: {type: Number},
-            height: {type: Number}
+            height: {type: Number},
+            context: {type: Object},
         };
     }
     constructor() {
@@ -41,7 +42,7 @@ export class SoundWaveCanvas extends LitElement {
     /**
      * Changes the width of the canvas depending on device width
      */
-    getWidth(){
+    getWidth() {
         const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         if(width > 400){
             return 400;
@@ -53,9 +54,9 @@ export class SoundWaveCanvas extends LitElement {
     /**
      * Creates the instance of soundwave once canvas is created 
      */
-    firstUpdated(){
+    firstUpdated() {
         this.canvas = this.shadowRoot.getElementById(this.canvasId);
-        this.soundWave = new SoundWave(this.canvas, this.audioStream);
+        this.soundWave = new SoundWave(this.canvas, this.audioStream, this.context);
     }
 
     /**
@@ -63,9 +64,10 @@ export class SoundWaveCanvas extends LitElement {
      * canvas to create a soundwave. If the user stops recording, stop showing
      * the soundwave on the canvas.
      */
-    updated(changedProperties){
+    updated(changedProperties) {
         if(this.audioStream != changedProperties.get("audioStream") && this.isRecording) {
             this.soundWave.setStream(this.audioStream);
+            this.soundWave.setContext(this.context);
             this.soundWave.createSoundWave();
         } else if (!this.isRecording && this.soundWave != undefined) {
             this.soundWave.stopSoundWave();

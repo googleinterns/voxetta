@@ -1,8 +1,8 @@
 export class StubMediaRecorder {
 
-    constructor(){
+    constructor() {
         this.start = jasmine.createSpy("start");
         this.stop = jasmine.createSpy("stop");
-
     }
+
 }
