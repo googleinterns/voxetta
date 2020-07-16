@@ -37,7 +37,7 @@ export class CookieService {
      *  if a cookie has not been set for such a key.  
      */
     getCookieValue(key) {
-        const cookie = global.document.cookie; 
+        const cookie = document.cookie; 
         if (cookie.includes(key + '=')) {
             return cookie
                 .split('; ')
