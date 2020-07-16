@@ -25,6 +25,7 @@ import {VoxettaRecordButton} from './components/VoxettaRecordButton';
 import {VoxettaSkipButton} from './components/VoxettaSkipButton';
 import {VoxettaUserForm} from './components/user/VoxettaUserForm';
 import {VoxettaUserIcon} from './components/user/VoxettaUserIcon';
+import {StateContainer} from './StateContainer';
 
 /**
  * Possible app view.

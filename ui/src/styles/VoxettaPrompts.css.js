@@ -25,8 +25,6 @@ export default css`
         text-align: center;
     }
 
-    div {
-    }
     p {
         max-width: 70vw;
 
