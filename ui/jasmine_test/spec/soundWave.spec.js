@@ -1,5 +1,5 @@
 import {SoundWave} from '../../src/SoundWave.js';
-import {StubContext} from './helpers/stubs/StubContext.js';
+import {StubContext} from './helpers/stubs/StubAudioContext.js';
 import {StubCanvasCtx} from './helpers/stubs/StubCanvasCtx.js';
 import {StubAnalyser} from './helpers/stubs/StubAnalyser.js';
 import {StubFreqs} from './helpers/stubs/StubFreqs.js';

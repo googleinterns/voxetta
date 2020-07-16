@@ -1,7 +1,7 @@
 export class StubSource {
  
     constructor() {
-        this.connect = jasmine.createSpy("connect");
+        this.connect = jasmine.createSpy('connect');
     }
  
 }
