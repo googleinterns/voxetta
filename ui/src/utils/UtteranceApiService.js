@@ -30,17 +30,12 @@ export class UtteranceApiService {
     /**
      * Save a recorded audio file to an external database. 
      * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
+     * @returns {Boolean} Indicates whether or not an audio file was successfully uploaded.
      */
     async saveAudio(audio) {
-        // Get Blobstore URL
+        // Get Blobstore URL & Form Data
         const url = await this.getUploadUrl();
-
-        const formData = new FormData();
-        formData.append('audio', audio.blob, 'blob');
-        formData.append('userId', this.cookieService.getUserId());
-        formData.append('gender', this.cookieService.getGender());
-        formData.append('userAge', this.cookieService.getUserAge());
-        formData.append('deviceType', this.cookieService.getDeviceType());
+        const formData = this.getFormData(); 
         
         const response = await fetch(url, { 
             method: 'POST',
@@ -50,12 +45,29 @@ export class UtteranceApiService {
 
         if (!query.success) {
             window.alert('Error: Unable to upload file.');
+            return false; 
         } 
+        return true;
+    }
+
+    /**
+     * Retrieve and return the user form data to upload. 
+     * @returns {FormData} The user form data to upload.
+     */
+    getFormData() {
+        const formData = new FormData();
+        formData.append('audio', audio.blob, 'blob');
+        formData.append('userId', this.cookieService.getUserId());
+        formData.append('gender', this.cookieService.getGender());
+        formData.append('userAge', this.cookieService.getUserAge());
+        formData.append('deviceType', this.cookieService.getDeviceType());
+
+        return formData; 
     }
 
     /**
      * Retrieve and return a Blobstore upload link. 
-     * @returns {String} A Blobstore URL>
+     * @returns {String} A Blobstore URL
      */
     async getUploadUrl() {
         const response = await fetch('/blobstore-utterance-upload-link');

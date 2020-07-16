@@ -17,7 +17,54 @@
 import {UtteranceApiService} from '../../src/utils/UtteranceApiService';
 import fetchMock from 'fetch-mock';
 
-describe('Testing that the Utterance API Service', () => {
+describe('Testing that the Utterance API Service saveAudio()', () => {
+    
+    const utteranceService = new UtteranceApiService(); 
+    const audio = {blob: {}, url: "blobstore.com"};
+
+    afterEach(() => {
+        fetchMock.reset();
+    });
+
+    it('returns true upon success', async () => {
+        spyOn(utteranceService, 'getUploadUrl').and.returnValue('blobstore.com');
+        spyOn(utteranceService, 'getFormData').and.returnValue('data');
+
+        const dummySuccessResponse = {
+            success: true
+        };
+
+        // Mock successful fetch
+        fetchMock.mock('blobstore.com', {
+            status: 200,
+            body: dummySuccessResponse
+        });
+
+        const response = await utteranceService.saveAudio(audio);
+        expect(response).toBeTrue();
+    }); 
+
+    it('returns false upon failure', async () => {
+        spyOn(utteranceService, 'getUploadUrl').and.returnValue('blobstore.com');
+        spyOn(utteranceService, 'getFormData').and.returnValue('data');
+
+        const dummyErrorResponse = {
+            success: false,
+            error: "Error: Unable to save audio file."
+        };
+
+        // Mock successful fetch
+        fetchMock.mock('blobstore.com', {
+            status: 200,
+            body: dummyErrorResponse
+        });
+
+        const response = await utteranceService.saveAudio(audio);
+        expect(response).toBeFalse();
+    }); 
+});
+
+describe('Testing that the Utterance API Service getUploadUrl()', () => {
     
     const utteranceService = new UtteranceApiService(); 
 
@@ -44,7 +91,7 @@ describe('Testing that the Utterance API Service', () => {
     it('returns null upon failure', async () => {
         const dummyErrorResponse = {
             success: false,
-            message: "Error: Failed to upload Utterance to Datastore."
+            error: "Error: Failed to upload Utterance to Datastore."
         };
 
         // Mock unsuccessful fetch
