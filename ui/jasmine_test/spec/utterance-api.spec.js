@@ -53,9 +53,9 @@ describe('Testing that the Utterance API Service saveAudio()', () => {
             error: "Error: Unable to save audio file."
         };
 
-        // Mock successful fetch
+        // Mock unsuccessful fetch
         fetchMock.mock('blobstore.com', {
-            status: 200,
+            status: 500,
             body: dummyErrorResponse
         });
 
@@ -96,7 +96,7 @@ describe('Testing that the Utterance API Service getUploadUrl()', () => {
 
         // Mock unsuccessful fetch
         fetchMock.mock('/blobstore-utterance-upload-link', {
-            status: 200,
+            status: 500,
             body: dummyErrorResponse
         });
         
