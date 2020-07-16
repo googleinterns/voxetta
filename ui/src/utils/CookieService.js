@@ -37,7 +37,7 @@ export class CookieService {
      *  if a cookie has not been set for such a key.  
      */
     getCookieValue(key) {
-        const cookie = this.getCookie(); 
+        const cookie = global.document.cookie; 
         if (cookie.includes(key + '=')) {
             return cookie
                 .split('; ')
@@ -46,14 +46,6 @@ export class CookieService {
         } else {
             return '';
         }
-    }
- 
-    /**
-     * Retrieves and returns the current list of stored cookies.  
-     * @returns {String} A list of all existing key:value cookie pairs.  
-     */
-    getCookie() {
-        return global.document.cookie; 
     }
  
     /**
