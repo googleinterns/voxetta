@@ -21,6 +21,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
+import com.google.speech.tools.voxetta.data.StatusResponse;
 import java.util.LinkedList;
 
 public class DatastorePromptDebugService {
@@ -33,8 +34,7 @@ public class DatastorePromptDebugService {
      *
      * @return {String} JSON array of all Prompt Entities.
      */
-    // TODO(eldrickb): change to StatusResponse object
-    public boolean resetAllToUnread() {
+    public StatusResponse resetAllToUnread() {
 
         Iterable<Entity> iterableResults = datastore.prepare(new Query("Prompt")).asIterable();
 
@@ -43,7 +43,7 @@ public class DatastorePromptDebugService {
             datastore.put(entity);
         }
 
-        return true;
+        return new StatusResponse(true);
     }
 
     /**

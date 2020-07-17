@@ -30,7 +30,7 @@ public class Prompt {
      * TEXT = body will be an excerpt to be read out
      * IMAGE = body will be a URL to an image to be described
      */
-    enum Type {
+    public enum Type {
         TEXT,
         IMAGE
     }

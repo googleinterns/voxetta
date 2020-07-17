@@ -19,7 +19,7 @@ import {LitElement, html, css} from 'lit-element';
 /**
  * Canvas responsible for holding soundwave once user starts recording 
  */
-export class SoundWaveCanvas extends LitElement {
+export class VoxettaWaveCanvas extends LitElement {
     static get properties() {
         return {
             canvasId: {type: String},
@@ -31,28 +31,26 @@ export class SoundWaveCanvas extends LitElement {
             context: {type: Object},
         };
     }
+
     constructor() {
         super();
         this.soundWave;
-        this.canvasId = "myCanvas";
+        this.canvasId = 'myCanvas';
         this.canvas;
         this.width = this.getWidth();
-        this.height = 400;
-    }
-    /**
-     * Changes the width of the canvas depending on device width
-     */
-    getWidth() {
-        const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        if(width > 400){
-            return 400;
-        }else{
-            return width;
-        }
+        this.height = 250;
     }
 
     /**
-     * Creates the instance of soundwave once canvas is created 
+     * Changes the width of the canvas depending on device width.
+     */
+    getWidth() {
+        const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        return Math.min(400, width - 100);
+    }
+
+    /**
+     * Creates the instance of soundwave once canvas is created .
      */
     firstUpdated() {
         this.canvas = this.shadowRoot.getElementById(this.canvasId);
@@ -65,7 +63,7 @@ export class SoundWaveCanvas extends LitElement {
      * the soundwave on the canvas.
      */
     updated(changedProperties) {
-        if(this.audioStream != changedProperties.get("audioStream") && this.isRecording) {
+        if (this.audioStream != changedProperties.get('audioStream') && this.isRecording) {
             this.soundWave.setStream(this.audioStream);
             this.soundWave.setContext(this.context);
             this.soundWave.createSoundWave();
@@ -81,4 +79,4 @@ export class SoundWaveCanvas extends LitElement {
     }
 }
 
-customElements.define('vox-sound-wave', SoundWaveCanvas);
+customElements.define('vox-sound-wave', VoxettaWaveCanvas);

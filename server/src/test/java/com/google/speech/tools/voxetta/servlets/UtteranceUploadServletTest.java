@@ -14,6 +14,8 @@
 
 package com.google.speech.tools.voxetta.servlets;
 
+import static com.google.speech.tools.voxetta.testUtils.StringWriterStub.stubStringWriter;
+
 import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.speech.tools.voxetta.data.Utterance;
 import com.google.speech.tools.voxetta.data.ErrorResponse; 
@@ -35,6 +37,7 @@ import org.mockito.Mockito;
 /**  
  * Verifies the intended behavior of UtteranceUploadServlet.java. 
  */
+ 
 @RunWith(JUnit4.class)
 public final class UtteranceUploadServletTest extends Mockito {
 
@@ -57,6 +60,12 @@ public final class UtteranceUploadServletTest extends Mockito {
     // Mock the request and response 
     request = mock(HttpServletRequest.class);       
     response = mock(HttpServletResponse.class);
+
+    // Return example data when request parameters are fetched
+    when(request.getParameter("userId")).thenReturn("123456");
+    when(request.getParameter("gender")).thenReturn("Female");
+    when(request.getParameter("userAge")).thenReturn("100");
+    when(request.getParameter("deviceType")).thenReturn("Pixelbook");
   }
 
   @Test
@@ -65,9 +74,7 @@ public final class UtteranceUploadServletTest extends Mockito {
     when(service.getAudioBlob(request)).thenReturn("audioBlobKey");
 
     // Create a writer that will record the doPost function's printed text
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
+    StringWriter stringWriter = stubStringWriter(response);
 
     // Call the doPost function now that all mocks are in place
     servlet.doPost(request, response);
@@ -90,9 +97,7 @@ public final class UtteranceUploadServletTest extends Mockito {
     Mockito.doThrow(DatastoreFailureException.class).when(service).saveUtterance(any(Utterance.class));
 
     // Create a writer that will record the doPost function's printed text
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
+    StringWriter stringWriter = stubStringWriter(response);
 
     // Call the doPost function now that all mocks are in place
     servlet.doPost(request, response);

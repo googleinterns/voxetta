@@ -1,11 +1,16 @@
 {
-    "extends": ["eslint:recommended", "prettier", "google"],
+    "extends": [
+        "eslint:recommended",
+        "prettier",
+        "plugin:jasmine/recommended",
+        "google"
+    ],
     "rules": {
         "indent": ["warn", 4, {"SwitchCase": 1}],
         "prettier/prettier": ["warn"],
         "require-jsdoc": ["off"]
     },
-    "plugins": ["prettier", "lit"],
+    "plugins": ["prettier", "lit", "jasmine"],
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module"
@@ -13,6 +18,7 @@
     "env": {
         "es6": true,
         "browser": true,
-        "node": true
+        "node": true,
+        "jasmine": true
     }
 }

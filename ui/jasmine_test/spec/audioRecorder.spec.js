@@ -1,4 +1,4 @@
-import {AudioRecorder} from '../../src/AudioRecorder.js';
+import {AudioRecorder} from '../../src/utils/AudioRecorder.js';
 
 describe('Testing the Audio Recorder methods', function() {
 
