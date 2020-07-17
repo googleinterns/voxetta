@@ -42,9 +42,8 @@ export class SoundWave {
      */
     createSoundWave() {
         this.canvasCtx = this.canvas.getContext('2d');
-        const context = new (window.AudioContext || window.webkitAudioContext)();
-        this.analyser = context.createAnalyser();
-        const source = context.createMediaStreamSource(this.stream);
+        this.analyser = this.context.createAnalyser();
+        const source = this.context.createMediaStreamSource(this.stream);
         source.connect(this.analyser);
         this.freqs = new Uint8Array(this.analyser.frequencyBinCount);
         this.stopId = requestAnimationFrame(() => this.draw());
