@@ -25,6 +25,7 @@ export class UtteranceApiService {
      */
     constructor() {
         this.cookieService = new CookieService();
+        this.formData = undefined; 
     }
 
     /**
@@ -35,11 +36,11 @@ export class UtteranceApiService {
     async saveAudio(audio) {
         // Get Blobstore URL & Form Data
         const url = await this.getUploadUrl();
-        const formData = this.getFormData(); 
+        this.getFormData(audio); 
         
         const response = await fetch(url, { 
             method: 'POST',
-            body: formData 
+            body: this.formData 
         });
         const query = await response.json(); 
 
@@ -52,17 +53,16 @@ export class UtteranceApiService {
 
     /**
      * Retrieve and return the user form data to upload. 
+     * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
      * @returns {FormData} The user form data to upload.
      */
-    getFormData() {
-        const formData = new FormData();
-        formData.append('audio', audio.blob, 'blob');
-        formData.append('userId', this.cookieService.getUserId());
-        formData.append('gender', this.cookieService.getGender());
-        formData.append('userAge', this.cookieService.getUserAge());
-        formData.append('deviceType', this.cookieService.getDeviceType());
-
-        return formData; 
+    getFormData(audio) {
+        this.formData = new FormData();
+        this.formData.append('audio', audio.blob, 'blob');
+        this.formData.append('userId', this.cookieService.getUserId());
+        this.formData.append('gender', this.cookieService.getGender());
+        this.formData.append('userAge', this.cookieService.getUserAge());
+        this.formData.append('deviceType', this.cookieService.getDeviceType());
     }
 
     /**

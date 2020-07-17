@@ -16,10 +16,12 @@
 
 import {UtteranceApiService} from '../../src/utils/UtteranceApiService';
 import fetchMock from 'fetch-mock';
+import { CookieService } from '../../src/utils/CookieService';
 
 describe('Testing that the Utterance API Service saveAudio()', () => {
     
     const utteranceService = new UtteranceApiService(); 
+    const cookieService = new CookieService(); 
     const audio = {blob: {}, url: "blobstore.com"};
 
     afterEach(() => {
@@ -61,6 +63,26 @@ describe('Testing that the Utterance API Service saveAudio()', () => {
 
         const response = await utteranceService.saveAudio(audio);
         expect(response).toBeFalse();
+    }); 
+});
+
+describe('Testing that the Utterance API Service getFormData()', () => {
+    
+    const utteranceService = new UtteranceApiService(); 
+    const cookieService = new CookieService(); 
+    const audio = {blob: {}, url: "blobstore.com"};
+    const userInfo = {
+        userId: '291192',
+        gender: 'Female',
+        userAge: 20,
+        deviceType: 'Pixelbook'
+    };
+
+    it('appends the necessary five fields', () => {
+        cookieService.makeUserInfoCookie(userInfo);
+        
+        utteranceService.getFormData(audio);
+        expect(utteranceService.formData.append).toHaveBeenCalledTimes(5);
     }); 
 });
 
