@@ -40,7 +40,8 @@ export class VoxettaRecordButton extends LitElement {
     static get properties() {
         return {
             isRecording: {type: Boolean},
-            audioStream: {type: Object}
+            audioStream: {type: Object},
+            context: {type: Object},
         };
     }
 
@@ -69,7 +70,8 @@ export class VoxettaRecordButton extends LitElement {
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
-        this.audioStream; 
+        this.audioStream;
+        this.context; 
     }
 
     updated() {
@@ -98,6 +100,7 @@ export class VoxettaRecordButton extends LitElement {
             }
             this.isRecording = true;
             this.audioStream = this.audioRecorder.stream;
+            this.context = new (window.AudioContext || window.webkitAudioContext)();
         } else {
             this.isRecording = false;
             this.handleFinish();
@@ -127,6 +130,14 @@ export class VoxettaRecordButton extends LitElement {
     }
 
     /**
+     * Returns the context of the audio. 
+     * @returns {Object} The current context for the audio.
+     */
+    getContext() {
+        return this.context; 
+    }
+
+    /**
      * Emits an event that causes the application to render a sound
      * wave that corresponds to the current audio stream. 
      */
@@ -134,7 +145,8 @@ export class VoxettaRecordButton extends LitElement {
         const event = new CustomEvent('update-wave', {
             detail: { 
                 isRecording: this.isRecording,
-                audioStream: this.audioStream
+                audioStream: this.audioStream,
+                context: this.context,
             }
         });
         this.dispatchEvent(event);

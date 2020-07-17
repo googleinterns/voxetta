@@ -41,12 +41,14 @@ export class VoxettaApp extends LitElement {
      *  actively recording.
      * @property audioStream - The stream of audio that is being
      *  actively recorded, if applicable.
+     * @property context - The context of the audio.
      */
     static get properties() {
         return {
             state: {type: String},
             isRecording: {type: Boolean},
-            audioStream: {type: Object}
+            audioStream: {type: Object},
+            context: {type: Object},
         };
     }
 
@@ -111,7 +113,8 @@ export class VoxettaApp extends LitElement {
                 </vox-prompts>
                 <vox-sound-wave 
                     .isRecording=${this.isRecording} 
-                    .audioStream=${this.audioStream}>
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}>
                 </vox-sound-wave>
             </div>
             <div class="buttons">
@@ -192,6 +195,7 @@ export class VoxettaApp extends LitElement {
         const recordComponent = this.shadowRoot.querySelector('vox-record-button');
         this.isRecording = recordComponent.getIsRecording();
         this.audioStream = recordComponent.getAudioStream();
+        this.context = recordComponent.getContext();
     }
 
     /**

@@ -9,4 +9,6 @@ global.window.alert = () => {};
 global.navigator = dom.window.navigator;
 global.navigator.mediaDevices = {getUserMedia: () => {}};
 global.MediaRecorder = StubMediaRecorder;
+global.requestAnimationFrame = () => {};
+global.cancelAnimationFrame = () => {};
 global.FormData = StubFormData;
