@@ -36,7 +36,7 @@ let recordingStyle = {
 /**
  * Button responsible for enabling the user to record and upload audio files. 
  */
-export class VoxettaRecordButton extends LitElement {
+export class RecordButton extends LitElement {
     static get properties() {
         return {
             isRecording: {type: Boolean},
@@ -161,4 +161,4 @@ export class VoxettaRecordButton extends LitElement {
     }
 }
 
-customElements.define('vox-record-button', VoxettaRecordButton);
+customElements.define('vox-record-button', RecordButton);
