@@ -34,10 +34,10 @@ export class StateContainer extends LitElement {
     constructor() {
         super();
         this.user = {
-            id: cookieService.getCookieValue('id'),
-            gender: cookieService.getCookieValue('gender'),
-            age: cookieService.getCookieValue('age'),
-            deviceType: cookieService.getCookieValue('deviceType'),
+            userId: cookieService.getUserId(),
+            gender: cookieService.getGender(),
+            userAge: cookieService.getUserAge(),
+            deviceType: cookieService.getDeviceType(),
         };
         this.view = Views.COLLECTION;
         this.canRecord = true;
@@ -57,9 +57,9 @@ export class StateContainer extends LitElement {
      */
     updateUserInformation(userInfo) {
         this.user = {
-            id: userInfo.id,
+            userId: userInfo.userId,
             gender: userInfo.gender,
-            age: userInfo.age,
+            userAge: userInfo.userAge,
             deviceType: userInfo.deviceType,
         };
     }

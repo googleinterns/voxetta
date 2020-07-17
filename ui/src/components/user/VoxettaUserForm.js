@@ -30,9 +30,9 @@ import style from '../../styles/user/VoxettaUserForm.css.js';
 export class VoxettaUserForm extends LitElement {
     static get properties() {
         return {
-            id: {type: String},
+            userId: {type: String},
             gender: {type: String},
-            age: {type: Number},
+            userAge: {type: Number},
             deviceType: {type: String},
         };
     }
@@ -52,15 +52,15 @@ export class VoxettaUserForm extends LitElement {
      * saves the user information in a cookie.
      */
     processForm() {
-        this.id = this.shadowRoot.getElementById('user-id').value;
+        this.userId = this.shadowRoot.getElementById('user-id').value;
         this.gender = this.shadowRoot.getElementById('gender-list').value;
-        this.age = this.shadowRoot.getElementById('user-age').value;
+        this.userAge = this.shadowRoot.getElementById('user-age').value;
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
         const userInfo = {
-            id: this.id,
+            userId: this.userId,
             gender: this.gender,
-            age: this.age,
+            userAge: this.userAge,
             deviceType: this.deviceType,
         };
 
@@ -111,7 +111,6 @@ export class VoxettaUserForm extends LitElement {
     handleFormSubmission(userInfo) {
         const event = new CustomEvent('update-user-info', {
             detail: {userInfo},
-
             bubbles: true,
             composed: true,
         });
@@ -138,7 +137,7 @@ export class VoxettaUserForm extends LitElement {
                         required
                         validationMessage="This field is required."
                         label="User identifier"
-                        value=${this.id}>
+                        value=${this.userId}>
                     </mwc-textfield>
                     <div class="mwc-select">
                         <mwc-select
@@ -165,7 +164,7 @@ export class VoxettaUserForm extends LitElement {
                         placeholder="Enter your age"
                         min=0
                         max=120
-                        value=${this.age}>
+                        value=${this.userAge}>
                     </mwc-textfield>
                     <mwc-textfield 
                         id="device-type"

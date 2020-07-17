@@ -54,7 +54,8 @@ export class ViewContainer extends LitElement {
             <div id="collection-wrapper">
                 <header class="top-level-component">
                     <div>
-                        <vox-user-icon .userId=${this.user.id}> </vox-user-icon>
+                        <vox-user-icon .userId=${this.user.userId}>
+                        </vox-user-icon>
                     </div>
 
                     <!-- Hide progress when finished -->
@@ -101,9 +102,9 @@ export class ViewContainer extends LitElement {
     renderUserFormView() {
         return html`
             <vox-user-form
-                .userId=${this.user.id}
+                .userId=${this.user.userId}
                 .gender=${this.user.gender}
-                .userAge=${this.user.age}
+                .userAge=${this.user.userAge}
                 .deviceType=${this.user.deviceType}
             >
             </vox-user-form>
