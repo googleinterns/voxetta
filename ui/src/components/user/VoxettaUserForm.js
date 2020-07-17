@@ -21,7 +21,7 @@ import {ListItem} from '@material/mwc-list/mwc-list-item';
 import {Button} from '@material/mwc-button';
 import {Icon} from '@material/mwc-icon';
 
-import style from '/src/styles/user/VoxettaUserForm.css.js';
+import style from '../../styles/user/VoxettaUserForm.css.js';
 
 /**
  * Component responsible for providing users a means to provide
@@ -30,9 +30,9 @@ import style from '/src/styles/user/VoxettaUserForm.css.js';
 export class VoxettaUserForm extends LitElement {
     static get properties() {
         return {
-            userId: {type: String},
+            id: {type: String},
             gender: {type: String},
-            userAge: {type: Number},
+            age: {type: Number},
             deviceType: {type: String},
         };
     }
@@ -52,15 +52,15 @@ export class VoxettaUserForm extends LitElement {
      * saves the user information in a cookie.
      */
     processForm() {
-        this.userId = this.shadowRoot.getElementById('user-id').value;
+        this.id = this.shadowRoot.getElementById('user-id').value;
         this.gender = this.shadowRoot.getElementById('gender-list').value;
-        this.userAge = this.shadowRoot.getElementById('user-age').value;
+        this.age = this.shadowRoot.getElementById('user-age').value;
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
         const userInfo = {
-            userId: this.userId,
+            id: this.id,
             gender: this.gender,
-            userAge: this.userAge,
+            age: this.age,
             deviceType: this.deviceType,
         };
 
@@ -72,13 +72,13 @@ export class VoxettaUserForm extends LitElement {
      * Determines if each input in the user form is valid and alters Save Button appropriately.
      */
     formIsValid() {
-        const userIdValidity = this.shadowRoot
+        const idValidity = this.shadowRoot
             .getElementById('user-id')
             .checkValidity();
         const genderValidity = this.shadowRoot
             .getElementById('gender-list')
             .checkValidity();
-        const userAgeValidity = this.shadowRoot
+        const ageValidity = this.shadowRoot
             .getElementById('user-age')
             .checkValidity();
         const deviceTypeValidity = this.shadowRoot
@@ -86,10 +86,7 @@ export class VoxettaUserForm extends LitElement {
             .checkValidity();
 
         const formValidity =
-            userIdValidity &&
-            genderValidity &&
-            userAgeValidity &&
-            deviceTypeValidity;
+            idValidity && genderValidity && ageValidity && deviceTypeValidity;
 
         const saveButton = this.shadowRoot.getElementById('save-button');
         saveButton.disabled = !formValidity;
@@ -100,7 +97,10 @@ export class VoxettaUserForm extends LitElement {
      * page to appear.
      */
     handleExitForm() {
-        const event = new CustomEvent('exit-form', {});
+        const event = new CustomEvent('exit-form', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
@@ -111,6 +111,9 @@ export class VoxettaUserForm extends LitElement {
     handleFormSubmission(userInfo) {
         const event = new CustomEvent('update-user-info', {
             detail: {userInfo},
+
+            bubbles: true,
+            composed: true,
         });
         this.dispatchEvent(event);
     }
@@ -135,7 +138,7 @@ export class VoxettaUserForm extends LitElement {
                         required
                         validationMessage="This field is required."
                         label="User identifier"
-                        value=${this.userId}>
+                        value=${this.id}>
                     </mwc-textfield>
                     <div class="mwc-select">
                         <mwc-select
@@ -162,7 +165,7 @@ export class VoxettaUserForm extends LitElement {
                         placeholder="Enter your age"
                         min=0
                         max=120
-                        value=${this.userAge}>
+                        value=${this.age}>
                     </mwc-textfield>
                     <mwc-textfield 
                         id="device-type"

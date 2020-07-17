@@ -4,6 +4,8 @@ import copy from 'rollup-plugin-copy';
 
 import {createSpaConfig} from '@open-wc/building-rollup';
 
+// TODO(eldrickb): make SPA decision and cleanup this config further
+
 const baseConfig = createSpaConfig({
     developmentMode: process.env.ROLLUP_WATCH === 'true',
 

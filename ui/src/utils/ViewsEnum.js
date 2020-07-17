@@ -14,38 +14,7 @@
  * limitations under the License.
  */
 
-import {css} from 'lit-element';
-
-export default css`
-    #prompt-screen {
-        width: 100%;
-        height: 100%;
-        align-items: center;
-        display: flex;
-        text-align: center;
-    }
-
-    p {
-        max-width: 70vw;
-
-        font-size: 44px;
-        color: black;
-    }
-
-    img {
-        max-height: 400px;
-    }
-
-    /* Prompt reset button  */
-
-    button {
-        background-color: white;
-        border: none;
-        color: #a0a0a0;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #dcdcdc;
-    }
-`;
+export default {
+    COLLECTION: 'collection',
+    USER_FORM: 'user_form',
+};

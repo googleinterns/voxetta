@@ -18,7 +18,7 @@ import {LitElement, html, css} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {IconButton} from '@material/mwc-icon-button';
 
-import style from '/src/styles/user/VoxettaUserIcon.css.js';
+import style from '../../styles/user/VoxettaUserIcon.css';
 
 /**
  * Button responsible for enabling the user to record and upload audio files.
@@ -39,7 +39,10 @@ export class VoxettaUserIcon extends LitElement {
      * form to appear.
      */
     handleUserIconClick() {
-        const event = new CustomEvent('enter-form', {});
+        const event = new CustomEvent('enter-form', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 

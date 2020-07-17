@@ -20,7 +20,7 @@ import {UtteranceApiService} from '../utils/UtteranceApiService';
 
 import {Icon} from '@material/mwc-icon';
 
-import style from '/src/styles/VoxettaRecordButton.css.js';
+import style from '../styles/VoxettaRecordButton.css.js';
 
 // Styling for the button when the user is not recording
 const nonRecordingStyle = {
@@ -121,6 +121,8 @@ export class VoxettaRecordButton extends LitElement {
                 isRecording: this.isRecording,
                 audioStream: this.audioStream,
             },
+            bubbles: true,
+            composed: true,
         });
         this.dispatchEvent(event);
     }
@@ -130,7 +132,10 @@ export class VoxettaRecordButton extends LitElement {
      * on the recording page.
      */
     handleFinish() {
-        const event = new CustomEvent('change-prompt', {});
+        const event = new CustomEvent('change-prompt', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 

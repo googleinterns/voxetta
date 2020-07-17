@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import {LitElement, html, css} from 'lit-element';
+import {LitElement, html} from 'lit-element';
 
 import * as promptApi from '../utils/PromptApiService';
 
-import {Icon} from '@material/mwc-icon';
+// import {Icon} from '@material/mwc-icon';
 
-import style from '/src/styles/VoxettaPrompts.css.js';
+import style from '../styles/VoxettaPrompts.css.js';
 
 export class VoxettaPrompts extends LitElement {
     static get properties() {
@@ -47,6 +47,7 @@ export class VoxettaPrompts extends LitElement {
      * Emits an event that causes audio-recording related components
      * to disappear.
      */
+    // TODO: figure out why this throws and unexpected token error
     async getNewPrompt() {
         this.state = 'LOADING';
         const promptRequest = await promptApi.getNewPrompt();
@@ -79,7 +80,7 @@ export class VoxettaPrompts extends LitElement {
     }
 
     /**
-     * Determines the approriate rendering action based on the current
+     * Determines the appropriate rendering action based on the current
      * prompt state.
      * @return {HTML} The HTML associated with the current state.
      */
@@ -88,7 +89,7 @@ export class VoxettaPrompts extends LitElement {
             case 'SUCCESS':
                 return this.renderPromptType();
             case 'LOADING':
-                return html`<p>Loading...</p>`;
+                return html`<p>Loading............</p>`;
             case 'FAILURE':
                 return html`<p><b>Prompt failed to load.</b></p>`;
             case 'FINISHED':
@@ -106,7 +107,10 @@ export class VoxettaPrompts extends LitElement {
      * to disappear.
      */
     handleSessionEnd() {
-        const event = new CustomEvent('end-session', {});
+        const event = new CustomEvent('end-session', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 

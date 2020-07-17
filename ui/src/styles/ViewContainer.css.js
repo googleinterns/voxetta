@@ -16,17 +16,18 @@
 
 import {css} from 'lit-element';
 
+// TODO: clean this shit up its gross
 export default css`
     /* skeleton  */
 
-    main {
+    #collection-wrapper {
         display: flex;
         flex-direction: column;
         width: 100vw;
         height: 100vh;
     }
 
-    main > div {
+    .top-level-component {
         align-items: center;
         display: flex;
         flex-direction: column;
@@ -34,14 +35,20 @@ export default css`
         justify-content: center;
     }
 
-    .header {
+    header.top-level-component {
         align-items: center;
         height: 70px;
         flex-direction: row;
     }
 
-    .header > div {
+    header > div {
         flex: 1;
+    }
+
+    vox-prompts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .prompts {
@@ -65,7 +72,7 @@ export default css`
 
     /* Details */
 
-    .header {
+    header {
         padding: 0 12px;
         box-shadow: 0px -2px 8px rgba(128, 134, 139, 0.09),
             0px 4px 8px rgba(128, 134, 139, 0.06),

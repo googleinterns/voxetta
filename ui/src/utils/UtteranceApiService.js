@@ -13,13 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {CookieService} from './CookieService';
+import {cookieService} from './CookieService';
 
 /**
- * Service responsible for saving audio files to an external database. 
+ * Service responsible for saving audio files to an external database.
  */
 export class UtteranceApiService {
-
     /**
      * Create an UtteranceApiService that can externally save audio files.
      */
@@ -28,12 +27,11 @@ export class UtteranceApiService {
          * A Blobstore upload link.
          * @private
          */
-        this.blobUrl_; 
-        this.cookieService = new CookieService();
+        this.blobUrl_;
     }
 
     /**
-     * Save a recorded audio file to an external database. 
+     * Save a recorded audio file to an external database.
      * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
      */
     async saveAudio(audio) {
@@ -42,33 +40,33 @@ export class UtteranceApiService {
 
         const formData = new FormData();
         formData.append('audio', audio.blob, 'blob');
-        formData.append('userId', this.cookieService.getUserId());
-        formData.append('gender', this.cookieService.getGender());
-        formData.append('userAge', this.cookieService.getUserAge());
-        formData.append('deviceType', this.cookieService.getDeviceType());
-        
-        const response = await fetch(this.blobUrl_, { 
+        formData.append('userId', cookieService.getUserId());
+        formData.append('gender', cookieService.getGender());
+        formData.append('userAge', cookieService.getUserAge());
+        formData.append('deviceType', cookieService.getDeviceType());
+
+        const response = await fetch(this.blobUrl_, {
             method: 'POST',
-            body: formData 
+            body: formData,
         });
-        const query = await response.json(); 
+        const query = await response.json();
 
         if (!query.success) {
             alert('Error: Unable to upload file.');
-        } 
+        }
     }
 
     /**
-     * Set the blobUrl_ property to be a Blobstore upload link. 
+     * Set the blobUrl_ property to be a Blobstore upload link.
      */
     async getUploadUrl() {
         const response = await fetch('/blobstore-utterance-upload-link');
         const query = await response.json();
 
         if (query.success) {
-            this.blobUrl_ = query.url; 
+            this.blobUrl_ = query.url;
         } else {
-            alert("Error: Unable to access database.");
+            alert('Error: Unable to access database.');
         }
-    } 
+    }
 }

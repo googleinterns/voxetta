@@ -18,7 +18,7 @@ import {LitElement, html, css} from 'lit-element';
 
 import {Icon} from '@material/mwc-icon';
 
-import style from '/src/styles/VoxettaSkipButton.css.js';
+import style from '../styles/VoxettaSkipButton.css.js';
 
 export class VoxettaSkipButton extends LitElement {
     static get properties() {
@@ -34,7 +34,10 @@ export class VoxettaSkipButton extends LitElement {
      * on the recording page.
      */
     handleSkip() {
-        const event = new CustomEvent('skip-prompt', {});
+        const event = new CustomEvent('skip-prompt', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
