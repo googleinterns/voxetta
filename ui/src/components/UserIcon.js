@@ -22,7 +22,7 @@ import {IconButton} from '@material/mwc-icon-button';
 /**
  * Button responsible for enabling the user to record and upload audio files. 
  */
-export class VoxettaUserIcon extends LitElement {
+export class UserIcon extends LitElement {
 
     static get styles() {
         return css`
@@ -53,4 +53,4 @@ export class VoxettaUserIcon extends LitElement {
     }
 }
 
-customElements.define('vox-user-icon', VoxettaUserIcon);
+customElements.define('vox-user-icon', UserIcon);

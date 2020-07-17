@@ -18,12 +18,12 @@ import {LitElement, html, css} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
 
-import {VoxettaWaveCanvas} from './components/VoxettaWaveCanvas';
-import {VoxettaPrompts} from './components/VoxettaPrompts';
-import {VoxettaRecordButton} from './components/VoxettaRecordButton';
-import {VoxettaSkipButton} from './components/VoxettaSkipButton';
-import {VoxettaUserForm} from './components/VoxettaUserForm';
-import {VoxettaUserIcon} from './components/VoxettaUserIcon';
+import {WaveCanvas} from './components/WaveCanvas';
+import {Prompts} from './components/Prompts';
+import {RecordButton} from './components/RecordButton';
+import {SkipButton} from './components/SkipButton';
+import {UserForm} from './components/UserForm';
+import {UserIcon} from './components/UserIcon';
 
 /**
  * Possible app states.

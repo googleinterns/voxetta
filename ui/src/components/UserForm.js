@@ -26,7 +26,7 @@ import {Icon} from '@material/mwc-icon'
  * Component responsible for providing users a means to provide
  * their personal information. 
  */
-export class VoxettaUserForm extends LitElement {
+export class UserForm extends LitElement {
 
     static get properties() {
         return {
@@ -250,4 +250,4 @@ export class VoxettaUserForm extends LitElement {
     }
 }
  
-customElements.define('vox-user-form', VoxettaUserForm);
+customElements.define('vox-user-form', UserForm);

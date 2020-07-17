@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import {AudioRecorder} from '../../src/utils/AudioRecorder.js';
 
 describe('Testing the Audio Recorder methods', function() {
@@ -43,5 +43,4 @@ describe('Testing the Audio Recorder methods', function() {
         expect(audioRecorder.mediaRecorder.stop).toHaveBeenCalled();
         expect(obj[0]).toBe(audioRecorder.recordingUrl);
     });
-
 });

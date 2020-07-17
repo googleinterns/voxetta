@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import {SoundWave} from '../../src/components/SoundWave.js';
 import {StubContext} from './helpers/stubs/StubAudioContext.js';
 import {StubCanvasCtx} from './helpers/stubs/StubCanvasCtx.js';

@@ -20,7 +20,7 @@ import * as promptApi from '../utils/PromptApiService';
 
 import {Icon} from '@material/mwc-icon';
 
-export class VoxettaPrompts extends LitElement {
+export class Prompts extends LitElement {
     static get properties() {
         return {
             prompt: {type: Object},
@@ -137,4 +137,4 @@ export class VoxettaPrompts extends LitElement {
     }
 }
 
-customElements.define('vox-prompts', VoxettaPrompts);
+customElements.define('vox-prompts', Prompts);
