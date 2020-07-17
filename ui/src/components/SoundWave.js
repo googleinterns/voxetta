@@ -1,16 +1,32 @@
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /**
- * Responsible for creating soundwave 
+ * Responsible for creating the soundwave. 
  */
 export class SoundWave {
 
    /**
-    * Creates a soundwave based off the loudness of the user
-    * @param {Object} canvas - A canvas to draw the soundwave on
-    * @param {Object} stream - stream the soundwave will be created off 
-    * @private {Object} Allows for the stream to be analyzed 
-    * @private {Number} Id needed to stop animation 
-    * @private {Array} Array used to store "loudness" of stream 
-    * @private {Object} Allows for the soundwave to be drawn on the canvas 
+    * Creates a soundwave based off the loudness of the user.
+    * @param {Object} canvas - A canvas to draw the soundwave on.
+    * @param {Object} stream - stream the soundwave will be created off. 
+    * @private {Object} Allows for the stream to be analyzed.
+    * @private {Number} Id needed to stop animation.
+    * @private {Array} Array used to store "loudness" of stream. 
+    * @private {Object} Allows for the soundwave to be drawn on the canvas.
     */
     constructor(canvas, stream, context, canvasCtx, analyser, freqs) {
         this.canvas = canvas;
@@ -23,9 +39,10 @@ export class SoundWave {
         this.canvasCtx = canvasCtx;
     }
 
-   /**
-    * Setter to update value of the constructor's stream property
-    */
+
+    /**
+     * Setter to update the value of the constructor's stream property.
+     */
     setStream(stream) {
         this.stream = stream;
     }
@@ -38,7 +55,7 @@ export class SoundWave {
     }
 
     /**
-     * Creates and uses the analyser node to start analysing the stream as it's coming in
+     * Creates and uses the analyser node to start analysing the stream as it's coming in.
      */
     createSoundWave() {
         this.canvasCtx = this.canvas.getContext('2d');

@@ -19,7 +19,7 @@ import {LitElement, html, css} from 'lit-element';
 /**
  * Canvas responsible for holding soundwave once user starts recording 
  */
-export class VoxettaWaveCanvas extends LitElement {
+export class WaveCanvas extends LitElement {
     static get properties() {
         return {
             canvasId: {type: String},
@@ -79,4 +79,4 @@ export class VoxettaWaveCanvas extends LitElement {
     }
 }
 
-customElements.define('vox-sound-wave', VoxettaWaveCanvas);
+customElements.define('vox-sound-wave', WaveCanvas);
