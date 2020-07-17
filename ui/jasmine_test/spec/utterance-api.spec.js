@@ -15,8 +15,9 @@
  */
 
 import {UtteranceApiService} from '../../src/utils/UtteranceApiService';
+import {CookieService} from '../../src/utils/CookieService';
+
 import fetchMock from 'fetch-mock';
-import { CookieService } from '../../src/utils/CookieService';
 
 describe('Testing that the Utterance API Service saveAudio()', () => {
     
