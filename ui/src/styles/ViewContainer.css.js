@@ -16,7 +16,7 @@
 
 import {css} from 'lit-element';
 
-// TODO: clean this shit up its gross
+// TODO(eldrickb, in styling): clean this up
 export default css`
     /* skeleton  */
 

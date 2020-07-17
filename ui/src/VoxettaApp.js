@@ -18,14 +18,7 @@ import {LitElement, html} from 'lit-element';
 
 import {StateContainer} from './StateContainer';
 
-// TODO: sweep sweep sweep
-// make eslint not annoying
-
 export class VoxettaApp extends LitElement {
-    constructor() {
-        super();
-    }
-
     render() {
         return html` <vox-state-container> </vox-state-container> `;
     }

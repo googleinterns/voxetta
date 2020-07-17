@@ -41,10 +41,6 @@ export class ViewContainer extends LitElement {
         return style;
     }
 
-    constructor() {
-        super();
-    }
-
     /**
      * Renders the components associated with the collection view.
      * @return {HTML} The HTML template for the collection view.
@@ -59,12 +55,13 @@ export class ViewContainer extends LitElement {
                     </div>
 
                     <!-- Hide progress when finished -->
-                    ${this.canRecord &&
-                    html`
-                        <div class="progress">
-                            <span>x of x</span>
-                        </div>
-                    `}
+                    ${this.canRecord
+                        ? html`
+                              <div class="progress">
+                                  <span>x of x</span>
+                              </div>
+                          `
+                        : html``}
 
                     <div class="connection-status"></div>
                 </header>
@@ -81,16 +78,17 @@ export class ViewContainer extends LitElement {
                 </div>
 
                 <!-- Hide recording when finished -->
-                ${this.canRecord &&
-                html` <div class="buttons top-level-component">
-                    <div class="button-container"></div>
-                    <div class="record-button-container">
-                        <vox-record-button> </vox-record-button>
-                    </div>
-                    <div class="button-container">
-                        <vox-skip-button> </vox-skip-button>
-                    </div>
-                </div>`}
+                ${this.canRecord
+                    ? html`<div class="buttons top-level-component">
+                          <div class="button-container"></div>
+                          <div class="record-button-container">
+                              <vox-record-button> </vox-record-button>
+                          </div>
+                          <div class="button-container">
+                              <vox-skip-button> </vox-skip-button>
+                          </div>
+                      </div>`
+                    : html``}
             </div>
         `;
     }
