@@ -1,4 +1,4 @@
-import {SoundWave} from '../../src/SoundWave.js';
+import {SoundWave} from '../../src/components/SoundWave.js';
 import {StubContext} from './helpers/stubs/StubAudioContext.js';
 import {StubCanvasCtx} from './helpers/stubs/StubCanvasCtx.js';
 import {StubAnalyser} from './helpers/stubs/StubAnalyser.js';
