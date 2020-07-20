@@ -45,10 +45,12 @@ export class CountrySelector extends LitElement {
             h3 {
                 font-family: 'Roboto';
                 font-size: 30px; 
+                font-weight: normal;
             }
             p {
                 font-family: 'Roboto';
                 font-size: 20px; 
+                font-weight: bolder; 
             }
         `;
     }
@@ -107,7 +109,7 @@ export class CountrySelector extends LitElement {
                         id="country-list" 
                         outlined 
                         required
-                        placeholder="Select your country">
+                        label="Select your country">
                             <mwc-list-item disabled></mwc-list-item>
                             ${this.countries.map(country => 
                                 html`<mwc-list-item value=${country}>
