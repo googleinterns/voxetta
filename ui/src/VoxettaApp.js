@@ -17,17 +17,20 @@ import {LitElement, html, css} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
 
-import {WaveCanvas} from './components/WaveCanvas';
+import {CountrySelector} from './components/CountrySelector';
 import {Prompts} from './components/Prompts';
 import {RecordButton} from './components/RecordButton';
 import {SkipButton} from './components/SkipButton';
 import {UserForm} from './components/UserForm';
 import {UserIcon} from './components/UserIcon';
+import {WaveCanvas} from './components/WaveCanvas';
 
 /**
  * Possible app states.
  */
 const States = {
+  COUNTRY_SELECTION: 'country_selection',
+  TERMS_OF_SERVICE: 'terms_of_service',
   ACTIVE_RECORD_PAGE: 'active_record_page',
   INACTIVE_RECORD_PAGE: 'inactive_record_page',
   USER_FORM: 'user_form',
@@ -89,11 +92,34 @@ export class VoxettaApp extends LitElement {
     constructor() {
         super();
         this.cookieService = new CookieService();
-        this.state = States.ACTIVE_RECORD_PAGE; 
+        this.state = States.COUNTRY_SELECTION; 
+        this.country = undefined; 
         this.userId = this.cookieService.getCookieValue('userId');
         this.gender = this.cookieService.getCookieValue('gender');
         this.userAge = this.cookieService.getCookieValue('userAge');
         this.deviceType = this.cookieService.getCookieValue('deviceType'); 
+    }
+
+    /**
+     * Renders the componenets associated with the country selection state. 
+     * @returns {HTML} The HTML template for the country selection state.
+     */
+    renderCountrySelectionTemplate() {
+        return html`
+            <vox-country-selector
+                @open-tos="${this.handleOpenTos}">
+            </vox-user-form>
+        `;
+    }
+
+    /**
+     * Renders the componenets associated with the terms of service state. 
+     * @returns {HTML} The HTML template for the terms of service state.
+     */
+    renderTermsOfServiceTemplate() {
+        return html`
+            ${this.country}
+        `;
     }
 
     /**
@@ -188,6 +214,16 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
+     * Updates the country property and state such that the country selector
+     * closes and the appropriate terms of service appears. 
+     */
+    handleOpenTos() {
+        const countrySelector = this.shadowRoot.querySelector('vox-country-selector');
+        this.country = countrySelector.getCountry(); 
+        this.state = States.TERMS_OF_SERVICE; 
+    }
+
+    /**
      * Updates the isRecording and audioStream properties with the most up-to-date
      * data from the vox-record-button component. 
      */
@@ -230,6 +266,14 @@ export class VoxettaApp extends LitElement {
 
     render() {  
         switch (this.state) {
+            case States.COUNTRY_SELECTION:
+                return html`
+                    ${this.renderCountrySelectionTemplate()}
+                `;
+            case States.TERMS_OF_SERVICE:
+                return html`
+                    ${this.renderTermsOfServiceTemplate()}
+                `;
             case States.ACTIVE_RECORD_PAGE:
                 return html`
                     ${this.renderActiveRecordTemplate()}
