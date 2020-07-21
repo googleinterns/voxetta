@@ -25,13 +25,21 @@ import style from '../styles/components/RecordButton.css.js';
 import {dispatchErrorToast} from '../utils/ToastUtils';
 
 // Styling for the button when the user is not recording
+<<<<<<< HEAD
 const nonRecordingStyle = {
+=======
+let nonRecordingStyle = {
+>>>>>>> master
     backgroundColor: 'white',
     color: '#3c4043',
 };
 
 // Styling for the button when the user is recording
+<<<<<<< HEAD
 const recordingStyle = {
+=======
+let recordingStyle = {
+>>>>>>> master
     backgroundColor: 'red',
     color: 'white',
 };

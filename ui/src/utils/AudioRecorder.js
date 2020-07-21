@@ -67,8 +67,8 @@ export class AudioRecorder {
     stopRecording() {
         if (this.mediaRecorder) {
             this.mediaRecorder.stop();
-            return new Promise((resolve) => {
-                this.mediaRecorder.ondataavailable = (e) => {
+            return new Promise(resolve => {
+                this.mediaRecorder.ondataavailable = e => {
                     const blob = new Blob([e.data], {type: 'audio/webm;'});
                     const recordingUrl = window.URL.createObjectURL(blob);
                     const audio = {blob, recordingUrl};

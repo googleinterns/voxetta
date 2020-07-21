@@ -15,19 +15,18 @@
  */
 
 /**
- * Responsible for creating the soundwave. 
+ * Responsible for creating the soundwave.
  */
 export class SoundWave {
-
-   /**
-    * Creates a soundwave based off the loudness of the user.
-    * @param {Object} canvas - A canvas to draw the soundwave on.
-    * @param {Object} stream - stream the soundwave will be created off. 
-    * @private {Object} Allows for the stream to be analyzed.
-    * @private {Number} Id needed to stop animation.
-    * @private {Array} Array used to store "loudness" of stream. 
-    * @private {Object} Allows for the soundwave to be drawn on the canvas.
-    */
+    /**
+     * Creates a soundwave based off the loudness of the user.
+     * @param {Object} canvas - A canvas to draw the soundwave on.
+     * @param {Object} stream - stream the soundwave will be created off.
+     * @private {Object} Allows for the stream to be analyzed.
+     * @private {Number} Id needed to stop animation.
+     * @private {Array} Array used to store "loudness" of stream.
+     * @private {Object} Allows for the soundwave to be drawn on the canvas.
+     */
     constructor(canvas, stream, context, canvasCtx, analyser, freqs) {
         this.canvas = canvas;
         this.stream = stream;
@@ -39,7 +38,6 @@ export class SoundWave {
         this.canvasCtx = canvasCtx;
     }
 
-
     /**
      * Setter to update the value of the constructor's stream property.
      */
@@ -47,9 +45,9 @@ export class SoundWave {
         this.stream = stream;
     }
 
-   /**
-    * Setter to update value of the constructor's context property
-    */
+    /**
+     * Setter to update value of the constructor's context property
+     */
     setContext(context) {
         this.context = context;
     }
@@ -79,9 +77,9 @@ export class SoundWave {
      */
     draw() {
         const bars = 200;
-        this.canvasCtx.fillStyle = "white";
+        this.canvasCtx.fillStyle = 'white';
         this.canvasCtx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        if(!this.stream) {
+        if (!this.stream) {
             return;
         }
         this.analyser.getByteFrequencyData(this.freqs);
@@ -89,16 +87,18 @@ export class SoundWave {
         for (let i = 0; i < bars; i++) {
             const radians = (Math.PI * 2) / bars;
             const barHeight = this.freqs[i] * 0.5;
-            const xStart = (i*2);
+            const xStart = i * 2;
             const yStart = this.canvas.height / 2;
-            const xEnd = (i*2);
+            const xEnd = i * 2;
             let yEnd;
-            if(isInversed) {
+            if (isInversed) {
                 isInversed = false;
-                yEnd = this.canvas.height / 2 + Math.cos(radians * i) * (barHeight);
+                yEnd =
+                    this.canvas.height / 2 + Math.cos(radians * i) * barHeight;
             } else {
                 isInversed = true;
-                yEnd = this.canvas.height / 2 - Math.cos(radians * i) * (barHeight);
+                yEnd =
+                    this.canvas.height / 2 - Math.cos(radians * i) * barHeight;
             }
             const color = `rgb(${237}, ${73}, ${62})`;
             this.canvasCtx.strokeStyle = color;
