@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import {LitElement, html, css} from 'lit-element';
 
 import {TextField} from '@material/mwc-textfield';
@@ -59,26 +59,38 @@ export class UserForm extends LitElement {
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
         const userInfo = {
-            userId: this.userId, 
+            userId: this.userId,
             gender: this.gender,
             userAge: this.userAge,
-            deviceType: this.deviceType
+            deviceType: this.deviceType,
         };
 
         this.handleFormSubmission(userInfo);
-        this.handleExitForm(); 
+        this.handleExitForm();
     }
 
     /**
-     * Determines if each input in the user form is valid and alters Save Button appropriately. 
+     * Determines if each input in the user form is valid and alters Save Button appropriately.
      */
     formIsValid() {
-        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
-        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
-        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
-        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
+        const userIdValidity = this.shadowRoot
+            .getElementById('user-id')
+            .checkValidity();
+        const genderValidity = this.shadowRoot
+            .getElementById('gender-list')
+            .checkValidity();
+        const userAgeValidity = this.shadowRoot
+            .getElementById('user-age')
+            .checkValidity();
+        const deviceTypeValidity = this.shadowRoot
+            .getElementById('device-type')
+            .checkValidity();
 
-        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
+        const formValidity =
+            userIdValidity &&
+            genderValidity &&
+            userAgeValidity &&
+            deviceTypeValidity;
         const saveButton = this.shadowRoot.getElementById('save-button');
         saveButton.disabled = !formValidity;
     }
@@ -187,4 +199,3 @@ export class UserForm extends LitElement {
 }
 
 customElements.define('vox-user-form', UserForm);
-

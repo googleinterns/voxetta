@@ -41,7 +41,7 @@ export class CookieService {
         if (cookie.includes(`${key}=`)) {
             return cookie
                 .split('; ')
-                .find((entry) => entry.startsWith(key))
+                .find(entry => entry.startsWith(key))
                 .split('=')[1];
         }
         return '';

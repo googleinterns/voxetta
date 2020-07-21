@@ -25,15 +25,15 @@ import {UtteranceApiService} from '../utils/UtteranceApiService';
 import style from '../styles/components/RecordButton.css.js';
 
 // Styling for the button when the user is not recording
-let nonRecordingStyle = { 
-    backgroundColor: 'white', 
-    color: '#3c4043' 
+let nonRecordingStyle = {
+    backgroundColor: 'white',
+    color: '#3c4043',
 };
 
 // Styling for the button when the user is recording
-let recordingStyle = { 
-    backgroundColor: 'red', 
-    color: 'white' 
+let recordingStyle = {
+    backgroundColor: 'red',
+    color: 'white',
 };
 
 export class RecordButton extends LitElement {
@@ -55,7 +55,7 @@ export class RecordButton extends LitElement {
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
         this.audioStream;
-        this.context; 
+        this.context;
     }
 
     updated() {
@@ -78,13 +78,14 @@ export class RecordButton extends LitElement {
             }
 
             if (!this.audioRecorder.startRecording()) {
-                 alert('Failed to start recording.')
-                 return; 
+                alert('Failed to start recording.');
+                return;
             }
-          
+
             this.isRecording = true;
             this.audioStream = this.audioRecorder.stream;
-            this.context = new (window.AudioContext || window.webkitAudioContext)();
+            this.context = new (window.AudioContext ||
+                window.webkitAudioContext)();
         } else {
             this.isRecording = false;
             this.handleFinish();
@@ -105,34 +106,34 @@ export class RecordButton extends LitElement {
     }
 
     /**
-     * Returns the current audio stream being recorded. 
+     * Returns the current audio stream being recorded.
      * @returns {Object} The current audio stream being
-     *  recorded. 
+     *  recorded.
      */
     getAudioStream() {
-        return this.audioStream; 
+        return this.audioStream;
     }
 
     /**
-     * Returns the context of the audio. 
+     * Returns the context of the audio.
      * @returns {Object} The current context for the audio.
      */
     getContext() {
-        return this.context; 
+        return this.context;
     }
 
     /**
      * Emits an event that causes the application to render a sound
-     * wave that corresponds to the current audio stream. 
+     * wave that corresponds to the current audio stream.
      */
     handleWaveCanvas() {
         const event = new CustomEvent('update-wave', {
-            detail: { 
+            detail: {
                 isRecording: this.isRecording,
                 audioStream: this.audioStream,
                 context: this.context,
             },
-                                      
+
             bubbles: true,
             composed: true,
         });
@@ -152,11 +153,14 @@ export class RecordButton extends LitElement {
     }
     render() {
         return html`
-            <mwc-icon-button 
+            <mwc-icon-button
                 id="record-button"
-                icon=${this.isRecording ? "stop" : "mic"}
-                style=${styleMap(this.isRecording ? recordingStyle : nonRecordingStyle)}
-                @click=${this.recordHandler}>
+                icon=${this.isRecording ? 'stop' : 'mic'}
+                style=${styleMap(
+                    this.isRecording ? recordingStyle : nonRecordingStyle
+                )}
+                @click=${this.recordHandler}
+            >
             </mwc-icon-button>
         `;
     }
