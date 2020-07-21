@@ -1,41 +1,66 @@
+/*
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /**
- * Responsible for creating soundwave 
+ * Responsible for creating the soundwave. 
  */
 export class SoundWave {
 
    /**
-    * Creates a soundwave based off the loudness of the user
-    * @param {Object} canvas - A canvas to draw the soundwave on
-    * @param {Object} stream - stream the soundwave will be created off 
-    * @private {Object} Allows for the stream to be analyzed 
-    * @private {Number} Id needed to stop animation 
-    * @private {Array} Array used to store "loudness" of stream 
-    * @private {Object} Allows for the soundwave to be drawn on the canvas 
+    * Creates a soundwave based off the loudness of the user.
+    * @param {Object} canvas - A canvas to draw the soundwave on.
+    * @param {Object} stream - stream the soundwave will be created off. 
+    * @private {Object} Allows for the stream to be analyzed.
+    * @private {Number} Id needed to stop animation.
+    * @private {Array} Array used to store "loudness" of stream. 
+    * @private {Object} Allows for the soundwave to be drawn on the canvas.
     */
-    constructor(canvas, stream) {
+    constructor(canvas, stream, context, canvasCtx, analyser, freqs) {
         this.canvas = canvas;
         this.stream = stream;
-        this.analyser = undefined;
+        this.analyser = analyser;
         this.stopId = undefined;
-        this.freqs = undefined;
-        this.ctx = undefined;
+        this.freqs = freqs;
+        this.source = undefined;
+        this.context = context;
+        this.canvasCtx = canvasCtx;
     }
 
+
     /**
-     * Setter to update value of the constructor's stream property
+     * Setter to update the value of the constructor's stream property.
      */
-    setStream(stream){
+    setStream(stream) {
         this.stream = stream;
     }
 
+   /**
+    * Setter to update value of the constructor's context property
+    */
+    setContext(context) {
+        this.context = context;
+    }
+
     /**
-     * Creates and uses the analyser node to start analysing the stream as it's coming in
+     * Creates and uses the analyser node to start analysing the stream as it's coming in.
      */
     createSoundWave() {
-        this.ctx = this.canvas.getContext('2d');
-        const context = new (window.AudioContext || window.webkitAudioContext)();
-        this.analyser = context.createAnalyser();
-        const source = context.createMediaStreamSource(this.stream);
+        this.canvasCtx = this.canvas.getContext('2d');
+        this.analyser = this.context.createAnalyser();
+        const source = this.context.createMediaStreamSource(this.stream);
         source.connect(this.analyser);
         this.freqs = new Uint8Array(this.analyser.frequencyBinCount);
         this.stopId = requestAnimationFrame(() => this.draw());
@@ -54,9 +79,9 @@ export class SoundWave {
      */
     draw() {
         const bars = 200;
-        this.ctx.fillStyle = "white";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        if (!this.stream) {
+        this.canvasCtx.fillStyle = "white";
+        this.canvasCtx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        if(!this.stream) {
             return;
         }
         this.analyser.getByteFrequencyData(this.freqs);
@@ -76,12 +101,12 @@ export class SoundWave {
                 yEnd = this.canvas.height / 2 - Math.cos(radians * i) * (barHeight);
             }
             const color = `rgb(${237}, ${73}, ${62})`;
-            this.ctx.strokeStyle = color;
-            this.ctx.lineWidth = 1;
-            this.ctx.beginPath();
-            this.ctx.moveTo(xStart, yStart);
-            this.ctx.lineTo(xEnd, yEnd);
-            this.ctx.stroke();
+            this.canvasCtx.strokeStyle = color;
+            this.canvasCtx.lineWidth = 1;
+            this.canvasCtx.beginPath();
+            this.canvasCtx.moveTo(xStart, yStart);
+            this.canvasCtx.lineTo(xEnd, yEnd);
+            this.canvasCtx.stroke();
         }
         requestAnimationFrame(() => this.draw());
     }

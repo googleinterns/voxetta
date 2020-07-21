@@ -16,7 +16,7 @@
 
 import {LitElement, html} from 'lit-element';
 
-import {cookieService} from './utils/CookieService';
+import {CookieService} from './utils/CookieService';
 import Views from './utils/ViewsEnum';
 import * as ToastService from './utils/ToastService';
 
@@ -36,17 +36,23 @@ export class StateContainer extends LitElement {
 
     constructor() {
         super();
+
+        this.cookieService = new CookieService();
+
         this.user = {
-            userId: cookieService.getUserId(),
-            gender: cookieService.getGender(),
-            userAge: cookieService.getUserAge(),
-            deviceType: cookieService.getDeviceType(),
+            userId: this.cookieService.getUserId(),
+            gender: this.cookieService.getGender(),
+            userAge: this.cookieService.getUserAge(),
+            deviceType: this.cookieService.getDeviceType(),
         };
+
         this.view = Views.COLLECTION;
         this.canRecord = true;
         this.toast = {
             state: ToastService.states.INACTIVE,
         };
+
+        this.viewShadowRoot = undefined;
     }
 
     firstUpdated() {
@@ -119,7 +125,7 @@ export class StateContainer extends LitElement {
      */
     handleUserInfoUpdate(e) {
         this.updateUserInformation(e.detail.userInfo);
-        cookieService.makeUserInfoCookie(e.detail.userInfo);
+        this.cookieService.makeUserInfoCookie(e.detail.userInfo);
     }
 
     handleUpdateToast(e) {

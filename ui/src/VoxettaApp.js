@@ -15,7 +15,6 @@
  */
 
 import {LitElement, html} from 'lit-element';
-
 import {StateContainer} from './StateContainer';
 
 export class VoxettaApp extends LitElement {

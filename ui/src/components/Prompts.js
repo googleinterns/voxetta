@@ -18,9 +18,9 @@ import {LitElement, html} from 'lit-element';
 
 import * as promptApi from '../utils/PromptApiService.js';
 
-// import {Icon} from '@material/mwc-icon';
-
 import style from '../styles/components/Prompts.css.js';
+
+import {Icon} from '@material/mwc-icon';
 
 export class Prompts extends LitElement {
     static get properties() {
@@ -36,7 +36,7 @@ export class Prompts extends LitElement {
 
     constructor() {
         super();
-        this.state = 'NOT_ASKED';
+        this.state = 'LOADING';
     }
 
     firstUpdated() {
@@ -47,9 +47,7 @@ export class Prompts extends LitElement {
      * Emits an event that causes audio-recording related components
      * to disappear.
      */
-    // TODO: figure out why this throws and unexpected token error
     async getNewPrompt() {
-        this.state = 'LOADING';
         const promptRequest = await promptApi.getNewPrompt();
 
         if (promptRequest.status === 'SUCCESS') {
@@ -89,7 +87,7 @@ export class Prompts extends LitElement {
             case 'SUCCESS':
                 return this.renderPromptType();
             case 'LOADING':
-                return html`<p>Loading............</p>`;
+                return html`<p>Loading...</p>`;
             case 'FAILURE':
                 return html`<p><b>Prompt failed to load.</b></p>`;
             case 'FINISHED':

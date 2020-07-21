@@ -1,22 +1,23 @@
 /*
-Copyright 2020 Google LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. */
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
  * Service responsible for creating and fetching cookies.
  */
-class CookieService {
+export class CookieService {
     /**
      * Create a cookie for each component of user information.
      * @param {Object} userInfo - An object containing various
@@ -36,15 +37,14 @@ class CookieService {
      *  if a cookie has not been set for such a key.
      */
     getCookieValue(key) {
-        const cookie = document.cookie;
-        if (cookie.includes(key + '=')) {
+        const {cookie} = document;
+        if (cookie.includes(`${key}=`)) {
             return cookie
                 .split('; ')
                 .find((entry) => entry.startsWith(key))
                 .split('=')[1];
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -83,5 +83,3 @@ class CookieService {
         return this.getCookieValue('deviceType');
     }
 }
-// needs to be accessed by multiple members
-export const cookieService = new CookieService();
