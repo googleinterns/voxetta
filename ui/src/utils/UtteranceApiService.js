@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {cookieService} from './CookieService';
+import {CookieService} from './CookieService';
 
 /**
  * Service responsible for saving audio files to an external database.
@@ -25,7 +25,8 @@ export class UtteranceApiService {
      */
     constructor() {
         this.blobUrl_;
-        this.formData = undefined; 
+        this.formData = undefined;
+        this.cookieService = new CookieService();
     }
 
     /**
@@ -36,23 +37,23 @@ export class UtteranceApiService {
     async saveAudio(audio) {
         // Get Blobstore URL & Form Data
         const url = await this.getUploadUrl();
-        this.getFormData(audio); 
-        
-        const response = await fetch(url, { 
+        this.getFormData(audio);
+
+        const response = await fetch(url, {
             method: 'POST',
-            body: this.formData 
+            body: this.formData,
         });
         const query = await response.json();
 
         if (!query.success) {
             window.alert('Error: Unable to upload file.');
-            return false; 
-        } 
+            return false;
+        }
         return true;
     }
 
     /**
-     * Retrieve and return the user form data to upload. 
+     * Retrieve and return the user form data to upload.
      * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
      */
     getFormData(audio) {
@@ -65,7 +66,7 @@ export class UtteranceApiService {
     }
 
     /**
-     * Retrieve and return a Blobstore upload link. 
+     * Retrieve and return a Blobstore upload link.
      * @returns {String} A Blobstore URL
      */
     async getUploadUrl() {
@@ -73,10 +74,9 @@ export class UtteranceApiService {
         const query = await response.json();
 
         if (query.success) {
-            return query.url; 
-        } else {
-            window.alert("Error: Unable to access database.");
-            return null; 
+            return query.url;
         }
+        window.alert('Error: Unable to access database.');
+        return null;
     }
 }
