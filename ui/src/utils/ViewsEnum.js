@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-import {LitElement, html} from 'lit-element';
-import {StateContainer} from './StateContainer';
-
-export class VoxettaApp extends LitElement {
-    render() {
-        return html` <vox-state-container> </vox-state-container> `;
-    }
-}
-
-customElements.define('vox-app', VoxettaApp);
+export default {
+    COLLECTION: 'collection',
+    USER_FORM: 'user_form',
+};

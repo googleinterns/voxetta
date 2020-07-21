@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-import {LitElement, html} from 'lit-element';
-import {StateContainer} from './StateContainer';
+import {css} from 'lit-element';
 
-export class VoxettaApp extends LitElement {
-    render() {
-        return html` <vox-state-container> </vox-state-container> `;
+export default css`
+    button {
+        background-color: white;
+        border: none;
+        color: #a0a0a0;
+        cursor: pointer;
+        font-family: 'Roboto';
+        text-transform: uppercase;
+        width: 50px;
     }
-}
-
-customElements.define('vox-app', VoxettaApp);
+    button:hover {
+        background-color: #dcdcdc;
+    }
+`;

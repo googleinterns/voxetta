@@ -14,13 +14,38 @@
  * limitations under the License.
  */
 
-import {LitElement, html} from 'lit-element';
-import {StateContainer} from './StateContainer';
+import {css} from 'lit-element';
 
-export class VoxettaApp extends LitElement {
-    render() {
-        return html` <vox-state-container> </vox-state-container> `;
+export default css`
+    #prompt-screen {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        text-align: center;
     }
-}
 
-customElements.define('vox-app', VoxettaApp);
+    p {
+        max-width: 70vw;
+
+        font-size: 44px;
+        color: black;
+    }
+
+    img {
+        max-height: 400px;
+    }
+
+    /* Prompt reset button  */
+
+    button {
+        background-color: white;
+        border: none;
+        color: #a0a0a0;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #dcdcdc;
+    }
+`;

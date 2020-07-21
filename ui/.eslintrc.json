@@ -1,16 +1,18 @@
 {
     "extends": [
-        "eslint:recommended",
-        "prettier",
+        "google",
+        "@open-wc/eslint-config",
+        "plugin:lit/recommended",
         "plugin:jasmine/recommended",
-        "google"
+        "eslint:recommended",
+        "eslint-config-prettier"
     ],
     "rules": {
         "indent": ["warn", 4, {"SwitchCase": 1}],
         "prettier/prettier": ["warn"],
         "require-jsdoc": ["off"]
     },
-    "plugins": ["prettier", "lit", "jasmine"],
+    "plugins": ["lit", "jasmine", "prettier"],
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module"

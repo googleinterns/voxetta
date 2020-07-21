@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 /**
- * Service responsible for creating and fetching cookies.   
+ * Service responsible for creating and fetching cookies.
  */
 export class CookieService {
- 
     /**
      * Create a cookie for each component of user information.
-     * @param {Object} userInfo - An object containing various  
+     * @param {Object} userInfo - An object containing various
      *  components of user information.
      */
     makeUserInfoCookie(userInfo) {
@@ -30,59 +29,57 @@ export class CookieService {
         document.cookie = `userAge=${userInfo.userAge}`;
         document.cookie = `deviceType=${userInfo.deviceType}`;
     }
- 
+
     /**
-     * Create a cookie for each component of user information.  
+     * Create a cookie for each component of user information.
      * @param {String} key - The name of a cookie key whose value is sought.
-     * @returns {String} The value of the given cookie key, or an empty string
-     *  if a cookie has not been set for such a key.  
+     * @return {String} The value of the given cookie key, or an empty string
+     *  if a cookie has not been set for such a key.
      */
     getCookieValue(key) {
-        const cookie = document.cookie; 
-        if (cookie.includes(key + '=')) {
+        const {cookie} = document;
+        if (cookie.includes(`${key}=`)) {
             return cookie
                 .split('; ')
                 .find(entry => entry.startsWith(key))
                 .split('=')[1];
-        } else {
-            return '';
         }
+        return '';
     }
- 
+
     /**
-     * Retrieves the user's id from a cookie, if it exists.  
-     * @returns {String} The user id stored in a cookie, or an empty string 
+     * Retrieves the user's id from a cookie, if it exists.
+     * @return {String} The user id stored in a cookie, or an empty string
      * if such a cookie does not exist.
      */
     getUserId() {
         return this.getCookieValue('userId');
     }
- 
+
     /**
-     * Retrieves the user's gender from a cookie, if it exists.  
-     * @returns {String} The gender type stored in a cookie, or an empty string 
+     * Retrieves the user's gender from a cookie, if it exists.
+     * @return {String} The gender type stored in a cookie, or an empty string
      * if such a cookie does not exist.
      */
     getGender() {
         return this.getCookieValue('gender');
     }
- 
+
     /**
-     * Retrieves the user's age from a cookie, if it exists.  
-     * @returns {Number} The user age stored in a cookie, or an empty string 
+     * Retrieves the user's age from a cookie, if it exists.
+     * @return {Number} The user age stored in a cookie, or an empty string
      * if such a cookie does not exist.
      */
     getUserAge() {
         return this.getCookieValue('userAge');
     }
- 
+
     /**
-     * Retrieves the user's device type from a cookie, if it exists.  
-     * @returns {String} The device type stored in a cookie, or an empty string 
+     * Retrieves the user's device type from a cookie, if it exists.
+     * @return {String} The device type stored in a cookie, or an empty string
      * if such a cookie does not exist.
      */
     getDeviceType() {
         return this.getCookieValue('deviceType');
     }
 }
- 
