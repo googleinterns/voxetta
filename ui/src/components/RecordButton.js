@@ -1,17 +1,19 @@
 /*
-Copyright 2020 Google LLC
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. */
 import {LitElement, html, css} from 'lit-element';
 import {styleMap} from 'lit-html/directives/style-map.js';
 
@@ -20,6 +22,7 @@ import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 
 import style from '../styles/components/RecordButton.css.js';
+import {dispatchErrorToast} from '../utils/ToastService';
 
 // Styling for the button when the user is not recording
 const nonRecordingStyle = {
@@ -70,14 +73,17 @@ export class RecordButton extends LitElement {
             try {
                 await this.audioRecorder.initRecorder();
             } catch (e) {
-                alert(`Error: Microphone access is currently blocked for this site. 
+                dispatchErrorToast(
+                    this,
+                    `Error: Microphone access is currently blocked for this site. 
                     To unblock, please navigate to chrome://settings/content/microphone 
-                    and remove this site from the 'Block' section.`);
+                    and remove this site from the 'Block' section.`
+                );
                 return;
             }
 
             if (!this.audioRecorder.startRecording()) {
-                alert('Failed to start recording.');
+                dispatchErrorToast(this, 'Failed to start recording.');
                 return;
             }
             this.isRecording = true;
@@ -85,7 +91,17 @@ export class RecordButton extends LitElement {
         } else {
             this.isRecording = false;
             this.handleFinish();
-            const audio = await this.audioRecorder.stopRecording();
+            let audio;
+
+            try {
+                audio = await this.audioRecorder.stopRecording();
+            } catch {
+                dispatchErrorToast(
+                    this,
+                    'Could not record successfully. Please try again.'
+                );
+            }
+
             if (audio.recordingUrl) {
                 this.utteranceService.saveAudio(audio);
             }

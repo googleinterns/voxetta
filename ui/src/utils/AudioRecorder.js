@@ -48,9 +48,10 @@ export class AudioRecorder {
             resolve();
         });
     }
+
     /**
      * Begins recording if access is granted.
-     * @return {Boolean} Denotes whether or not the recording successfully began.
+     * @returns {Boolean} Denotes whether or not the recording successfully began.
      */
     startRecording() {
         if (!this.stream) {
@@ -63,7 +64,7 @@ export class AudioRecorder {
 
     /**
      * Stops recording and stores utterance data in Url if recording
-     * @return {Object} Url to access utterance on the front end, and blob to access utterance in the back end
+     * @returns {Object} Url to access utterance on the front end, and blob to access utterance in the back end
      */
     stopRecording() {
         if (this.mediaRecorder) {
@@ -76,9 +77,7 @@ export class AudioRecorder {
                     resolve(audio);
                 };
             });
-        } else {
-            alert('Error: Could not record successfully.');
-            return null;
         }
+        throw new Error('Could not record successfully.');
     }
 }
