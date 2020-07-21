@@ -16,7 +16,7 @@
 
 import {LitElement, html} from 'lit-element';
 
-import * as promptApi from '../utils/PromptApiService';
+import * as promptApi from '../utils/PromptApiService.js';
 
 // import {Icon} from '@material/mwc-icon';
 
@@ -99,7 +99,6 @@ export class VoxettaPrompts extends LitElement {
 
     handleResetPrompts() {
         promptApi.resetAllPromptsUnread();
-        // .then(() => this.getNewPrompt());
     }
 
     /**
