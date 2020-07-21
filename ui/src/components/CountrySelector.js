@@ -1,17 +1,18 @@
 /*
-Copyright 2020 Google LLC
- 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
- 
-    https://www.apache.org/licenses/LICENSE-2.0
- 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. */
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
  
 import {LitElement, html, css} from 'lit-element';
 
@@ -59,7 +60,6 @@ export class CountrySelector extends LitElement {
         super();
         this.countries = []; 
         this.countryService = new CountryService(); 
-        this.addEventListener('click', this.checkSelection);
         
     }
 
@@ -75,7 +75,7 @@ export class CountrySelector extends LitElement {
         const countryList = this.shadowRoot.getElementById('country-list');
         if (countryList.checkValidity()) {
             this.country = countryList.value;
-            this.handleOpenTerms();
+            this.handleCountrySelected();
         }
     }
 
@@ -91,8 +91,11 @@ export class CountrySelector extends LitElement {
      * Emits an event that causes the country selector to close and the appropriate
      * Terms of Service to appear. 
      */
-    handleOpenTerms() {
-        const event = new CustomEvent('open-tos', {});
+    handleCountrySelected() {
+        const event = new CustomEvent('open-tos', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
@@ -109,7 +112,8 @@ export class CountrySelector extends LitElement {
                         id="country-list" 
                         outlined 
                         required
-                        label="Select your country">
+                        label="Select your country"
+                        @click="${this.checkSelection}">
                             <mwc-list-item disabled></mwc-list-item>
                             ${this.countries.map(country => 
                                 html`<mwc-list-item value=${country}>
