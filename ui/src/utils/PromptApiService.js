@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// TODO: merge with UtteranceApiService.js (in Ashley's PR)
-
 const getNewPrompt = async () => {
     let resp;
     try {

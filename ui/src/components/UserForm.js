@@ -1,18 +1,19 @@
 /*
-Copyright 2020 Google LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. */
-
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
 import {LitElement, html, css} from 'lit-element';
 
 import {TextField} from '@material/mwc-textfield';
@@ -58,36 +59,26 @@ export class UserForm extends LitElement {
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
         const userInfo = {
-            userId: this.userId,
+            userId: this.userId, 
             gender: this.gender,
             userAge: this.userAge,
-            deviceType: this.deviceType,
+            deviceType: this.deviceType
         };
 
         this.handleFormSubmission(userInfo);
-        this.handleExitForm();
+        this.handleExitForm(); 
     }
 
     /**
-     * Determines if each input in the user form is valid and alters Save Button appropriately.
+     * Determines if each input in the user form is valid and alters Save Button appropriately. 
      */
     formIsValid() {
-        const idValidity = this.shadowRoot
-            .getElementById('user-id')
-            .checkValidity();
-        const genderValidity = this.shadowRoot
-            .getElementById('gender-list')
-            .checkValidity();
-        const ageValidity = this.shadowRoot
-            .getElementById('user-age')
-            .checkValidity();
-        const deviceTypeValidity = this.shadowRoot
-            .getElementById('device-type')
-            .checkValidity();
+        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
+        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
+        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
+        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
 
-        const formValidity =
-            idValidity && genderValidity && ageValidity && deviceTypeValidity;
-
+        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
         const saveButton = this.shadowRoot.getElementById('save-button');
         saveButton.disabled = !formValidity;
     }
@@ -196,3 +187,4 @@ export class UserForm extends LitElement {
 }
 
 customElements.define('vox-user-form', UserForm);
+

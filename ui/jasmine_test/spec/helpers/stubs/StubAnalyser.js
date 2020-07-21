@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.speech.tools.voxetta.data;
-
-/** 
- * A UrlResponse is the container for a servlet's response to a front-end fetch request for a URL.  
- */
-public class UrlResponse extends StatusResponse {
-  
-  private String url; 
-
-  /**
-   * Creates a new UrlResponse.
-   *
-   * @param success Represents if a backend fetch was successful or not. 
-   * @param url The url associated with a given fetch response.
-   */ 
-  public UrlResponse(boolean success, String url) {
-    super(success);
-    this.url = url;
-  }
+export class StubAnalyser {
+ 
+    constructor() {
+        this.frequencyBinCount = 32;
+        this.getByteFrequencyData = jasmine.createSpy('getByteFrequencyData');
+    }
+ 
 }
