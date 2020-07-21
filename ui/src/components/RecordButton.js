@@ -14,35 +14,13 @@
  * limitations under the License.
  */
 
-import {LitElement, html, css} from 'lit-element';
-import {styleMap} from 'lit-html/directives/style-map.js';
+import {LitElement, html} from 'lit-element';
 
-import {Icon} from '@material/mwc-icon';
-import {AudioRecorder} from '../utils/AudioRecorder';
-import {UtteranceApiService} from '../utils/UtteranceApiService';
+import {AudioRecorder} from '../utils/AudioRecorder.js';
+import {UtteranceApiService} from '../utils/UtteranceApiService.js';
 
 import style from '../styles/components/RecordButton.css.js';
-import {dispatchErrorToast} from '../utils/ToastUtils';
-
-// Styling for the button when the user is not recording
-<<<<<<< HEAD
-const nonRecordingStyle = {
-=======
-let nonRecordingStyle = {
->>>>>>> master
-    backgroundColor: 'white',
-    color: '#3c4043',
-};
-
-// Styling for the button when the user is recording
-<<<<<<< HEAD
-const recordingStyle = {
-=======
-let recordingStyle = {
->>>>>>> master
-    backgroundColor: 'red',
-    color: 'white',
-};
+import {dispatchErrorToast} from '../utils/ToastUtils.js';
 
 export class RecordButton extends LitElement {
     static get properties() {
@@ -62,8 +40,6 @@ export class RecordButton extends LitElement {
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
-        this.audioStream;
-        this.context;
     }
 
     updated() {
@@ -115,7 +91,7 @@ export class RecordButton extends LitElement {
             if (audio.recordingUrl) {
                 try {
                     await this.utteranceService.saveAudio(audio);
-                } catch {
+                } catch (e) {
                     dispatchErrorToast(
                         this,
                         `Could not upload recording successfully; ${e.name}: ${e.message}`
@@ -186,9 +162,7 @@ export class RecordButton extends LitElement {
             <mwc-icon-button
                 id="record-button"
                 icon=${this.isRecording ? 'stop' : 'mic'}
-                style=${styleMap(
-                    this.isRecording ? recordingStyle : nonRecordingStyle
-                )}
+                class=${this.isRecording ? 'recording' : ''}
                 @click=${this.recordHandler}
             >
             </mwc-icon-button>

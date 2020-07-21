@@ -33,6 +33,12 @@ export default css`
             0px 3px 16px rgba(128, 134, 139, 0.06),
             0px 2px 4px rgba(60, 64, 67, 0.1),
             0px 8px 12px rgba(60, 64, 67, 0.11);
+        background-color: white;
         color: #3c4043;
+    }
+
+    mwc-icon-button.recording {
+        background: #ea4335;
+        color: white;
     }
 `;
