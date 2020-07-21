@@ -5,6 +5,8 @@ export default css`
         display: flex;
         align-items: center;
         padding: 20px 16px;
+        position: relative;
+        z-index: 999;
 
         background: #fce8e6;
         color: #d93025;
