@@ -131,7 +131,7 @@ export class RecordButton extends LitElement {
                 isRecording: this.isRecording,
                 audioStream: this.audioStream,
                 context: this.context,
-            }
+            },
                                       
             bubbles: true,
             composed: true,
