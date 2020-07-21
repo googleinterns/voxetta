@@ -18,9 +18,9 @@ import {LitElement, html, css} from 'lit-element';
 
 import {Icon} from '@material/mwc-icon';
 
-import style from '../styles/VoxettaSkipButton.css.js';
+import style from '../styles/components/SkipButton.css.js';
 
-export class VoxettaSkipButton extends LitElement {
+export class SkipButton extends LitElement {
     static get properties() {
         return {};
     }
@@ -51,4 +51,4 @@ export class VoxettaSkipButton extends LitElement {
     }
 }
 
-customElements.define('vox-skip-button', VoxettaSkipButton);
+customElements.define('vox-skip-button', SkipButton);

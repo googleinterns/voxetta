@@ -13,13 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import {SoundWave} from './SoundWave';
 import {LitElement, html, css} from 'lit-element';
+import {SoundWave} from './SoundWave';
 
 /**
  * Canvas responsible for holding soundwave once user starts recording
  */
-export class VoxettaWaveCanvas extends LitElement {
+export class WaveCanvas extends LitElement {
     static get properties() {
         return {
             canvasId: {type: String},
@@ -84,4 +84,4 @@ export class VoxettaWaveCanvas extends LitElement {
     }
 }
 
-customElements.define('vox-sound-wave', VoxettaWaveCanvas);
+customElements.define('vox-sound-wave', WaveCanvas);

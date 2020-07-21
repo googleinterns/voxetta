@@ -15,12 +15,11 @@ limitations under the License. */
 import {LitElement, html, css} from 'lit-element';
 import {styleMap} from 'lit-html/directives/style-map.js';
 
+import {Icon} from '@material/mwc-icon';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 
-import {Icon} from '@material/mwc-icon';
-
-import style from '../styles/VoxettaRecordButton.css.js';
+import style from '../styles/components/RecordButton.css.js';
 
 // Styling for the button when the user is not recording
 const nonRecordingStyle = {
@@ -37,7 +36,7 @@ const recordingStyle = {
 /**
  * Button responsible for enabling the user to record and upload audio files.
  */
-export class VoxettaRecordButton extends LitElement {
+export class RecordButton extends LitElement {
     static get properties() {
         return {
             isRecording: {type: Boolean},
@@ -154,4 +153,4 @@ export class VoxettaRecordButton extends LitElement {
     }
 }
 
-customElements.define('vox-record-button', VoxettaRecordButton);
+customElements.define('vox-record-button', RecordButton);

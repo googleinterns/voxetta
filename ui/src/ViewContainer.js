@@ -19,12 +19,12 @@ import style from './styles/ViewContainer.css.js';
 
 import Views from './utils/ViewsEnum';
 
-import {VoxettaPrompts} from './components/VoxettaPrompts';
-import {VoxettaUserIcon} from './components/user/VoxettaUserIcon';
-import {VoxettaUserForm} from './components/user/VoxettaUserForm';
-import {VoxettaWaveCanvas} from './components/VoxettaWaveCanvas';
-import {VoxettaRecordButton} from './components/VoxettaRecordButton';
-import {VoxettaSkipButton} from './components/VoxettaSkipButton';
+import {UserIcon} from './components/UserIcon';
+import {Prompts} from './components/Prompts';
+import {UserForm} from './components/UserForm';
+import {WaveCanvas} from './components/WaveCanvas';
+import {RecordButton} from './components/RecordButton';
+import {SkipButton} from './components/SkipButton';
 
 export class ViewContainer extends LitElement {
     static get properties() {

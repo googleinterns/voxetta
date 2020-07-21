@@ -21,13 +21,13 @@ import {ListItem} from '@material/mwc-list/mwc-list-item';
 import {Button} from '@material/mwc-button';
 import {Icon} from '@material/mwc-icon';
 
-import style from '../../styles/user/VoxettaUserForm.css.js';
+import style from '../styles/components/UserForm.css.js';
 
 /**
  * Component responsible for providing users a means to provide
  * their personal information.
  */
-export class VoxettaUserForm extends LitElement {
+export class UserForm extends LitElement {
     static get properties() {
         return {
             userId: {type: String},
@@ -195,4 +195,4 @@ export class VoxettaUserForm extends LitElement {
     }
 }
 
-customElements.define('vox-user-form', VoxettaUserForm);
+customElements.define('vox-user-form', UserForm);

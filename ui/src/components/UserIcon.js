@@ -18,12 +18,12 @@ import {LitElement, html, css} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {IconButton} from '@material/mwc-icon-button';
 
-import style from '../../styles/user/VoxettaUserIcon.css';
+import style from '../styles/components/UserIcon.css';
 
 /**
  * Button responsible for enabling the user to record and upload audio files.
  */
-export class VoxettaUserIcon extends LitElement {
+export class UserIcon extends LitElement {
     static get properties() {
         return {
             userId: {type: Number},
@@ -61,4 +61,4 @@ export class VoxettaUserIcon extends LitElement {
     }
 }
 
-customElements.define('vox-user-icon', VoxettaUserIcon);
+customElements.define('vox-user-icon', UserIcon);
