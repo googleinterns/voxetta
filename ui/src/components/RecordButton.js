@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-/*
-=======
 /**
- * Button responsible for enabling the user to record and upload audio files.
-=======
->>>>>>> state-container
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-<<<<<<< HEAD
 
-=======
->>>>>>> state-container
 import {LitElement, html, css} from 'lit-element';
 import {styleMap} from 'lit-html/directives/style-map.js';
 
@@ -31,18 +22,18 @@ import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 
 import style from '../styles/components/RecordButton.css.js';
-import {dispatchErrorToast} from '../utils/ToastService';
+import {dispatchErrorToast} from '../utils/ToastUtils';
 
 // Styling for the button when the user is not recording
-let nonRecordingStyle = { 
-    backgroundColor: 'white', 
-    color: '#3c4043' 
+const nonRecordingStyle = {
+    backgroundColor: 'white',
+    color: '#3c4043',
 };
 
 // Styling for the button when the user is recording
-let recordingStyle = { 
-    backgroundColor: 'red', 
-    color: 'white' 
+const recordingStyle = {
+    backgroundColor: 'red',
+    color: 'white',
 };
 
 export class RecordButton extends LitElement {
@@ -64,12 +55,13 @@ export class RecordButton extends LitElement {
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
         this.audioStream;
-        this.context; 
+        this.context;
     }
 
     updated() {
         this.handleWaveCanvas();
     }
+
     /**
      * If the user is not currently recording, begin recording using the Microphone
      * component. Otherwise, stop recording and save and display the just-recorded
@@ -82,7 +74,7 @@ export class RecordButton extends LitElement {
             } catch (e) {
                 dispatchErrorToast(
                     this,
-                    `Error: Microphone access is currently blocked for this site. 
+                    `Microphone access is currently blocked for this site. 
                     To unblock, please navigate to chrome://settings/content/microphone 
                     and remove this site from the 'Block' section.`
                 );
@@ -93,10 +85,11 @@ export class RecordButton extends LitElement {
                 dispatchErrorToast(this, 'Failed to start recording.');
                 return;
             }
-          
+
             this.isRecording = true;
             this.audioStream = this.audioRecorder.stream;
-            this.context = new (window.AudioContext || window.webkitAudioContext)();
+            this.context = new (window.AudioContext ||
+                window.webkitAudioContext)();
         } else {
             this.isRecording = false;
             this.handleFinish();
@@ -104,15 +97,22 @@ export class RecordButton extends LitElement {
 
             try {
                 audio = await this.audioRecorder.stopRecording();
-            } catch {
+            } catch (e) {
                 dispatchErrorToast(
                     this,
-                    'Could not record successfully. Please try again.'
+                    `Could not record successfully; ${e.name}: ${e.message}`
                 );
             }
 
             if (audio.recordingUrl) {
-                this.utteranceService.saveAudio(audio);
+                try {
+                    await this.utteranceService.saveAudio(audio);
+                } catch {
+                    dispatchErrorToast(
+                        this,
+                        `Could not upload recording successfully; ${e.name}: ${e.message}`
+                    );
+                }
             }
         }
     }
@@ -127,34 +127,34 @@ export class RecordButton extends LitElement {
     }
 
     /**
-     * Returns the current audio stream being recorded. 
+     * Returns the current audio stream being recorded.
      * @returns {Object} The current audio stream being
-     *  recorded. 
+     *  recorded.
      */
     getAudioStream() {
-        return this.audioStream; 
+        return this.audioStream;
     }
 
     /**
-     * Returns the context of the audio. 
+     * Returns the context of the audio.
      * @returns {Object} The current context for the audio.
      */
     getContext() {
-        return this.context; 
+        return this.context;
     }
 
     /**
      * Emits an event that causes the application to render a sound
-     * wave that corresponds to the current audio stream. 
+     * wave that corresponds to the current audio stream.
      */
     handleWaveCanvas() {
         const event = new CustomEvent('update-wave', {
-            detail: { 
+            detail: {
                 isRecording: this.isRecording,
                 audioStream: this.audioStream,
                 context: this.context,
             },
-                                      
+
             bubbles: true,
             composed: true,
         });
@@ -172,13 +172,17 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
+
     render() {
         return html`
-            <mwc-icon-button 
+            <mwc-icon-button
                 id="record-button"
-                icon=${this.isRecording ? "stop" : "mic"}
-                style=${styleMap(this.isRecording ? recordingStyle : nonRecordingStyle)}
-                @click=${this.recordHandler}>
+                icon=${this.isRecording ? 'stop' : 'mic'}
+                style=${styleMap(
+                    this.isRecording ? recordingStyle : nonRecordingStyle
+                )}
+                @click=${this.recordHandler}
+            >
             </mwc-icon-button>
         `;
     }

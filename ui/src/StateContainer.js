@@ -18,7 +18,7 @@ import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
 import Views from './utils/ViewsEnum';
-import * as ToastService from './utils/ToastService';
+import {states as ToastStates} from './utils/ToastUtils';
 
 import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
@@ -49,7 +49,7 @@ export class StateContainer extends LitElement {
         this.view = Views.COLLECTION;
         this.canRecord = true;
         this.toast = {
-            state: ToastService.states.INACTIVE,
+            state: ToastStates.INACTIVE,
         };
 
         this.viewShadowRoot = undefined;
@@ -129,18 +129,16 @@ export class StateContainer extends LitElement {
     }
 
     handleUpdateToast(e) {
-        console.log('ding');
-
         let toast;
 
-        if (e.detail.state !== ToastService.states.INACTIVE) {
+        if (e.detail.state !== ToastStates.INACTIVE) {
             toast = {
                 state: e.detail.state,
                 message: e.detail.message,
             };
         } else {
             toast = {
-                state: ToastService.states.INACTIVE,
+                state: ToastStates.INACTIVE,
             };
         }
 
@@ -148,7 +146,7 @@ export class StateContainer extends LitElement {
     }
 
     renderToast() {
-        if (!this.toast || this.toast.state === ToastService.states.INACTIVE) {
+        if (!this.toast || this.toast.state === ToastStates.INACTIVE) {
             return html``;
         }
         return html` <vox-toast message="${this.toast.message}"></vox-toast> `;

@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * States for various toast statuses
+ */
 const states = {
     ERROR: 'ERROR',
     INACTIVE: 'INACTIVE',
 };
 
+/**
+ * Dispatches an error toast event from the element it is called from
+ * @param {LitElement} e Element to dispatch event from (usually `this`)
+ * @param {*} message Message to display in error toast template
+ */
 const dispatchErrorToast = (e, message) => {
     const toastEvent = new CustomEvent('update-toast', {
         detail: {
@@ -32,7 +40,12 @@ const dispatchErrorToast = (e, message) => {
     e.dispatchEvent(toastEvent);
 };
 
-const dispatchClearToast = (e) => {
+/**
+ * Dispatches an inactive toast event from the element it is called from,
+ * which will clear the toast from the view
+ * @param {LitElement} e Element to dispatch event from (usually `this`)
+ */
+const dispatchInactiveToast = (e) => {
     const toastEvent = new CustomEvent('update-toast', {
         detail: {
             state: states.INACTIVE,
@@ -44,4 +57,4 @@ const dispatchClearToast = (e) => {
     e.dispatchEvent(toastEvent);
 };
 
-export {states, dispatchErrorToast, dispatchClearToast};
+export {states, dispatchErrorToast, dispatchInactiveToast};

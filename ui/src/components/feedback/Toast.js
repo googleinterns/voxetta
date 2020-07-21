@@ -19,8 +19,11 @@ import {LitElement, html} from 'lit-element';
 import {IconButton} from '@material/mwc-icon-button';
 
 import style from '../../styles/components/feedback/Toast.css.js';
-import {dispatchClearToast} from '../../utils/ToastService.js';
+import {dispatchInactiveToast} from '../../utils/ToastUtils.js';
 
+/**
+ * Component that displays error messages as a "toast" at the top of the app view.
+ */
 export class Toast extends LitElement {
     static get properties() {
         return {
@@ -32,8 +35,8 @@ export class Toast extends LitElement {
         return style;
     }
 
-    dispatchClearToast() {
-        dispatchClearToast(this);
+    dispatchInactiveToast() {
+        dispatchInactiveToast(this);
     }
 
     render() {
@@ -43,7 +46,7 @@ export class Toast extends LitElement {
 
                 <mwc-icon-button
                     icon="clear"
-                    @click=${this.dispatchClearToast}
+                    @click=${this.dispatchInactiveToast}
                 ></mwc-icon-button>
             </div>
         `;

@@ -21,6 +21,8 @@ export default css`
     /* skeleton  */
 
     #view-container {
+        display: flex;
+        flex-direction: column;
         width: 100vw;
         height: 100vh;
     }
@@ -28,6 +30,7 @@ export default css`
     #collection-wrapper {
         display: flex;
         flex-direction: column;
+        height: 100%;
     }
 
     .top-level-component {

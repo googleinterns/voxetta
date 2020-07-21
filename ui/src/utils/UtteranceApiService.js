@@ -46,7 +46,6 @@ export class UtteranceApiService {
         const query = await response.json();
 
         if (!query.success) {
-            window.alert('Error: Unable to upload file.');
             return false;
         }
         return true;
@@ -76,7 +75,7 @@ export class UtteranceApiService {
         if (query.success) {
             return query.url;
         }
-        window.alert('Error: Unable to access database.');
+
         return null;
     }
 }

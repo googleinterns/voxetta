@@ -27,6 +27,7 @@ export class AudioRecorder {
         this.mediaRecorder = undefined;
         this.stream = undefined;
     }
+
     /**
      * Prompts user for access to Microphone using API
      */
@@ -40,9 +41,6 @@ export class AudioRecorder {
                 this.mediaRecorder = new MediaRecorder(this.stream);
             } catch (err) {
                 console.log(err.name, err.message);
-                window.alert(`Error: Microphone access is currently blocked for this site. 
-              To unblock, please navigate to chrome://settings/content/microphone and 
-              remove this site from the 'Block' section.`);
                 reject();
             }
             resolve();
@@ -61,6 +59,7 @@ export class AudioRecorder {
         this.mediaRecorder.start();
         return true;
     }
+
     /**
      * Stops recording and stores utterance data in Url if recording
      * @returns {Object} Url to access utterance on the front end, and blob to access utterance in the back end
