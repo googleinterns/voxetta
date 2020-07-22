@@ -27,14 +27,10 @@ export class ToSService {
      */
     async getToS(country) {
         const fileName = country.split(' ').join('_') + '.tos.txt';
-        const terms = await fetch('./src/data/ToS/' + fileName, 
-        {
-            headers: {
-                'Content-Type': 'text/plain',
-            }
+        const terms = await fetch('./src/data/ToS/' + fileName, {
+            headers: {'Content-Type': 'text/plain'}
         })
-            .then(response => response.text())
-
+            .then(response => response.text());
         return terms;
     }   
 }
