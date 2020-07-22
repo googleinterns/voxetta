@@ -22,30 +22,41 @@ export class QualityControl {
    /**
     * Creates an quality control instance
     */
-    constructor(context) {
+    constructor(context, blob) {
         this.context = context;
+        this.blob = blob;
+        this.audioBuffer;
     }
     
    /**
     * Checks if sound is of good quality
     */
-    isQualitySound() {
-        if(this.lengthCheck()) {
-            return true;
-        } else {
-            return false;
+    async isQualitySound() {
+        const blobArrayBuffer = await this.blob.arrayBuffer();
+        this.audioBuffer = await this.context.decodeAudioData(blobArrayBuffer);
+
+        const qualityResult = {
+            success: true,
+            errorMessage: '',
         }
+
+        const lengthResult = this.lengthCheck();
+        if (lengthResult) {
+            qualityResult.success = false;
+            qualityResult.errorMessage += lengthResult;
+        }
+
+        return qualityResult;
     }
 
    /**
     * Checks if audio is too short
     */
     lengthCheck() {
-        if (this.context.currentTime < 2.0) {
-            alert('Audio recording failed: recording was too short. Try again');
-            return false;
+        if (this.audioBuffer.duration > 2.0) {
+            return null;
         } else {
-            return true;
+            return 'Audio recording failed: recording was too short. Try again';
         }
     }
 }
