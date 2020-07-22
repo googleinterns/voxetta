@@ -107,7 +107,9 @@ export class VoxettaApp extends LitElement {
     renderCountrySelectionTemplate() {
         return html`
             <vox-country-selector
-                @open-tos="${this.handleOpenTos}">
+                @country-selected="${(e) => { 
+                    this.country = (e.detail.country);
+                    this.handleCountrySelected(); }}">
             </vox-user-form>
         `;
     }
@@ -214,12 +216,10 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * Updates the country property and state such that the country selector
-     * closes and the appropriate terms of service appears. 
+     * Updates the state such that the country selector closes and
+     * the appropriate terms of service appears. 
      */
-    handleOpenTos() {
-        const countrySelector = this.shadowRoot.querySelector('vox-country-selector');
-        this.country = countrySelector.getCountry(); 
+    handleCountrySelected() {
         this.state = States.TERMS_OF_SERVICE; 
     }
 

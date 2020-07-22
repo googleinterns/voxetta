@@ -80,21 +80,16 @@ export class CountrySelector extends LitElement {
     }
 
     /**
-     * Returns the name of the country the user is located in.
-     * @returns {String} The name of the country the user is located in. 
-     */
-    getCountry() {
-        return this.country; 
-    }
-
-    /**
      * Emits an event that causes the country selector to close and the appropriate
      * Terms of Service to appear. 
      */
     handleCountrySelected() {
-        const event = new CustomEvent('open-tos', {
+        const event = new CustomEvent('country-selected', {
             bubbles: true,
             composed: true,
+            detail: { 
+                country: this.country
+            }
         });
         this.dispatchEvent(event);
     }
