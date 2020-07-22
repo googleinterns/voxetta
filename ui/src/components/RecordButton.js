@@ -19,6 +19,7 @@ import {styleMap} from 'lit-html/directives/style-map.js';
 
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
+import {QualityControl} from '../utils/QualityControl';
 
 import {Icon} from '@material/mwc-icon';
 
@@ -104,8 +105,12 @@ export class RecordButton extends LitElement {
             this.context = new (window.AudioContext || window.webkitAudioContext)();
         } else {
             this.isRecording = false;
-            this.handleFinish();
             const audio = await this.audioRecorder.stopRecording();
+            const qualityCheck = new QualityControl(this.context);
+            if(!qualityCheck.isQualitySound()) {
+                return;
+            }
+            this.handleFinish();
             if (audio.recordingUrl) {
                 this.utteranceService.saveAudio(audio);
             }
