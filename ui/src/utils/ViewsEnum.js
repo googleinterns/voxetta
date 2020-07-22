@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-export class StubFreqs {
- 
-    constructor() {
-        this.freqs = [];
-    }
- 
-}
+export default {
+    COUNTRY_SELECTION: 'country_selection',
+    TERMS_OF_SERVICE: 'terms_of_service',
+    COLLECTION: 'collection',
+    USER_FORM: 'user_form',
+};

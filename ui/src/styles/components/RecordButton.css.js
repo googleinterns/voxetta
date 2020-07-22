@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-export class StubMediaRecorder {
+import {css} from 'lit-element';
 
-    constructor() {
-        this.start = jasmine.createSpy('start');
-        this.stop = jasmine.createSpy('stop');
+export default css`
+    div {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
     }
-
-}
+    mwc-icon-button {
+        --mdc-icon-button-size: 80px;
+        --mdc-icon-size: 40px;
+        border-radius: 50%;
+        box-shadow: 0px 7px 26px rgba(128, 134, 139, 0.09),
+            0px 3px 16px rgba(128, 134, 139, 0.06),
+            0px 2px 4px rgba(60, 64, 67, 0.1),
+            0px 8px 12px rgba(60, 64, 67, 0.11);
+        color: #3c4043;
+    }
+`;

@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-export class StubFreqs {
- 
-    constructor() {
-        this.freqs = [];
+import {css} from 'lit-element';
+
+export default css`
+    button {
+        background-color: white;
+        border: none;
+        color: #a0a0a0;
+        cursor: pointer;
+        font-family: 'Roboto';
+        text-transform: uppercase;
+        width: 50px;
     }
- 
-}
+    button:hover {
+        background-color: #dcdcdc;
+    }
+`;

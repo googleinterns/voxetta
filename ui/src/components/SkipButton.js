@@ -18,35 +18,26 @@ import {LitElement, html, css} from 'lit-element';
 
 import {Icon} from '@material/mwc-icon';
 
+import style from '../styles/components/SkipButton.css.js';
+
 export class SkipButton extends LitElement {
     static get properties() {
-        return {
-        };
+        return {};
     }
 
     static get styles() {
-        return css`
-            button {
-                background-color: white;
-                border: none;
-                color: #a0a0a0;
-                cursor: pointer;
-                font-family: 'Roboto';
-                text-transform: uppercase;
-                width: 50px; 
-            }
-            button:hover {
-                background-color: #dcdcdc;
-            }
-        `;
+        return style;
     }
 
     /**
      * Emits an event that causes a new prompt to be rendered
-     * on the recording page. 
+     * on the recording page.
      */
     handleSkip() {
-        const event = new CustomEvent('skip-prompt', {});
+        const event = new CustomEvent('skip-prompt', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
