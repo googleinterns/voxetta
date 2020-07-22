@@ -43,15 +43,20 @@ export class CountrySelector extends LitElement {
                 justify-content: center; 
                 text-align: center;  
             }
+            mwc-select {
+                width: 300px; 
+            }
             h3 {
                 font-family: 'Roboto';
-                font-size: 30px; 
+                font-size: 28px; 
                 font-weight: normal;
+                padding: 0px 20px 0px 20px;
             }
             p {
                 font-family: 'Roboto';
-                font-size: 20px; 
+                font-size: 18px; 
                 font-weight: bolder; 
+                padding: 0px 20px 0px 20px;
             }
         `;
     }
@@ -60,7 +65,6 @@ export class CountrySelector extends LitElement {
         super();
         this.countries = []; 
         this.countryService = new CountryService(); 
-        
     }
 
     async firstUpdated() {

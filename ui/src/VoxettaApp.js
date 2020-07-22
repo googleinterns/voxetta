@@ -21,6 +21,7 @@ import {CountrySelector} from './components/CountrySelector';
 import {Prompts} from './components/Prompts';
 import {RecordButton} from './components/RecordButton';
 import {SkipButton} from './components/SkipButton';
+import {ToS} from './components/ToS';
 import {UserForm} from './components/UserForm';
 import {UserIcon} from './components/UserIcon';
 import {WaveCanvas} from './components/WaveCanvas';
@@ -107,7 +108,9 @@ export class VoxettaApp extends LitElement {
     renderCountrySelectionTemplate() {
         return html`
             <vox-country-selector
-                @open-tos="${this.handleOpenTos}">
+                @country-selected="${(e) => { 
+                    this.country = (e.detail.country);
+                    this.handleCountrySelected(); }}">
             </vox-user-form>
         `;
     }
@@ -118,7 +121,11 @@ export class VoxettaApp extends LitElement {
      */
     renderTermsOfServiceTemplate() {
         return html`
-            ${this.country}
+            <vox-tos
+                .country = ${this.country}
+                @cancel-tos="${this.handleCancelTerms}"
+                @accept-tos="${this.handleAcceptTerms}">
+            </vox-tos>
         `;
     }
 
@@ -214,13 +221,27 @@ export class VoxettaApp extends LitElement {
     }
 
     /**
-     * Updates the country property and state such that the country selector
-     * closes and the appropriate terms of service appears. 
+     * Updates the state such that the country selector closes and 
+     * the appropriate terms of service appears. 
      */
-    handleOpenTos() {
-        const countrySelector = this.shadowRoot.querySelector('vox-country-selector');
-        this.country = countrySelector.getCountry(); 
+    handleCountrySelected() {
         this.state = States.TERMS_OF_SERVICE; 
+    }
+
+    /**
+     * Updates the state such that the Terms of Service closes and the 
+     * country selection component re-appears. 
+     */
+    handleCancelTerms() {
+        this.state = States.COUNTRY_SELECTION; 
+    }
+
+    /**
+     * Updates the state such that the Terms of Service closes and the 
+     * recording page appears. 
+     */
+    handleAcceptTerms() {
+        this.state = States.ACTIVE_RECORD_PAGE; 
     }
 
     /**
