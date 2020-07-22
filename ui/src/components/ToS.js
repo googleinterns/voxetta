@@ -55,7 +55,7 @@ export class ToS extends LitElement {
                 text-align: center;  
             }
             mwc-button {
-                font-size: 8px;
+                font-size: 8x;
                 padding: 10px;
             }
             mwc-button.accept {
@@ -79,6 +79,9 @@ export class ToS extends LitElement {
 
     async firstUpdated() {
         this.tos = await this.tosService.getToS(this.country);
+    }
+
+    updated() {
         this.detectOverflow(); 
     }
 
@@ -94,15 +97,13 @@ export class ToS extends LitElement {
     }
 
     /**
-     * Enables the 'accept-button' if it has been detected that the terms container can be viewed in its
-     * entirety without scrolling. 
+     * Disables the 'accept-button' if it has been detected that the terms container cannot 
+     * be viewed in its entirety without scrolling. 
      */
     detectOverflow() {
         const termsContainer = this.shadowRoot.getElementById('terms-container');
-        console.log(termsContainer.clientHeight);
-        console.log(termsContainer.scrollHeight)
-        if(termsContainer.clientHeight <= termsContainer.scrollHeight) {
-            this.shadowRoot.getElementById('accept-button').disabled = false;
+        if(termsContainer.clientHeight < termsContainer.scrollHeight) {
+            this.shadowRoot.getElementById('accept-button').disabled = true;
         }
     }
 
@@ -151,7 +152,6 @@ export class ToS extends LitElement {
                     id="accept-button"
                     class="accept"
                     unelevated 
-                    disabled
                     label="I have read and agree to terms"
                     @click=${this.handleAcceptTerms}>
                 </mwc-button>
