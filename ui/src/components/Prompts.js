@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import {LitElement, html, css} from 'lit-element';
+import {LitElement, html} from 'lit-element';
 
-import * as promptApi from '../utils/PromptApiService';
+import * as promptApi from '../utils/PromptApiService.js';
+
+import style from '../styles/components/Prompts.css.js';
 
 import {Icon} from '@material/mwc-icon';
 
@@ -24,40 +26,17 @@ export class Prompts extends LitElement {
     static get properties() {
         return {
             prompt: {type: Object},
-            state: {type: String}
+            state: {type: String},
         };
     }
 
     static get styles() {
-        return css`
-            button {
-                background-color: white;
-                border: none;
-                color: #a0a0a0;
-                cursor: pointer;
-                font-family: 'Roboto';
-            }
-            button:hover {
-                background-color: #dcdcdc;
-            }
-            div {
-                align-items: center; 
-                display: flex; 
-                flex-direction: column; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                text-align: center;  
-            }
-            p {
-                font-family: 'Roboto';
-                font-size: 30px; 
-            }
-        `;
+        return style;
     }
 
     constructor() {
         super();
-        this.state = 'Loading';
+        this.state = 'LOADING';
     }
 
     firstUpdated() {
@@ -66,7 +45,7 @@ export class Prompts extends LitElement {
 
     /**
      * Emits an event that causes audio-recording related components
-     * to disappear. 
+     * to disappear.
      */
     async getNewPrompt() {
         const promptRequest = await promptApi.getNewPrompt();
@@ -84,7 +63,7 @@ export class Prompts extends LitElement {
 
     /**
      * Determines the approriate method of rendering the current prompt.
-     * @returns {HTML} The HTML associated with the current prompt. 
+     * @return {HTML} The HTML associated with the current prompt.
      */
     renderPromptType() {
         switch (this.prompt.type) {
@@ -99,9 +78,9 @@ export class Prompts extends LitElement {
     }
 
     /**
-     * Determines the approriate rendering action based on the current
+     * Determines the appropriate rendering action based on the current
      * prompt state.
-     * @returns {HTML} The HTML associated with the current state. 
+     * @return {HTML} The HTML associated with the current state.
      */
     renderPromptState() {
         switch (this.state) {
@@ -116,23 +95,31 @@ export class Prompts extends LitElement {
         }
     }
 
+    handleResetPrompts() {
+        promptApi.resetAllPromptsUnread();
+    }
+
     /**
      * Emits an event that causes audio-recording related components
-     * to disappear. 
+     * to disappear.
      */
     handleSessionEnd() {
-        const event = new CustomEvent('end-session', {});
+        const event = new CustomEvent('end-session', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
-    render() { 
+    // TODO: cleanup reset button methodology
+    render() {
         return html`
             <div id="prompt-screen">
                 ${this.renderPromptState()}
-                <button @click="${promptApi.resetAllPromptsUnread}">
-                    reset all prompts to unread
-                </button> 
             </div>
+            <button @click="${this.handleResetPrompts}">
+                reset all prompts to unread
+            </button>
         `;
     }
 }

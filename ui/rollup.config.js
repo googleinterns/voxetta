@@ -27,6 +27,10 @@ export default merge(baseConfig, {
                     src: 'WEB-INF',
                     dest: 'dist/',
                 },
+                {
+                    src: 'public',
+                    dest: 'dist/',
+                },
             ],
         }),
     ],

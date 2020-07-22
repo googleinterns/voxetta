@@ -1,112 +1,45 @@
 /*
-Copyright 2020 Google LLC
- 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
- 
-    https://www.apache.org/licenses/LICENSE-2.0
- 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. */
- 
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {LitElement, html, css} from 'lit-element';
 
 import {TextField} from '@material/mwc-textfield';
 import {Select} from '@material/mwc-select';
 import {ListItem} from '@material/mwc-list/mwc-list-item';
 import {Button} from '@material/mwc-button';
-import {Icon} from '@material/mwc-icon'
- 
+import {Icon} from '@material/mwc-icon';
+
+import style from '../styles/components/UserForm.css.js';
+
 /**
  * Component responsible for providing users a means to provide
- * their personal information. 
+ * their personal information.
  */
 export class UserForm extends LitElement {
-
     static get properties() {
         return {
             userId: {type: String},
             gender: {type: String},
             userAge: {type: Number},
-            deviceType: {type: String}
+            deviceType: {type: String},
         };
     }
 
     static get styles() {
-        return css`
-            .container {
-                align-items: center; 
-                color: #3c4043;
-                display: flex; 
-                flex-direction: column; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                text-align: center;  
-                width: 100vw; 
-            }
-            .header-container {
-                align-items: center;
-                display: flex; 
-                flex-direction: row; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                width: 270x; 
-            }
-            .title-container {
-                width: 250px; 
-            }
-            .icon-container {
-                width: 20px; 
-            }
-            h1, h2 { 
-                font-family: 'Roboto';
-                font-weight: normal; 
-                margin-top: 5px;
-                margin-left: 0px;
-                margin-right: 0px; 
-                width: 270px; 
-            }
-            h1.title {
-                font-size: 30px;
-                margin-bottom: 5px; 
-                padding-left: 5px; 
-            }
-            h2.description {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-            mwc-icon {
-                --mdc-icon-size: 40px; 
-                float: left;
-                position: relative;
-            }
-            mwc-textfield {
-                --mdc-theme-primary: #1a73e8;
-                padding: 10px; 
-                width: 300px;
-            }
-            mwc-select {
-                --mdc-theme-primary: #1a73e8;
-                padding: 10px; 
-                width: 300px;
-            }
-            mwc-button {
-                padding: 10px;
-                width: 250px; 
-            }
-            mwc-button.save {
-                --mdc-theme-primary: #1a73e8;
-                --mdc-theme-on-primary: white;
-            }
-            mwc-button.cancel {
-                --mdc-theme-primary: white;
-                --mdc-theme-on-primary: #1a73e8;
-            }
-        `;
+        return style;
     }
 
     constructor() {
@@ -117,7 +50,7 @@ export class UserForm extends LitElement {
 
     /**
      * Checks to see if the user submitted valid information, and if so,
-     * saves the user information in a cookie. 
+     * saves the user information in a cookie.
      */
     processForm() {
         this.userId = this.shadowRoot.getElementById('user-id').value;
@@ -126,47 +59,63 @@ export class UserForm extends LitElement {
         this.deviceType = this.shadowRoot.getElementById('device-type').value;
 
         const userInfo = {
-            userId: this.userId, 
+            userId: this.userId,
             gender: this.gender,
             userAge: this.userAge,
-            deviceType: this.deviceType
+            deviceType: this.deviceType,
         };
 
         this.handleFormSubmission(userInfo);
-        this.handleExitForm(); 
+        this.handleExitForm();
     }
 
     /**
-     * Determines if each input in the user form is valid and alters Save Button appropriately. 
+     * Determines if each input in the user form is valid and alters Save Button appropriately.
      */
     formIsValid() {
-        const userIdValidity = this.shadowRoot.getElementById('user-id').checkValidity();
-        const genderValidity = this.shadowRoot.getElementById('gender-list').checkValidity();
-        const userAgeValidity = this.shadowRoot.getElementById('user-age').checkValidity();
-        const deviceTypeValidity = this.shadowRoot.getElementById('device-type').checkValidity();
+        const userIdValidity = this.shadowRoot
+            .getElementById('user-id')
+            .checkValidity();
+        const genderValidity = this.shadowRoot
+            .getElementById('gender-list')
+            .checkValidity();
+        const userAgeValidity = this.shadowRoot
+            .getElementById('user-age')
+            .checkValidity();
+        const deviceTypeValidity = this.shadowRoot
+            .getElementById('device-type')
+            .checkValidity();
 
-        const formValidity = userIdValidity && genderValidity && userAgeValidity && deviceTypeValidity;
-        
+        const formValidity =
+            userIdValidity &&
+            genderValidity &&
+            userAgeValidity &&
+            deviceTypeValidity;
         const saveButton = this.shadowRoot.getElementById('save-button');
         saveButton.disabled = !formValidity;
     }
 
     /**
      * Emits an event that causes the form page to close and the record
-     * page to appear. 
+     * page to appear.
      */
     handleExitForm() {
-        const event = new CustomEvent('exit-form', {});
+        const event = new CustomEvent('exit-form', {
+            bubbles: true,
+            composed: true,
+        });
         this.dispatchEvent(event);
     }
 
     /**
-     * Emits an event that causes the user infomration to update. 
+     * Emits an event that causes the user infomration to update.
      * @param {Object} userInfo - The information entered on the user form.
      */
     handleFormSubmission(userInfo) {
         const event = new CustomEvent('update-user-info', {
-            detail: { userInfo }
+            detail: {userInfo},
+            bubbles: true,
+            composed: true,
         });
         this.dispatchEvent(event);
     }
@@ -248,5 +197,5 @@ export class UserForm extends LitElement {
         `;
     }
 }
- 
+
 customElements.define('vox-user-form', UserForm);
