@@ -34,6 +34,7 @@ export class StateContainer extends LitElement {
     constructor() {
         super();
 
+        this.country = undefined;
         this.cookieService = new CookieService();
 
         this.user = {
@@ -43,7 +44,7 @@ export class StateContainer extends LitElement {
             deviceType: this.cookieService.getDeviceType(),
         };
 
-        this.view = Views.COLLECTION;
+        this.view = Views.COUNTRY_SELECTION;
         this.canRecord = true;
 
         this.viewShadowRoot = undefined;
@@ -66,6 +67,14 @@ export class StateContainer extends LitElement {
             userAge: userInfo.userAge,
             deviceType: userInfo.deviceType,
         };
+    }
+
+    /**
+     * Updates the state such that the country selector closes and
+     * the appropriate terms of service appears. 
+     */
+    handleCountrySelected() {
+        this.view = Views.TERMS_OF_SERVICE; 
     }
 
     /**
@@ -125,6 +134,9 @@ export class StateContainer extends LitElement {
     render() {
         return html` <div
             id="state-wrapper"
+            @country-selected="${(e) => { 
+                    this.country = (e.detail.country);
+                    this.handleCountrySelected(); }}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
@@ -134,6 +146,7 @@ export class StateContainer extends LitElement {
             @update-wave="${this.handleUpdateWave}"
         >
             <vox-view-container
+                .country=${this.country}
                 .view=${this.view}
                 ?can-record=${this.canRecord}
                 ?is-recording=${this.isRecording}

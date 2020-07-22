@@ -19,6 +19,7 @@ import style from './styles/ViewContainer.css.js';
 
 import Views from './utils/ViewsEnum';
 
+import {CountrySelector} from './components/CountrySelector';
 import {UserIcon} from './components/UserIcon';
 import {Prompts} from './components/Prompts';
 import {UserForm} from './components/UserForm';
@@ -34,11 +35,32 @@ export class ViewContainer extends LitElement {
             isRecording: {type: Boolean, attribute: 'is-recording'},
             audioStream: {type: Object, attribute: 'audio-stream'},
             user: {type: Object},
+            country: {type: String},
         };
     }
 
     static get styles() {
         return style;
+    }
+
+    /**
+     * Renders the componenets associated with the country selection state. 
+     * @returns {HTML} The HTML template for the country selection state.
+     */
+    renderCountrySelectionTemplate() {
+        return html`
+            <vox-country-selector></vox-user-form>
+        `;
+    }
+
+    /**
+     * Renders the componenets associated with the terms of service state. 
+     * @returns {HTML} The HTML template for the terms of service state.
+     */
+    renderTermsOfServiceTemplate() {
+        return html`
+            ${this.country}
+        `;
     }
 
     /**
@@ -113,6 +135,14 @@ export class ViewContainer extends LitElement {
         let viewTemplate;
 
         switch (this.view) {
+            case Views.COUNTRY_SELECTION:
+                return html`
+                    ${this.renderCountrySelectionTemplate()}
+                `;
+            case Views.TERMS_OF_SERVICE:
+                return html`
+                    ${this.renderTermsOfServiceTemplate()}
+                `;
             case Views.COLLECTION:
                 viewTemplate = html` ${this.renderCollectionView()} `;
                 break;
