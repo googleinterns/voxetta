@@ -33,7 +33,7 @@ describe('Testing that the Toast Utils', () => {
         });
 
         // Dispatch inactive toast event
-        ToastUtils.dispatchInactiveToast(dummyElement);
+        ToastUtils.clearToast(dummyElement);
 
         // Assert that inactive toast was thrown
         expect(event.detail.state).toEqual(ToastUtils.states.INACTIVE);

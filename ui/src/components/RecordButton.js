@@ -90,11 +90,13 @@ export class RecordButton extends LitElement {
 
             if (audio.recordingUrl) {
                 try {
-                    await this.utteranceService.saveAudio(audio);
+                    const resp = await this.utteranceService.saveAudio(audio);
+
+                    if (!resp) throw new Error();
                 } catch (e) {
                     dispatchErrorToast(
                         this,
-                        `Could not upload recording successfully; ${e.name}: ${e.message}`
+                        `Could not upload recording successfully`
                     );
                 }
             }

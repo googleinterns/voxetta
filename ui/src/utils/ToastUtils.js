@@ -27,7 +27,7 @@ const states = {
  * @param {LitElement} e Element to dispatch event from (usually `this`)
  * @param {*} message Message to display in error toast template
  */
-const dispatchErrorToast = (e, message) => {
+const dispatchErrorToast = (elem, message) => {
     const toastEvent = new CustomEvent('update-toast', {
         detail: {
             state: states.ERROR,
@@ -37,7 +37,7 @@ const dispatchErrorToast = (e, message) => {
         composed: true,
     });
 
-    e.dispatchEvent(toastEvent);
+    elem.dispatchEvent(toastEvent);
 };
 
 /**
@@ -45,7 +45,7 @@ const dispatchErrorToast = (e, message) => {
  * which will clear the toast from the view
  * @param {LitElement} e Element to dispatch event from (usually `this`)
  */
-const dispatchInactiveToast = (e) => {
+const clearToast = (elem) => {
     const toastEvent = new CustomEvent('update-toast', {
         detail: {
             state: states.INACTIVE,
@@ -54,7 +54,7 @@ const dispatchInactiveToast = (e) => {
         composed: true,
     });
 
-    e.dispatchEvent(toastEvent);
+    elem.dispatchEvent(toastEvent);
 };
 
-export {states, dispatchErrorToast, dispatchInactiveToast};
+export {states, dispatchErrorToast, clearToast};

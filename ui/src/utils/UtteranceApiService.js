@@ -37,6 +37,11 @@ export class UtteranceApiService {
     async saveAudio(audio) {
         // Get Blobstore URL & Form Data
         const url = await this.getUploadUrl();
+
+        if (!url) {
+            return false;
+        }
+
         this.getFormData(audio);
 
         const response = await fetch(url, {
