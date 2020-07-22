@@ -1,0 +1,54 @@
+Google Participant Release
+
+Thank you for agreeing to allow Google LLC and its affiliates (“Google”) to collect from You
+voice samples and other information (collectively “Feedback”) to be reviewed by human beings
+for the purpose of developing and improving speech recognition technologies (the “Purpose”).
+The Purpose may also include the use of the Feedback to generate a new voice for new voice products
+and services (such as the Google Assistant). The new voice might resemble your voice.
+The “Feedback” may include:
+
+• Voice samples
+• Ideas, reports, suggestions
+• Data or other information as requested by Google
+
+1. You grant to Google a revocable, royalty-free, worldwide, perpetual, non-exclusive right and
+license (a) to, and to permit others to, store, copy, process, and otherwise use the Feedback in
+perpetuity in connection with the Purpose; and (b) to any copyrights, rights of publicity, and any
+other legal rights necessary in order for Google and others to use the Feedback as permitted by
+this release. You agree to Google storing the Feedback until you revoke your consent, and
+processing the Feedback for the Purpose outlined herein and as described in Google's Privacy
+Policy (available at http://www.google.com/privacy.html). You specifically waive and release any
+potential intellectual property, right of publicity or right of privacy claim against Google or others
+for using or sharing Your Feedback. You also acknowledge that you won't have access to the
+Feedback.
+
+2. You confirm that You are of the age of majority and have full power and authority to authorize
+this release, including without limitation the power and authority to grant all rights and licenses
+relating to the Feedback.
+
+3. If You wish to discontinue your participation, it is your responsibility to inform Google or
+provide no further Feedback to Google. If You end your participation, Google may continue to
+use and share the Feedback collected prior to You ending Your participation.
+
+4. Any information provided to You by Google and any Feedback You provide will be considered
+confidential (the “Confidential Information”), and the following terms will apply: (a) You may use
+Confidential Information only for the Purpose; (b) You will use a reasonable degree of care to
+protect Confidential Information and to prevent any unauthorized use or disclosure of
+Confidential Information; and (c) You may not share the Confidential Information with any third
+party in any manner.
+
+5. GOOGLE MAKES NO WARRANTY, EXPRESS OR IMPLIED, WITH RESPECT TO THE
+PURPOSE AND EXPRESSLY DISCLAIMS THE WARRANTIES OF NONINFRINGEMENT,
+SATISFACTORY QUALITY, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE. IN NO EVENT WILL EITHER PARTY BE LIABLE FOR ANY DAMAGES UNDER
+THIS RELEASE IN EXCESS OF $100. CALIFORNIA LAW, EXCLUDING CALIFORNIA’S
+CHOICE OF LAW RULES, WILL GOVERN ALL CLAIMS ARISING OUT OF OR RELATING TO
+THIS RELEASE (collectively, “CLAIMS”). ALL CLAIMS WILL BE LITIGATED EXCLUSIVELY IN
+THE FEDERAL OR STATE COURTS OF SANTA CLARA COUNTY, CALIFORNIA, USA, AND
+THE PARTIES CONSENT TO PERSONAL JURISDICTION IN THOSE COURTS. You may not
+assign your rights or delegate your obligations under this release, by law or otherwise, without
+the prior written consent of Google and any other attempt to transfer or assign is void. Failure to
+enforce any provision in this release will not constitute a waiver. If any provision is found
+unenforceable, the balance of this release will remain in full force and effect. This release is the
+parties’ entire agreement relating to its subject and supersedes any prior or contemporaneous
+agreements on that subject.
