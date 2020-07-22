@@ -136,7 +136,7 @@ export class ViewContainer extends LitElement {
 
     render() {
         let viewTemplate;
-        console.log("rendering");
+        
         switch (this.view) {
             case Views.COUNTRY_SELECTION:
                 return html`
