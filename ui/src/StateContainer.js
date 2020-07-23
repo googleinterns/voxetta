@@ -73,7 +73,8 @@ export class StateContainer extends LitElement {
      * Updates the state such that the country selector closes and
      * the appropriate terms of service appears. 
      */
-    handleCountrySelected() {
+    handleCountrySelected(e) {
+        this.country = (e.detail.country);
         this.view = Views.TERMS_OF_SERVICE; 
     }
 
@@ -151,9 +152,7 @@ export class StateContainer extends LitElement {
         return html` 
             <div
                 id="state-wrapper"
-                @country-selected="${(e) => { 
-                    this.country = (e.detail.country);
-                    this.handleCountrySelected(); }}"
+                @country-selected="${this.handleCountrySelected}}"
                 @cancel-tos="${this.handleCancelTerms}"
                 @accept-tos="${this.handleAcceptTerms}"
                 @enter-form="${this.handleEnterForm}"

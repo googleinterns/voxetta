@@ -18,6 +18,8 @@ import {LitElement, html, css} from 'lit-element';
 
 import {ToSService} from '../utils/ToSService';
 
+import style from '../styles/components/ToS.css.js';
+
 import {ListItem} from '@material/mwc-list/mwc-list-item';
  
 /**
@@ -29,51 +31,19 @@ export class ToS extends LitElement {
     static get properties() {
         return {
             country: {type: String},
-            tos: {type: Array}
+            tos: {type: Array},
+            disabled: {type: Boolean}
         };
     }
 
     static get styles() {
-        return css`
-            textarea.terms {
-                border: none;
-                font-family: 'Roboto';
-                font-size: 15px; 
-                height: 85vh;
-                width: 90%;
-                overflow: scroll; 
-                padding: 5px 20px 0px 20px; 
-            }
-            div.button-container {
-                align-items: center; 
-                box-shadow: 0px -3px 1px -1px #dcdcdc;
-                display: flex; 
-                flex-direction: row; 
-                flex-wrap: wrap;
-                height: 12vh;
-                justify-content: center; 
-                text-align: center;  
-            }
-            mwc-button {
-                font-size: 8x;
-                padding: 10px;
-            }
-            mwc-button.accept {
-                --mdc-theme-primary: #1a73e8;
-                --mdc-theme-on-primary: white;
-                width: 60vw;
-            }
-            mwc-button.cancel {
-                --mdc-theme-primary: white;
-                --mdc-theme-on-primary: #1a73e8;
-                width: 15vw;
-            }
-        `;
+        return style;
     }
 
     constructor() {
         super();
         this.tos = [];
+        this.disabled = false;
         this.tosService = new ToSService(); 
     }
 
@@ -92,7 +62,7 @@ export class ToS extends LitElement {
     checkScroll() {
         const termsContainer = this.shadowRoot.getElementById('terms-container');
         if(termsContainer.offsetHeight + termsContainer.scrollTop >= termsContainer.scrollHeight - 5) {
-            this.shadowRoot.getElementById('accept-button').disabled = false;
+            this.disabled = false;
         }
     }
 
@@ -103,7 +73,7 @@ export class ToS extends LitElement {
     detectOverflow() {
         const termsContainer = this.shadowRoot.getElementById('terms-container');
         if(termsContainer.clientHeight < termsContainer.scrollHeight) {
-            this.shadowRoot.getElementById('accept-button').disabled = true;
+            this.disabled = true;
         }
     }
 
@@ -152,6 +122,7 @@ export class ToS extends LitElement {
                     id="accept-button"
                     class="accept"
                     unelevated 
+                    ?disabled="${this.disabled}"
                     label="I have read and agree to terms"
                     @click=${this.handleAcceptTerms}>
                 </mwc-button>

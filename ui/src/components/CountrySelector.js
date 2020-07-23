@@ -18,6 +18,8 @@ import {LitElement, html, css} from 'lit-element';
 
 import {CountryService} from '../utils/CountryService';
 
+import style from '../styles/components/CountrySelector.css.js';
+
 import {Select} from '@material/mwc-select';
 import {ListItem} from '@material/mwc-list/mwc-list-item';
  
@@ -34,31 +36,7 @@ export class CountrySelector extends LitElement {
     }
 
     static get styles() {
-        return css`
-            div {
-                align-items: center; 
-                display: flex; 
-                flex-direction: column; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                text-align: center;  
-            }
-            mwc-select {
-                width: 300px; 
-            }
-            h3 {
-                font-family: 'Roboto';
-                font-size: 28px; 
-                font-weight: normal;
-                padding: 0px 20px 0px 20px;
-            }
-            p {
-                font-family: 'Roboto';
-                font-size: 18px; 
-                font-weight: bolder; 
-                padding: 0px 20px 0px 20px;
-            }
-        `;
+        return style;
     }
 
     constructor() {
