@@ -29,7 +29,7 @@ export class QualityControl {
     }
     
    /**
-    * Checks if sound is of good quality
+    * Checks if sound is of good quality: not too short or silent
     */
     async isQualitySound() {
         const blobArrayBuffer = await this.blob.arrayBuffer();
@@ -38,25 +38,18 @@ export class QualityControl {
         const qualityResult = {
             success: true,
             errorMessage: '',
-        }
+        };
 
-        const lengthResult = this.lengthCheck();
-        if (lengthResult) {
+        const audioResult = this.soundCheck();
+
+        if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
-            qualityResult.errorMessage += lengthResult;
+            qualityResult.errorMessage += 'Audio recording failed: recording was too short. Try again';
+        } else if (audioResult) {
+            qualityResult.success = false;
+            qualityResult.errorMessage += audioResult;
         }
-
+        
         return qualityResult;
-    }
-
-   /**
-    * Checks if audio is too short
-    */
-    lengthCheck() {
-        if (this.audioBuffer.duration > 2.0) {
-            return null;
-        } else {
-            return 'Audio recording failed: recording was too short. Try again';
-        }
     }
 }

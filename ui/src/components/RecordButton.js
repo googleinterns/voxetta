@@ -107,8 +107,8 @@ export class RecordButton extends LitElement {
             this.isRecording = false;
             const audio = await this.audioRecorder.stopRecording();
             const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityObj = qualityCheck.isQualitySound();
-            if (!qualityObj.success) {
+            const qualityResult = qualityCheck.isQualitySound();
+            if (!qualityResult.success) {
                 return;
             }
             this.handleFinish();
