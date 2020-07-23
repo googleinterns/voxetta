@@ -40,16 +40,11 @@ export class QualityControl {
             errorMessage: '',
         };
 
-        const audioResult = this.soundCheck();
-
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
             qualityResult.errorMessage += 'Audio recording failed: recording was too short. Try again';
-        } else if (audioResult) {
-            qualityResult.success = false;
-            qualityResult.errorMessage += audioResult;
         }
-        
+
         return qualityResult;
     }
 }
