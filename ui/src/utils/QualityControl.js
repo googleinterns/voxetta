@@ -50,7 +50,6 @@ export class QualityControl {
             qualityResult.errorMessage += audioResult;
         }
 
-        console.log(qualityResult.errorMessage);
         return qualityResult;
     }
 
