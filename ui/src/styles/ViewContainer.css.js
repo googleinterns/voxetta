@@ -25,7 +25,6 @@ export default css`
         flex-direction: column;
         width: 100vw;
         height: 100%;
-        flex-grow: 1;
     }
 
     #collection-wrapper {
