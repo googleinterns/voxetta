@@ -18,10 +18,12 @@ import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
 import Views from './utils/ViewsEnum';
-import {states as ToastStates} from './utils/ToastUtils';
+import * as ToastUtils from './utils/ToastUtils';
 
 import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
+
+import style from './styles/StateContainer.css.js';
 
 export class StateContainer extends LitElement {
     static get properties() {
@@ -32,6 +34,10 @@ export class StateContainer extends LitElement {
             audioStream: {type: Object},
             toast: {type: Object},
         };
+    }
+
+    static get styles() {
+        return style;
     }
 
     constructor() {
@@ -48,9 +54,6 @@ export class StateContainer extends LitElement {
 
         this.view = Views.COLLECTION;
         this.canRecord = true;
-        this.toast = {
-            state: ToastStates.INACTIVE,
-        };
 
         this.viewShadowRoot = undefined;
     }
@@ -128,28 +131,19 @@ export class StateContainer extends LitElement {
         this.cookieService.makeUserInfoCookie(e.detail.userInfo);
     }
 
-    handleUpdateToast(e) {
-        let toast;
+    handleAddToast(e) {
+        this.toast = e.detail.message;
+    }
 
-        if (e.detail.state !== ToastStates.INACTIVE) {
-            toast = {
-                state: e.detail.state,
-                message: e.detail.message,
-            };
-        } else {
-            toast = {
-                state: ToastStates.INACTIVE,
-            };
-        }
-
-        this.toast = toast;
+    handleClearToast() {
+        this.toast = undefined;
     }
 
     renderToast() {
-        if (!this.toast || this.toast.state === ToastStates.INACTIVE) {
+        if (!this.toast) {
             return html``;
         }
-        return html` <vox-toast message="${this.toast.message}"></vox-toast> `;
+        return html` <vox-toast message="${this.toast}"></vox-toast> `;
     }
 
     render() {
@@ -162,19 +156,17 @@ export class StateContainer extends LitElement {
             @skip-prompt="${this.handleChangePrompt}"
             @end-session="${this.handleEndSession}"
             @update-wave="${this.handleUpdateWave}"
-            @update-toast="${this.handleUpdateToast}"
+            @add-toast="${this.handleAddToast}"
+            @clear-toast="${this.handleClearToast}"
         >
+            ${this.renderToast()}
             <vox-view-container
                 .view=${this.view}
                 ?can-record=${this.canRecord}
                 ?is-recording=${this.isRecording}
                 .audio-stream=${this.audioStream}
                 .user=${this.user}
-                .toast=${this.toast}
             >
-                <div slot="toast">
-                    ${this.renderToast()}
-                </div>
             </vox-view-container>
         </div>`;
     }

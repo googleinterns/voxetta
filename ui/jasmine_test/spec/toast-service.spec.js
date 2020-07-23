@@ -10,7 +10,7 @@ describe('Testing that the Toast Utils', () => {
 
         // Listen for event to be thrown; assign to "event" if so
         let event;
-        window.addEventListener('update-toast', (e) => {
+        window.addEventListener('add-toast', (e) => {
             event = e;
         });
 
@@ -18,8 +18,8 @@ describe('Testing that the Toast Utils', () => {
         const string = 'mocked error';
         ToastUtils.dispatchErrorToast(dummyElement, string);
 
-        // Assert that error toast was thrown
-        expect(event.detail.state).toEqual(ToastUtils.states.ERROR);
+        // Assert that message and event type are correct
+        expect(event.type).toEqual('add-toast');
         expect(event.detail.message).toEqual(string);
     });
 
@@ -28,14 +28,14 @@ describe('Testing that the Toast Utils', () => {
 
         // Listen for event to be thrown; assign to "event" if so
         let event;
-        window.addEventListener('update-toast', (e) => {
+        window.addEventListener('clear-toast', (e) => {
             event = e;
         });
 
         // Dispatch inactive toast event
         ToastUtils.clearToast(dummyElement);
 
-        // Assert that inactive toast was thrown
-        expect(event.detail.state).toEqual(ToastUtils.states.INACTIVE);
+        // Assert that event type is correct
+        expect(event.type).toEqual('clear-toast');
     });
 });

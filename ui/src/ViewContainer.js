@@ -123,7 +123,6 @@ export class ViewContainer extends LitElement {
 
         return html`
             <div id="view-container">
-                <slot name="toast"></slot>
                 ${viewTemplate}
             </div>
         `;

@@ -15,22 +15,13 @@
  */
 
 /**
- * States for various toast statuses
- */
-const states = {
-    ERROR: 'ERROR',
-    INACTIVE: 'INACTIVE',
-};
-
-/**
  * Dispatches an error toast event from the element it is called from
  * @param {LitElement} e Element to dispatch event from (usually `this`)
  * @param {*} message Message to display in error toast template
  */
 const dispatchErrorToast = (elem, message) => {
-    const toastEvent = new CustomEvent('update-toast', {
+    const toastEvent = new CustomEvent('add-toast', {
         detail: {
-            state: states.ERROR,
             message,
         },
         bubbles: true,
@@ -46,10 +37,7 @@ const dispatchErrorToast = (elem, message) => {
  * @param {LitElement} e Element to dispatch event from (usually `this`)
  */
 const clearToast = (elem) => {
-    const toastEvent = new CustomEvent('update-toast', {
-        detail: {
-            state: states.INACTIVE,
-        },
+    const toastEvent = new CustomEvent('clear-toast', {
         bubbles: true,
         composed: true,
     });
@@ -57,4 +45,4 @@ const clearToast = (elem) => {
     elem.dispatchEvent(toastEvent);
 };
 
-export {states, dispatchErrorToast, clearToast};
+export {dispatchErrorToast, clearToast};
