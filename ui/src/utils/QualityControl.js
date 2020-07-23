@@ -57,7 +57,7 @@ export class QualityControl {
     * Checks if the sound is too silent
     */
     soundCheck() {
-        const bufferArray = this.audioBuffer.getChannelData(0);;
+        const bufferArray = this.audioBuffer.getChannelData(0);
         const bufferSet = new Set(bufferArray);
         const arrOfSet = [];
         for (let data of bufferSet) {
