@@ -40,11 +40,46 @@ export class QualityControl {
             errorMessage: '',
         };
 
+        const audioResult = this.soundCheck();
+
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
             qualityResult.errorMessage += 'Audio recording failed: recording was too short. Try again';
+        } else if (audioResult) {
+            qualityResult.success = false;
+            qualityResult.errorMessage += audioResult;
         }
 
+        console.log(qualityResult.errorMessage);
         return qualityResult;
+    }
+
+   /**
+    * Checks if the sound is too silent
+    */
+    soundCheck() {
+        const bufferArray = this.audioBuffer.getChannelData(0);;
+        const bufferSet = new Set(bufferArray);
+        const arrOfSet = [];
+        for (let data of bufferSet) {
+            arrOfSet.push(data);
+        }
+        const arrOfBiggest = [];
+        for(let i = 0; i < 100; i++){
+            const max = Math.max(...arrOfSet);
+            arrOfBiggest.push(max);
+            const index = arrOfSet.indexOf(max);
+            arrOfSet.splice(index, 1);
+        }
+        let total = 0;
+        for (let i = 0; i < arrOfBiggest.length; i++) {
+            total += arrOfBiggest[i];
+        }
+        const avg = total / arrOfBiggest.length;
+        if (avg > 0.2) {
+            return null;
+        } else {
+            return 'Audio recording failed: recording was silent. Try again';
+        }
     }
 }
