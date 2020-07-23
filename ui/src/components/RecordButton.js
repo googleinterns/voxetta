@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+<<<<<<< HEAD
 import {LitElement, html} from 'lit-element';
+=======
+import {Icon} from '@material/mwc-icon';
+import {AudioRecorder} from '../utils/AudioRecorder';
+import {UtteranceApiService} from '../utils/UtteranceApiService';
+import {QualityControl} from '../utils/QualityControl';
+>>>>>>> master
 
 import {AudioRecorder} from '../utils/AudioRecorder.js';
 import {UtteranceApiService} from '../utils/UtteranceApiService.js';
@@ -75,8 +82,8 @@ export class RecordButton extends LitElement {
             this.context = new (window.AudioContext ||
                 window.webkitAudioContext)();
         } else {
+
             this.isRecording = false;
-            this.handleFinish();
             let audio;
 
             try {
@@ -86,6 +93,12 @@ export class RecordButton extends LitElement {
                     this,
                     `Could not record successfully; ${e.name}: ${e.message}`
                 );
+            }
+
+            const qualityCheck = new QualityControl(this.context, audio.blob);
+            const qualityResult = qualityCheck.isQualitySound();
+            if (!qualityResult.success) {
+                return;
             }
 
             if (audio.recordingUrl) {
@@ -100,6 +113,8 @@ export class RecordButton extends LitElement {
                     );
                 }
             }
+
+            this.handleFinish();
         }
     }
 

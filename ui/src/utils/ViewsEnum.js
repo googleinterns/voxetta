@@ -15,6 +15,8 @@
  */
 
 export default {
+    COUNTRY_SELECTION: 'country_selection',
+    TERMS_OF_SERVICE: 'terms_of_service',
     COLLECTION: 'collection',
     USER_FORM: 'user_form',
 };
