@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-<<<<<<< HEAD
 import {LitElement, html} from 'lit-element';
-=======
 import {Icon} from '@material/mwc-icon';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 import {QualityControl} from '../utils/QualityControl';
->>>>>>> master
-
-import {AudioRecorder} from '../utils/AudioRecorder.js';
-import {UtteranceApiService} from '../utils/UtteranceApiService.js';
+import {dispatchErrorToast} from '../utils/ToastUtils.js';
 
 import style from '../styles/components/RecordButton.css.js';
-import {dispatchErrorToast} from '../utils/ToastUtils.js';
 
 export class RecordButton extends LitElement {
     static get properties() {
@@ -82,7 +76,6 @@ export class RecordButton extends LitElement {
             this.context = new (window.AudioContext ||
                 window.webkitAudioContext)();
         } else {
-
             this.isRecording = false;
             let audio;
 
