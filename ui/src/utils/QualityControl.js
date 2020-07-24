@@ -21,8 +21,11 @@ export class QualityControl {
     
    /**
     * Creates an quality control instance
+    * @param {Object} context - Audio context used to extract data from utterance.
+    * @param {Object} blob - the blob containig utterance data
+    * @private {Object} Allows access to data of the utterance  
     */
-    constructor(context, blob) {
+    constructor(context, blob, ) {
         this.context = context;
         this.blob = blob;
         this.audioBuffer;
@@ -40,7 +43,7 @@ export class QualityControl {
             errorMessage: '',
         };
 
-        const audioResult = this.soundCheck();
+        const audioResult = this.silenceCheck();
 
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
@@ -54,31 +57,38 @@ export class QualityControl {
     }
 
    /**
-    * Checks if the sound is too silent
+    * Checks if the sound is too silent by finding the average of the 100 biggest values
+    * of the buffer's data
     */
-    soundCheck() {
+    silenceCheck() {
+        const soundCutOff = 0.2;
         const bufferArray = this.audioBuffer.getChannelData(0);
-        const bufferSet = new Set(bufferArray);
-        const arrOfSet = [];
-        for (let data of bufferSet) {
-            arrOfSet.push(data);
-        }
-        const arrOfBiggest = [];
-        for(let i = 0; i < 100; i++){
-            const max = Math.max(...arrOfSet);
-            arrOfBiggest.push(max);
-            const index = arrOfSet.indexOf(max);
-            arrOfSet.splice(index, 1);
-        }
-        let total = 0;
-        for (let i = 0; i < arrOfBiggest.length; i++) {
-            total += arrOfBiggest[i];
-        }
-        const avg = total / arrOfBiggest.length;
-        if (avg > 0.2) {
+        const noDuplicateValues = Array.from(new Set(bufferArray));  // makes sure all values are unique
+        const biggestValues = this.nLargest(noDuplicateValues, 100);
+        const average = this.findAverage(biggestValues);
+        if (average > soundCutOff) {
             return null;
         } else {
             return 'Audio recording failed: recording was silent. Try again';
         }
+    }
+
+   /**
+    * Helper function for silenceCheck that returns the 100 biggest values of an array
+    */
+    nLargest(arr, n) {
+        const sorted = [...arr].sort().reverse();
+        return sorted.slice(0, n);
+    }
+
+   /**
+    * Helper function for silenceCheck that returns the average of the numbers in an array
+    */
+    findAverage(arr) {
+        let total = 0;
+        for (let i = 0; i < arr.length; i++) {
+            total += arr[i];
+        }
+        return total / arr.length;
     }
 }
