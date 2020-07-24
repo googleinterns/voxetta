@@ -20,11 +20,17 @@ import {css} from 'lit-element';
 export default css`
     /* skeleton  */
 
-    #collection-wrapper {
+    #view-container {
         display: flex;
         flex-direction: column;
         width: 100vw;
-        height: 100vh;
+        height: 100%;
+    }
+
+    #collection-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .top-level-component {

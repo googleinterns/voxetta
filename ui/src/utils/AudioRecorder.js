@@ -27,6 +27,7 @@ export class AudioRecorder {
         this.mediaRecorder = undefined;
         this.stream = undefined;
     }
+
     /**
      * Prompts user for access to Microphone using API
      */
@@ -39,10 +40,6 @@ export class AudioRecorder {
                 });
                 this.mediaRecorder = new MediaRecorder(this.stream);
             } catch (err) {
-                console.log(err.name, err.message);
-                window.alert(`Error: Microphone access is currently blocked for this site. 
-              To unblock, please navigate to chrome://settings/content/microphone and 
-              remove this site from the 'Block' section.`);
                 reject();
             }
             resolve();
@@ -51,7 +48,7 @@ export class AudioRecorder {
 
     /**
      * Begins recording if access is granted.
-     * @return {Boolean} Denotes whether or not the recording successfully began.
+     * @returns {Boolean} Denotes whether or not the recording successfully began.
      */
     startRecording() {
         if (!this.stream) {
@@ -61,24 +58,23 @@ export class AudioRecorder {
         this.mediaRecorder.start();
         return true;
     }
+
     /**
      * Stops recording and stores utterance data in Url if recording
-     * @return {Object} Url to access utterance on the front end, and blob to access utterance in the back end
+     * @returns {Object} Url to access utterance on the front end, and blob to access utterance in the back end
      */
     stopRecording() {
         if (this.mediaRecorder) {
             this.mediaRecorder.stop();
-            return new Promise(resolve => {
-                this.mediaRecorder.ondataavailable = e => {
+            return new Promise((resolve) => {
+                this.mediaRecorder.ondataavailable = (e) => {
                     const blob = new Blob([e.data], {type: 'audio/webm;'});
                     const recordingUrl = window.URL.createObjectURL(blob);
                     const audio = {blob, recordingUrl};
                     resolve(audio);
                 };
             });
-        } else {
-            alert('Error: Could not record successfully.');
-            return null;
         }
+        throw new Error('Could not record successfully.');
     }
 }

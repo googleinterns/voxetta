@@ -152,7 +152,11 @@ export class ViewContainer extends LitElement {
                 break;
         }
 
-        return viewTemplate;
+        return html`
+            <div id="view-container">
+                ${viewTemplate}
+            </div>
+        `;
     }
 }
 
