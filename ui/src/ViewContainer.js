@@ -20,6 +20,10 @@ import style from './styles/ViewContainer.css.js';
 import Views from './utils/ViewsEnum';
 
 import {CountrySelector} from './components/CountrySelector';
+<<<<<<< Updated upstream
+=======
+import {UserIcon} from './components/UserIcon';
+>>>>>>> Stashed changes
 import {Prompts} from './components/Prompts';
 import {RecordButton} from './components/RecordButton';
 import {SkipButton} from './components/SkipButton';
@@ -60,9 +64,13 @@ export class ViewContainer extends LitElement {
      */
     renderTermsOfServiceTemplate() {
         return html`
+<<<<<<< Updated upstream
             <vox-tos
                 .country = ${this.country}>
             </vox-tos>
+=======
+            ${this.country}
+>>>>>>> Stashed changes
         `;
     }
 
@@ -140,10 +148,19 @@ export class ViewContainer extends LitElement {
         switch (this.view) {
             case Views.COUNTRY_SELECTION:
                 return html`
+<<<<<<< Updated upstream
                     ${this.renderCountrySelectionTemplate()} `;
             case Views.TERMS_OF_SERVICE:
                 return html`
                     ${this.renderTermsOfServiceTemplate()} `;
+=======
+                    ${this.renderCountrySelectionTemplate()}
+                `;
+            case Views.TERMS_OF_SERVICE:
+                return html`
+                    ${this.renderTermsOfServiceTemplate()}
+                `;
+>>>>>>> Stashed changes
             case Views.COLLECTION:
                 viewTemplate = html` ${this.renderCollectionView()} `;
                 break;

@@ -18,6 +18,10 @@
 import {LitElement, html, css} from 'lit-element';
 import {styleMap} from 'lit-html/directives/style-map.js';
 
+<<<<<<< Updated upstream
+=======
+import {LitElement, html} from 'lit-element';
+>>>>>>> Stashed changes
 import {Icon} from '@material/mwc-icon';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
@@ -95,10 +99,23 @@ export class RecordButton extends LitElement {
             if (!qualityResult.success) {
                 return;
             }
+<<<<<<< Updated upstream
             this.handleFinish();
+=======
+
+            const qualityCheck = new QualityControl(this.context, audio.blob);
+            const qualityResult = qualityCheck.isQualitySound();
+
+            if (!qualityResult.success) {
+                return;
+            }
+
+>>>>>>> Stashed changes
             if (audio.recordingUrl) {
                 this.utteranceService.saveAudio(audio);
             }
+
+            this.handleFinish();
         }
     }
 
