@@ -51,8 +51,12 @@ export class ToS extends LitElement {
         this.tos = await this.tosService.getToS(this.country);
     }
 
-    updated() {
-        this.detectOverflow(); 
+    updated(changedProperties) {
+        changedProperties.forEach((value, propName) => {
+            if (`${propName}` === 'tos') {
+                this.detectOverflow();
+            } 
+        });
     }
 
     /**
@@ -122,7 +126,7 @@ export class ToS extends LitElement {
                     id="accept-button"
                     class="accept"
                     unelevated 
-                    ?disabled="${this.disabled}"
+                    ?disabled=${this.disabled}
                     label="I have read and agree to terms"
                     @click=${this.handleAcceptTerms}>
                 </mwc-button>
