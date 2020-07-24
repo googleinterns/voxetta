@@ -1,5 +1,4 @@
-/**
- * Possible app states.
+/*
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +14,30 @@
  * limitations under the License.
  */
 
-import {LitElement, html} from 'lit-element';
-import {StateContainer} from './StateContainer';
+import {css} from 'lit-element';
 
-export class VoxettaApp extends LitElement {
-    render() {
-        return html` <vox-state-container> </vox-state-container> `;
+export default css`
+    div {
+        align-items: center; 
+        display: flex; 
+        flex-direction: column; 
+        flex-wrap: wrap;
+        justify-content: center; 
+        text-align: center;  
     }
-}
-
-customElements.define('vox-app', VoxettaApp);
+    mwc-select {
+        width: 300px; 
+    }
+    h3 {
+        font-family: 'Roboto';
+        font-size: 28px; 
+        font-weight: normal;
+        padding: 0px 20px 0px 20px;
+    }
+    p {
+        font-family: 'Roboto';
+        font-size: 18px; 
+        font-weight: bolder; 
+        padding: 0px 20px 0px 20px;
+    }
+`;
