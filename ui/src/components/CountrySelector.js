@@ -18,6 +18,8 @@ import {LitElement, html, css} from 'lit-element';
 
 import {CountryService} from '../utils/CountryService';
 
+import style from '../styles/components/CountrySelector.css.js';
+
 import {Select} from '@material/mwc-select';
 import {ListItem} from '@material/mwc-list/mwc-list-item';
  
@@ -34,33 +36,13 @@ export class CountrySelector extends LitElement {
     }
 
     static get styles() {
-        return css`
-            div {
-                align-items: center; 
-                display: flex; 
-                flex-direction: column; 
-                flex-wrap: wrap;
-                justify-content: center; 
-                text-align: center;  
-            }
-            h3 {
-                font-family: 'Roboto';
-                font-size: 30px; 
-                font-weight: normal;
-            }
-            p {
-                font-family: 'Roboto';
-                font-size: 20px; 
-                font-weight: bolder; 
-            }
-        `;
+        return style;
     }
 
     constructor() {
         super();
         this.countries = []; 
         this.countryService = new CountryService(); 
-        
     }
 
     async firstUpdated() {

@@ -73,8 +73,25 @@ export class StateContainer extends LitElement {
      * Updates the state such that the country selector closes and
      * the appropriate terms of service appears. 
      */
-    handleCountrySelected() {
+    handleCountrySelected(e) {
+        this.country = (e.detail.country);
         this.view = Views.TERMS_OF_SERVICE; 
+    }
+
+    /**
+     * Updates the state such that the Terms of Service closes and the 
+     * country selection component re-appears. 
+     */
+    handleCancelTerms() {
+        this.view = Views.COUNTRY_SELECTION; 
+    }
+
+    /**
+     * Updates the state such that the Terms of Service closes and the 
+     * recording page appears. 
+     */
+    handleAcceptTerms() {
+        this.view = Views.COLLECTION; 
     }
 
     /**
@@ -132,28 +149,28 @@ export class StateContainer extends LitElement {
     }
 
     render() {
-        return html` <div
-            id="state-wrapper"
-            @country-selected="${(e) => { 
-                    this.country = (e.detail.country);
-                    this.handleCountrySelected(); }}"
-            @enter-form="${this.handleEnterForm}"
-            @exit-form="${this.handleExitForm}"
-            @update-user-info="${this.handleUserInfoUpdate}"
-            @change-prompt="${this.handleChangePrompt}"
-            @skip-prompt="${this.handleChangePrompt}"
-            @end-session="${this.handleEndSession}"
-            @update-wave="${this.handleUpdateWave}"
-        >
-            <vox-view-container
-                .country=${this.country}
-                .view=${this.view}
-                ?can-record=${this.canRecord}
-                ?is-recording=${this.isRecording}
-                .audio-stream=${this.audioStream}
-                .user=${this.user}
-            ></vox-view-container>
-        </div>`;
+        return html` 
+            <div
+                id="state-wrapper"
+                @country-selected="${this.handleCountrySelected}}"
+                @cancel-tos="${this.handleCancelTerms}"
+                @accept-tos="${this.handleAcceptTerms}"
+                @enter-form="${this.handleEnterForm}"
+                @exit-form="${this.handleExitForm}"
+                @update-user-info="${this.handleUserInfoUpdate}"
+                @change-prompt="${this.handleChangePrompt}"
+                @skip-prompt="${this.handleChangePrompt}"
+                @end-session="${this.handleEndSession}"
+                @update-wave="${this.handleUpdateWave}">
+                <vox-view-container
+                    .country=${this.country}
+                    .view=${this.view}
+                    ?can-record=${this.canRecord}
+                    ?is-recording=${this.isRecording}
+                    .audio-stream=${this.audioStream}
+                    .user=${this.user}>
+                </vox-view-container>
+            </div>`;
     }
 }
 

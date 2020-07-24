@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 /**
- * Service responsible for creating and fetching cookies.   
+ * Service responsible for creating and fetching the list of countries.   
  */
 export class CountryService {
 

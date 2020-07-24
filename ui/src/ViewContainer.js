@@ -20,12 +20,13 @@ import style from './styles/ViewContainer.css.js';
 import Views from './utils/ViewsEnum';
 
 import {CountrySelector} from './components/CountrySelector';
-import {UserIcon} from './components/UserIcon';
 import {Prompts} from './components/Prompts';
-import {UserForm} from './components/UserForm';
-import {WaveCanvas} from './components/WaveCanvas';
 import {RecordButton} from './components/RecordButton';
 import {SkipButton} from './components/SkipButton';
+import {ToS} from './components/ToS';
+import {UserForm} from './components/UserForm';
+import {UserIcon} from './components/UserIcon';
+import {WaveCanvas} from './components/WaveCanvas';
 
 export class ViewContainer extends LitElement {
     static get properties() {
@@ -59,7 +60,9 @@ export class ViewContainer extends LitElement {
      */
     renderTermsOfServiceTemplate() {
         return html`
-            ${this.country}
+            <vox-tos
+                .country = ${this.country}>
+            </vox-tos>
         `;
     }
 
@@ -133,16 +136,14 @@ export class ViewContainer extends LitElement {
 
     render() {
         let viewTemplate;
-
+        
         switch (this.view) {
             case Views.COUNTRY_SELECTION:
                 return html`
-                    ${this.renderCountrySelectionTemplate()}
-                `;
+                    ${this.renderCountrySelectionTemplate()} `;
             case Views.TERMS_OF_SERVICE:
                 return html`
-                    ${this.renderTermsOfServiceTemplate()}
-                `;
+                    ${this.renderTermsOfServiceTemplate()} `;
             case Views.COLLECTION:
                 viewTemplate = html` ${this.renderCollectionView()} `;
                 break;
