@@ -25,7 +25,7 @@ export class QualityControl {
     * @param {Object} blob - the blob containig utterance data
     * @private {Object} Allows access to data of the utterance  
     */
-    constructor(context, blob, ) {
+    constructor(context, blob) {
         this.context = context;
         this.blob = blob;
         this.audioBuffer;
@@ -77,7 +77,7 @@ export class QualityControl {
     * Helper function for silenceCheck that returns the 100 biggest values of an array
     */
     nLargest(arr, n) {
-        const sorted = [...arr].sort().reverse();
+        const sorted = [...arr].sort((a, b) => b - a);
         return sorted.slice(0, n);
     }
 
