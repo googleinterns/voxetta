@@ -20,10 +20,6 @@ import style from './styles/ViewContainer.css.js';
 import Views from './utils/ViewsEnum';
 
 import {CountrySelector} from './components/CountrySelector';
-<<<<<<< Updated upstream
-=======
-import {UserIcon} from './components/UserIcon';
->>>>>>> Stashed changes
 import {Prompts} from './components/Prompts';
 import {RecordButton} from './components/RecordButton';
 import {SkipButton} from './components/SkipButton';
@@ -49,7 +45,7 @@ export class ViewContainer extends LitElement {
     }
 
     /**
-     * Renders the componenets associated with the country selection state. 
+     * Renders the componenets associated with the country selection state.
      * @returns {HTML} The HTML template for the country selection state.
      */
     renderCountrySelectionTemplate() {
@@ -59,19 +55,11 @@ export class ViewContainer extends LitElement {
     }
 
     /**
-     * Renders the componenets associated with the terms of service state. 
+     * Renders the componenets associated with the terms of service state.
      * @returns {HTML} The HTML template for the terms of service state.
      */
     renderTermsOfServiceTemplate() {
-        return html`
-<<<<<<< Updated upstream
-            <vox-tos
-                .country = ${this.country}>
-            </vox-tos>
-=======
-            ${this.country}
->>>>>>> Stashed changes
-        `;
+        return html` <vox-tos .country=${this.country}> </vox-tos> `;
     }
 
     /**
@@ -144,23 +132,12 @@ export class ViewContainer extends LitElement {
 
     render() {
         let viewTemplate;
-        
+
         switch (this.view) {
             case Views.COUNTRY_SELECTION:
-                return html`
-<<<<<<< Updated upstream
-                    ${this.renderCountrySelectionTemplate()} `;
+                return html` ${this.renderCountrySelectionTemplate()} `;
             case Views.TERMS_OF_SERVICE:
-                return html`
-                    ${this.renderTermsOfServiceTemplate()} `;
-=======
-                    ${this.renderCountrySelectionTemplate()}
-                `;
-            case Views.TERMS_OF_SERVICE:
-                return html`
-                    ${this.renderTermsOfServiceTemplate()}
-                `;
->>>>>>> Stashed changes
+                return html` ${this.renderTermsOfServiceTemplate()} `;
             case Views.COLLECTION:
                 viewTemplate = html` ${this.renderCollectionView()} `;
                 break;

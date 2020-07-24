@@ -71,37 +71,30 @@ export class StateContainer extends LitElement {
 
     /**
      * Updates the state such that the country selector closes and
-     * the appropriate terms of service appears. 
+     * the appropriate terms of service appears.
      */
-<<<<<<< Updated upstream
     handleCountrySelected(e) {
-        this.country = (e.detail.country);
-=======
-    handleCountrySelected() {
->>>>>>> Stashed changes
-        this.view = Views.TERMS_OF_SERVICE; 
+        this.country = e.detail.country;
+        this.view = Views.TERMS_OF_SERVICE;
     }
 
     /**
-<<<<<<< Updated upstream
-     * Updates the state such that the Terms of Service closes and the 
-     * country selection component re-appears. 
+     * Updates the state such that the Terms of Service closes and the
+     * country selection component re-appears.
      */
     handleCancelTerms() {
-        this.view = Views.COUNTRY_SELECTION; 
+        this.view = Views.COUNTRY_SELECTION;
     }
 
     /**
-     * Updates the state such that the Terms of Service closes and the 
-     * recording page appears. 
+     * Updates the state such that the Terms of Service closes and the
+     * recording page appears.
      */
     handleAcceptTerms() {
-        this.view = Views.COLLECTION; 
+        this.view = Views.COLLECTION;
     }
 
     /**
-=======
->>>>>>> Stashed changes
      * Updates the isRecording and audioStream properties with the most up-to-date
      * data from the vox-record-button component.
      */
@@ -156,35 +149,11 @@ export class StateContainer extends LitElement {
     }
 
     render() {
-<<<<<<< Updated upstream
-        return html` 
-            <div
-                id="state-wrapper"
-                @country-selected="${this.handleCountrySelected}}"
-                @cancel-tos="${this.handleCancelTerms}"
-                @accept-tos="${this.handleAcceptTerms}"
-                @enter-form="${this.handleEnterForm}"
-                @exit-form="${this.handleExitForm}"
-                @update-user-info="${this.handleUserInfoUpdate}"
-                @change-prompt="${this.handleChangePrompt}"
-                @skip-prompt="${this.handleChangePrompt}"
-                @end-session="${this.handleEndSession}"
-                @update-wave="${this.handleUpdateWave}">
-                <vox-view-container
-                    .country=${this.country}
-                    .view=${this.view}
-                    ?can-record=${this.canRecord}
-                    ?is-recording=${this.isRecording}
-                    .audio-stream=${this.audioStream}
-                    .user=${this.user}>
-                </vox-view-container>
-            </div>`;
-=======
         return html` <div
             id="state-wrapper"
-            @country-selected="${(e) => { 
-                    this.country = (e.detail.country);
-                    this.handleCountrySelected(); }}"
+            @country-selected="${this.handleCountrySelected}}"
+            @cancel-tos="${this.handleCancelTerms}"
+            @accept-tos="${this.handleAcceptTerms}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
@@ -192,7 +161,6 @@ export class StateContainer extends LitElement {
             @skip-prompt="${this.handleChangePrompt}"
             @end-session="${this.handleEndSession}"
             @update-wave="${this.handleUpdateWave}"
-            @update-toast="${this.handleUpdateToast}"
         >
             <vox-view-container
                 .country=${this.country}
@@ -201,14 +169,9 @@ export class StateContainer extends LitElement {
                 ?is-recording=${this.isRecording}
                 .audio-stream=${this.audioStream}
                 .user=${this.user}
-                .toast=${this.toast}
             >
-                <div slot="toast">
-                    ${this.renderToast()}
-                </div>
             </vox-view-container>
         </div>`;
->>>>>>> Stashed changes
     }
 }
 

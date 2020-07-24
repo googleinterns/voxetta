@@ -18,10 +18,6 @@
 import {LitElement, html, css} from 'lit-element';
 import {styleMap} from 'lit-html/directives/style-map.js';
 
-<<<<<<< Updated upstream
-=======
-import {LitElement, html} from 'lit-element';
->>>>>>> Stashed changes
 import {Icon} from '@material/mwc-icon';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
@@ -30,13 +26,13 @@ import {QualityControl} from '../utils/QualityControl';
 import style from '../styles/components/RecordButton.css.js';
 
 // Styling for the button when the user is not recording
-let nonRecordingStyle = {
+const nonRecordingStyle = {
     backgroundColor: 'white',
     color: '#3c4043',
 };
 
 // Styling for the button when the user is recording
-let recordingStyle = {
+const recordingStyle = {
     backgroundColor: 'red',
     color: 'white',
 };
@@ -66,6 +62,7 @@ export class RecordButton extends LitElement {
     updated() {
         this.handleWaveCanvas();
     }
+
     /**
      * If the user is not currently recording, begin recording using the Microphone
      * component. Otherwise, stop recording and save and display the just-recorded
@@ -99,18 +96,7 @@ export class RecordButton extends LitElement {
             if (!qualityResult.success) {
                 return;
             }
-<<<<<<< Updated upstream
             this.handleFinish();
-=======
-
-            const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityResult = qualityCheck.isQualitySound();
-
-            if (!qualityResult.success) {
-                return;
-            }
-
->>>>>>> Stashed changes
             if (audio.recordingUrl) {
                 this.utteranceService.saveAudio(audio);
             }
@@ -174,6 +160,7 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
+
     render() {
         return html`
             <mwc-icon-button
