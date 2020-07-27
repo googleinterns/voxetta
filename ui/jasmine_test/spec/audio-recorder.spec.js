@@ -28,16 +28,16 @@ describe('Testing the Audio Recorder methods', function() {
         await audioRecorder.initRecorder();
     });
 
-    it('asks for mic', async () => {
+    it('asks for mic', () => {
         expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalled();
     });
     
-    it('records audio', async () => {
+    it('records audio', () => {
         audioRecorder.startRecording();
         expect(audioRecorder.mediaRecorder.start).toHaveBeenCalled();
     });
 
-    it('stops recording', async () => {
+    it('stops recording', () => {
         audioRecorder.startRecording();
         let obj = audioRecorder.stopRecording();
         expect(audioRecorder.mediaRecorder.stop).toHaveBeenCalled();

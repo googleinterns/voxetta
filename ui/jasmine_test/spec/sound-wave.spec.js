@@ -50,7 +50,6 @@ describe('Testing the Sound Wave methods', function() {
     });
     
     it('draw on canvas', () => {
-        const audioContextMock = new StubContext();
         const canvasCtx = new StubCanvasCtx();
         const analyser = new StubAnalyser();
         const freqs = new StubFreqs();
