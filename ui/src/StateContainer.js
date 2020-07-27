@@ -34,10 +34,6 @@ export class StateContainer extends LitElement {
         };
     }
 
-    static get styles() {
-        return style;
-    }
-
     constructor() {
         super();
 
