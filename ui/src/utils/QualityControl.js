@@ -21,6 +21,9 @@ export class QualityControl {
     
    /**
     * Creates an quality control instance
+    * @param {Object} context - Audio context used to extract data from utterance.
+    * @param {Object} blob - the blob containig utterance data
+    * @private {Object} Allows access to data of the utterance  
     */
     constructor(context, blob) {
         this.context = context;
@@ -40,11 +43,52 @@ export class QualityControl {
             errorMessage: '',
         };
 
+        const audioResult = this.silenceCheck();
+
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
             qualityResult.errorMessage += 'Audio recording failed: recording was too short. Try again';
+        } else if (audioResult) {
+            qualityResult.success = false;
+            qualityResult.errorMessage += audioResult;
         }
 
         return qualityResult;
+    }
+
+   /**
+    * Checks if the sound is too silent by finding the average of the 100 biggest values
+    * of the buffer's data
+    */
+    silenceCheck() {
+        const soundCutOff = 0.2;
+        const bufferArray = this.audioBuffer.getChannelData(0);
+        const noDuplicateValues = Array.from(new Set(bufferArray));  // makes sure all values are unique
+        const biggestValues = this.nLargest(noDuplicateValues, 100);
+        const average = this.findAverage(biggestValues);
+        if (average > soundCutOff) {
+            return null;
+        } else {
+            return 'Audio recording failed: recording was silent. Try again';
+        }
+    }
+
+   /**
+    * Helper function for silenceCheck that returns the 100 biggest values of an array
+    */
+    nLargest(arr, n) {
+        const sorted = [...arr].sort((a, b) => b - a);
+        return sorted.slice(0, n);
+    }
+
+   /**
+    * Helper function for silenceCheck that returns the average of the numbers in an array
+    */
+    findAverage(arr) {
+        let total = 0;
+        for (let i = 0; i < arr.length; i++) {
+            total += arr[i];
+        }
+        return total / arr.length;
     }
 }
