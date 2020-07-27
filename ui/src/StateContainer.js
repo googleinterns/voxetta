@@ -77,8 +77,6 @@ export class StateContainer extends LitElement {
      * the appropriate terms of service appears. 
      */
     handleCountrySelected(e) {
-        this.setUserId();
-        this.setUserDetails();
         this.country = (e.detail.country);
         this.view = Views.TERMS_OF_SERVICE; 
     }
