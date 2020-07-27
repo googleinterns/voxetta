@@ -17,6 +17,8 @@
 import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
+import {UrlService} from './utils/UrlService';
+
 import Views from './utils/ViewsEnum';
 
 import {ViewContainer} from './ViewContainer';
@@ -28,7 +30,12 @@ export class StateContainer extends LitElement {
             canRecord: {type: Boolean},
             isRecording: {type: Boolean},
             audioStream: {type: Object},
+            context: {type: Object}
         };
+    }
+
+    static get styles() {
+        return style;
     }
 
     constructor() {
@@ -74,6 +81,8 @@ export class StateContainer extends LitElement {
      * the appropriate terms of service appears. 
      */
     handleCountrySelected(e) {
+        this.setUserId();
+        this.setUserDetails();
         this.country = (e.detail.country);
         this.view = Views.TERMS_OF_SERVICE; 
     }
@@ -104,6 +113,7 @@ export class StateContainer extends LitElement {
         );
         this.isRecording = recordComponent.getIsRecording();
         this.audioStream = recordComponent.getAudioStream();
+        this.context = recordComponent.getContext(); 
     }
 
     /**
@@ -167,8 +177,9 @@ export class StateContainer extends LitElement {
                     .view=${this.view}
                     ?can-record=${this.canRecord}
                     ?is-recording=${this.isRecording}
-                    .audio-stream=${this.audioStream}
-                    .user=${this.user}>
+                    .audioStream=${this.audioStream}
+                    .user=${this.user}
+                    .context=${this.context}>
                 </vox-view-container>
             </div>`;
     }
