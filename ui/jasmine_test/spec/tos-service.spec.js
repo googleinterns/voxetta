@@ -14,41 +14,38 @@
  * limitations under the License.
  */
 
+import fetchMock from 'fetch-mock';
 import {ToSService} from '../../src/utils/ToSService';
 
-import fetchMock from 'fetch-mock';
-
 describe('Testing that the ToS Service', () => {
-
-    const tosService = new ToSService(); 
+    const tosService = new ToSService();
 
     it('properly retrieves the ToS for a country without spaces', async () => {
-
-        const dummySuccessResponse = 
-            'Terms of Service for Brazil.'
+        const dummySuccessResponse = 'Terms of Service for Brazil.';
 
         // Mock successful fetch
-        fetchMock.mock('/src/data/ToS/Brazil.tos.txt', {
+        fetchMock.mock('/data/ToS/Brazil.tos.txt', {
             status: 200,
-            body: dummySuccessResponse
+            body: dummySuccessResponse,
         });
 
         const terms = await tosService.getToS('Brazil');
+
         expect(terms).toEqual('Terms of Service for Brazil.');
     });
 
     it('properly retrieves the ToS for a country with spaces', async () => {
-
-        const dummySuccessResponse = 
-            'Terms of Service for United States (English).'
+        const dummySuccessResponse =
+            'Terms of Service for United States (English).';
 
         // Mock successful fetch
-        fetchMock.mock('/src/data/ToS/United_States_(English).tos.txt', {
+        fetchMock.mock('/data/ToS/United_States_(English).tos.txt', {
             status: 200,
-            body: dummySuccessResponse
+            body: dummySuccessResponse,
         });
 
         const terms = await tosService.getToS('United States (English)');
+
         expect(terms).toEqual('Terms of Service for United States (English).');
     });
 });
