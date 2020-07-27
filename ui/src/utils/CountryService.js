@@ -14,18 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 /**
- * Service responsible for creating and fetching the list of countries.   
+ * Service responsible for creating and fetching the list of countries.
  */
 export class CountryService {
-
     /**
      * Returns an array form of the 'countries.txt' file.
-     * @return {Array} The name of every country the user may be located in. 
+     * @return {Array} The name of every country the user may be located in.
      */
     async getCountries() {
-        const countries = await fetch('./src/data/countries.txt')
-            .then(response => response.text())
-            .then(countries => countries.split('\n'));
+        const countries = await fetch('/data/countries.txt')
+            .then((response) => response.text())
+            .then((countries) => countries.split('\n'));
         return countries;
-    }   
+    }
 }

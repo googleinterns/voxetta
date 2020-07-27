@@ -175,10 +175,7 @@ export class StateContainer extends LitElement {
     render() {
         return html` <div
             id="state-wrapper"
-            @country-selected="${(e) => {
-                this.country = e.detail.country;
-                this.handleCountrySelected();
-            }}"
+            @country-selected="${this.handleCountrySelected}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
@@ -188,6 +185,8 @@ export class StateContainer extends LitElement {
             @update-wave="${this.handleUpdateWave}"
             @add-toast="${this.handleAddToast}"
             @clear-toast="${this.handleClearToast}"
+            @accept-tos="${this.handleAcceptTerms}"
+            @cancel-tos="${this.handleCancelTerms}"
         >
             ${this.renderToast()}
             <vox-view-container

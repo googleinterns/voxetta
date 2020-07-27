@@ -31,6 +31,10 @@ export default merge(baseConfig, {
                     src: 'public',
                     dest: 'dist/',
                 },
+                {
+                    src: 'data',
+                    dest: 'dist/',
+                },
             ],
         }),
     ],

@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import {LitElement, html, css} from 'lit-element';
 
+import {Select} from '@material/mwc-select';
+import {ListItem} from '@material/mwc-list/mwc-list-item';
 import {CountryService} from '../utils/CountryService';
 
 import style from '../styles/components/CountrySelector.css.js';
 
-import {Select} from '@material/mwc-select';
-import {ListItem} from '@material/mwc-list/mwc-list-item';
- 
 /**
  * Component responsible for providing users a means to select
- * the country they are located in. 
+ * the country they are located in.
  */
 export class CountrySelector extends LitElement {
-
     static get properties() {
         return {
-            countries: {type: Array}
+            countries: {type: Array},
         };
     }
 
@@ -41,8 +39,8 @@ export class CountrySelector extends LitElement {
 
     constructor() {
         super();
-        this.countries = []; 
-        this.countryService = new CountryService(); 
+        this.countries = [];
+        this.countryService = new CountryService();
     }
 
     async firstUpdated() {
@@ -50,8 +48,8 @@ export class CountrySelector extends LitElement {
     }
 
     /**
-     * Determines if a country has been selected and handles the app state 
-     * accordingly. 
+     * Determines if a country has been selected and handles the app state
+     * accordingly.
      */
     checkSelection() {
         const countryList = this.shadowRoot.getElementById('country-list');
@@ -63,15 +61,15 @@ export class CountrySelector extends LitElement {
 
     /**
      * Emits an event that causes the country selector to close and the appropriate
-     * Terms of Service to appear. 
+     * Terms of Service to appear.
      */
     handleCountrySelected() {
         const event = new CustomEvent('country-selected', {
             bubbles: true,
             composed: true,
-            detail: { 
-                country: this.country
-            }
+            detail: {
+                country: this.country,
+            },
         });
         this.dispatchEvent(event);
     }
@@ -79,27 +77,35 @@ export class CountrySelector extends LitElement {
     render() {
         return html`
             <div>
-                <h3>This site enables Google to collect audio samples from you, for 
-                    the purpose of developing and improving speech recognition 
-                    technologies</h3>
-                <p>You must fill out the form for your country and agree to the 
-                    terms before using this site:</p>
+                <h3>
+                    This site enables Google to collect audio samples from you,
+                    for the purpose of developing and improving speech
+                    recognition technologies
+                </h3>
+                <p>
+                    You must fill out the form for your country and agree to the
+                    terms before using this site:
+                </p>
                 <div class="mwc-select">
                     <mwc-select
-                        id="country-list" 
-                        outlined 
+                        id="country-list"
+                        outlined
                         required
                         label="Select your country"
-                        @click="${this.checkSelection}">
-                            <mwc-list-item disabled></mwc-list-item>
-                            ${this.countries.map(country => 
+                        @click="${this.checkSelection}"
+                    >
+                        <mwc-list-item disabled></mwc-list-item>
+                        ${this.countries.map(
+                            (country) =>
                                 html`<mwc-list-item value=${country}>
-                                ${country}</mwc-list-item>`)}
+                                    ${country}</mwc-list-item
+                                >`
+                        )}
                     </mwc-select>
                 </div>
             </div>
         `;
     }
 }
- 
+
 customElements.define('vox-country-selector', CountrySelector);
