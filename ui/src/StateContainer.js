@@ -133,6 +133,7 @@ export class StateContainer extends LitElement {
      * Causes a new prompt to render in the vox-prompts child component.
      */
     handleChangePrompt() {
+        this.collectionState = CollectionStates.TRANSITIONING;
         const promptComponent = this.viewShadowRoot.querySelector(
             'vox-prompts'
         );
