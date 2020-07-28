@@ -34,6 +34,7 @@ export class StateContainer extends LitElement {
             audioStream: {type: Object},
             toast: {type: Object},
             collectionState: {type: String},
+            context: {type: Object},
         };
     }
 
@@ -112,6 +113,7 @@ export class StateContainer extends LitElement {
      */
     handleUpdateWave(e) {
         this.audioStream = e.detail.audioStream;
+        this.context = e.detail.context;
     }
 
     /**
@@ -204,10 +206,11 @@ export class StateContainer extends LitElement {
             <vox-view-container
                 .country=${this.country}
                 .view=${this.view}
-                ?can-record=${this.canRecord}
+                ?canRecord=${this.canRecord}
                 .collectionState=${this.collectionState}
-                .audio-stream=${this.audioStream}
+                .audioStream=${this.audioStream}
                 .user=${this.user}
+                .context=${this.context}
             >
             </vox-view-container>
         </div>`;

@@ -25,6 +25,7 @@ export class RecordingSection extends LitElement {
         return {
             collectionState: {type: String},
             audioStream: {type: Object},
+            context: {type: Object},
         };
     }
 
@@ -45,6 +46,7 @@ export class RecordingSection extends LitElement {
                 return html` <vox-sound-wave
                     .collectionState=${this.collectionState}
                     .audioStream=${this.audioStream}
+                    .context=${this.context}
                 >
                 </vox-sound-wave>`;
             case CollectionStates.BEFORE_UPLOAD:

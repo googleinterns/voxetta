@@ -33,11 +33,12 @@ export class ViewContainer extends LitElement {
     static get properties() {
         return {
             view: {type: String},
-            canRecord: {type: Boolean, attribute: 'can-record'},
+            canRecord: {type: Boolean},
             collectionState: {type: String},
-            audioStream: {type: Object, attribute: 'audio-stream'},
+            audioStream: {type: Object},
             user: {type: Object},
             country: {type: String},
+            context: {type: Object},
         };
     }
 
@@ -97,6 +98,7 @@ export class ViewContainer extends LitElement {
                 <vox-recording-section
                     .collectionState=${this.collectionState}
                     .audioStream=${this.audioStream}
+                    .context=${this.context}
                 >
                 </vox-recording-section>
             </div>
