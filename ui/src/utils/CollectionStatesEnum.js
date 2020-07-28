@@ -1,7 +1,8 @@
-export const ButtonStates = {
+export const CollectionStates = {
     NOT_RECORDING: 'NOT_RECORDING',
     RECORDING: 'RECORDING',
     BEFORE_UPLOAD: 'BEFORE_UPLOAD',
     TRANSITIONING: 'TRANSITIONING',
-    ERROR: 'ERROR',
+    QC_ERROR: 'QC_ERROR',
+    UPLOAD_ERROR: 'UPLOAD_ERROR',
 };

@@ -19,6 +19,7 @@ import {LitElement, html} from 'lit-element';
 import {CookieService} from './utils/CookieService';
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
+import {CollectionStates} from './utils/CollectionStatesEnum';
 
 import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
@@ -30,9 +31,9 @@ export class StateContainer extends LitElement {
         return {
             view: {type: String},
             canRecord: {type: Boolean},
-            isRecording: {type: Boolean},
             audioStream: {type: Object},
             toast: {type: Object},
+            collectionState: {type: String},
         };
     }
 
@@ -55,6 +56,8 @@ export class StateContainer extends LitElement {
 
         this.view = Views.COUNTRY_SELECTION;
         this.canRecord = true;
+
+        this.collectionState = CollectionStates.NOT_RECORDING;
 
         this.viewShadowRoot = undefined;
     }
@@ -104,14 +107,13 @@ export class StateContainer extends LitElement {
     }
 
     /**
-     * Updates the isRecording and audioStream properties with the most up-to-date
+     * Updates the audioStream property with the most up-to-date
      * data from the vox-record-button component.
      */
     handleUpdateWave() {
         const recordComponent = this.viewShadowRoot.querySelector(
             'vox-record-button'
         );
-        this.isRecording = recordComponent.getIsRecording();
         this.audioStream = recordComponent.getAudioStream();
     }
 
@@ -172,6 +174,14 @@ export class StateContainer extends LitElement {
         return html` <vox-toast message="${this.toast}"></vox-toast> `;
     }
 
+    updateCollectionState(e) {
+        this.collectionState = e.detail.state;
+
+        if (this.collectionState === CollectionStates.TRANSITIONING) {
+            this.getNewPrompt();
+        }
+    }
+
     render() {
         return html` <div
             id="state-wrapper"
@@ -179,7 +189,7 @@ export class StateContainer extends LitElement {
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
-            @change-prompt="${this.handleChangePrompt}"
+            @update-collection-state=${this.updateCollectionState}
             @skip-prompt="${this.handleChangePrompt}"
             @end-session="${this.handleEndSession}"
             @update-wave="${this.handleUpdateWave}"
@@ -193,7 +203,7 @@ export class StateContainer extends LitElement {
                 .country=${this.country}
                 .view=${this.view}
                 ?can-record=${this.canRecord}
-                ?is-recording=${this.isRecording}
+                .collectionState=${this.collectionState}
                 .audio-stream=${this.audioStream}
                 .user=${this.user}
             >

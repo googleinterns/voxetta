@@ -27,13 +27,14 @@ import {ToS} from './components/ToS';
 import {UserForm} from './components/UserForm';
 import {UserIcon} from './components/UserIcon';
 import {WaveCanvas} from './components/WaveCanvas';
+import {RecordingSection} from './components/RecordingSection';
 
 export class ViewContainer extends LitElement {
     static get properties() {
         return {
             view: {type: String},
             canRecord: {type: Boolean, attribute: 'can-record'},
-            isRecording: {type: Boolean, attribute: 'is-recording'},
+            collectionState: {type: String},
             audioStream: {type: Object, attribute: 'audio-stream'},
             user: {type: Object},
             country: {type: String},
@@ -86,30 +87,15 @@ export class ViewContainer extends LitElement {
 
                     <div class="connection-status"></div>
                 </header>
+
+                <!-- Prompts -->
                 <div class="prompts top-level-component">
                     <vox-prompts></vox-prompts>
                 </div>
 
-                <div id="feedback top-level-component">
-                    <vox-sound-wave
-                        .isRecording=${this.isRecording}
-                        .audioStream=${this.audioStream}
-                    >
-                    </vox-sound-wave>
-                </div>
-
-                <!-- Hide recording when finished -->
-                ${this.canRecord
-                    ? html`<div class="buttons top-level-component">
-                          <div class="button-container"></div>
-                          <div class="record-button-container">
-                              <vox-record-button> </vox-record-button>
-                          </div>
-                          <div class="button-container">
-                              <vox-skip-button> </vox-skip-button>
-                          </div>
-                      </div>`
-                    : html``}
+                <!-- Recording section  -->
+                <vox-recording-section .collectionState=${this.collectionState}>
+                </vox-recording-section>
             </div>
         `;
     }

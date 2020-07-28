@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import {SoundWave} from './SoundWave';
 import {LitElement, html, css} from 'lit-element';
+import {SoundWave} from './SoundWave';
+import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 /**
  * Canvas responsible for holding soundwave once user starts recording
@@ -26,7 +27,7 @@ export class WaveCanvas extends LitElement {
             canvasId: {type: String},
             canvas: {type: Object},
             audioStream: {type: Object},
-            isRecording: {type: Boolean},
+            collectionState: {type: String},
             width: {type: Number},
             height: {type: Number},
             context: {type: Object},
@@ -70,14 +71,21 @@ export class WaveCanvas extends LitElement {
     updated(changedProperties) {
         if (
             this.audioStream != changedProperties.get('audioStream') &&
-            this.isRecording
+            this.getIsRecordingState()
         ) {
             this.soundWave.setStream(this.audioStream);
             this.soundWave.setContext(this.context);
             this.soundWave.createSoundWave();
-        } else if (!this.isRecording && this.soundWave != undefined) {
+        } else if (!this.getIsRecordingState() && this.soundWave != undefined) {
             this.soundWave.stopSoundWave();
         }
+    }
+
+    /**
+     * @returns {Boolean} If the current local state property is the recording state
+     */
+    getIsRecordingState() {
+        return this.collectionState === CollectionStates.RECORDING;
     }
 
     render() {
