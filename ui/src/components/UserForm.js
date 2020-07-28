@@ -52,7 +52,9 @@ export class UserForm extends LitElement {
     }
 
     firstUpdated() {
-        this.checkInitialEnable(); 
+        if (!this.loginCompleted) {
+            this.checkInitialEnable(); 
+        }
         this.handleFirstAccess(); 
     }
 
@@ -191,7 +193,8 @@ export class UserForm extends LitElement {
                             validationMessage="This field is required."
                             label="Gender" 
                             placeholder="Select your gender"
-                            value=${this.gender}>
+                            value=${this.gender}
+                            @click=${this.formIsValid}>
                                 <mwc-list-item disabled></mwc-list-item>
                                 <mwc-list-item value="Female">Female</mwc-list-item>
                                 <mwc-list-item value="Male">Male</mwc-list-item>  
