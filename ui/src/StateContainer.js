@@ -110,11 +110,8 @@ export class StateContainer extends LitElement {
      * Updates the audioStream property with the most up-to-date
      * data from the vox-record-button component.
      */
-    handleUpdateWave() {
-        const recordComponent = this.viewShadowRoot.querySelector(
-            'vox-record-button'
-        );
-        this.audioStream = recordComponent.getAudioStream();
+    handleUpdateWave(e) {
+        this.audioStream = e.detail.audioStream;
     }
 
     /**
