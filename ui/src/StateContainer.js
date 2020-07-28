@@ -20,8 +20,12 @@ import {CookieService} from './utils/CookieService';
 import {UrlService} from './utils/UrlService';
 
 import Views from './utils/ViewsEnum';
+import * as ToastUtils from './utils/ToastUtils';
 
+import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
+
+import style from './styles/StateContainer.css.js';
 
 export class StateContainer extends LitElement {
     static get properties() {
@@ -30,8 +34,13 @@ export class StateContainer extends LitElement {
             canRecord: {type: Boolean},
             isRecording: {type: Boolean},
             audioStream: {type: Object},
-            context: {type: Object}
+            context: {type: Object},
+            toast: {type: Object},
         };
+    }
+
+    static get styles() {
+        return style;
     }
 
     constructor() {
@@ -74,27 +83,27 @@ export class StateContainer extends LitElement {
 
     /**
      * Updates the state such that the country selector closes and
-     * the appropriate terms of service appears. 
+     * the appropriate terms of service appears.
      */
     handleCountrySelected(e) {
-        this.country = (e.detail.country);
-        this.view = Views.TERMS_OF_SERVICE; 
+        this.country = e.detail.country;
+        this.view = Views.TERMS_OF_SERVICE;
     }
 
     /**
-     * Updates the state such that the Terms of Service closes and the 
-     * country selection component re-appears. 
+     * Updates the state such that the Terms of Service closes and the
+     * country selection component re-appears.
      */
     handleCancelTerms() {
-        this.view = Views.COUNTRY_SELECTION; 
+        this.view = Views.COUNTRY_SELECTION;
     }
 
     /**
-     * Updates the state such that the Terms of Service closes and the 
-     * recording page appears. 
+     * Updates the state such that the Terms of Service closes and the
+     * recording page appears.
      */
     handleAcceptTerms() {
-        this.view = Views.COLLECTION; 
+        this.view = Views.COLLECTION;
     }
 
     /**
@@ -152,6 +161,21 @@ export class StateContainer extends LitElement {
         this.cookieService.makeUserInfoCookie(e.detail.userInfo);
     }
 
+    handleAddToast(e) {
+        this.toast = e.detail.message;
+    }
+
+    handleClearToast() {
+        this.toast = undefined;
+    }
+
+    renderToast() {
+        if (!this.toast) {
+            return html``;
+        }
+        return html` <vox-toast message="${this.toast}"></vox-toast> `;
+    }
+
     render() {
         return html` 
             <div
@@ -165,7 +189,9 @@ export class StateContainer extends LitElement {
                 @change-prompt="${this.handleChangePrompt}"
                 @skip-prompt="${this.handleChangePrompt}"
                 @end-session="${this.handleEndSession}"
-                @update-wave="${this.handleUpdateWave}">
+                @update-wave="${this.handleUpdateWave}"
+                @add-toast="${this.handleAddToast}"
+                @clear-toast="${this.handleClearToast}">
                 <vox-view-container
                     .country=${this.country}
                     .view=${this.view}

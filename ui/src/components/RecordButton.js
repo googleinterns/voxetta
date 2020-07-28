@@ -1,6 +1,4 @@
 /**
- * Button responsible for enabling the user to record and upload audio files.
-=======
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {LitElement, html, css} from 'lit-element';
-import {styleMap} from 'lit-html/directives/style-map.js';
 
+import {LitElement, html} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
+import {QualityControl} from '../utils/QualityControl';
+import {dispatchErrorToast} from '../utils/ToastUtils.js';
 
 import style from '../styles/components/RecordButton.css.js';
-
-// Styling for the button when the user is not recording
-let nonRecordingStyle = {
-    backgroundColor: 'white',
-    color: '#3c4043',
-};
-
-// Styling for the button when the user is recording
-let recordingStyle = {
-    backgroundColor: 'red',
-    color: 'white',
-};
 
 export class RecordButton extends LitElement {
     static get properties() {
@@ -54,13 +41,12 @@ export class RecordButton extends LitElement {
         this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
-        this.audioStream;
-        this.context;
     }
 
     updated() {
         this.handleWaveCanvas();
     }
+
     /**
      * If the user is not currently recording, begin recording using the Microphone
      * component. Otherwise, stop recording and save and display the just-recorded
@@ -71,14 +57,17 @@ export class RecordButton extends LitElement {
             try {
                 await this.audioRecorder.initRecorder();
             } catch (e) {
-                alert(`Error: Microphone access is currently blocked for this site. 
+                dispatchErrorToast(
+                    this,
+                    `Microphone access is currently blocked for this site. 
                     To unblock, please navigate to chrome://settings/content/microphone 
-                    and remove this site from the 'Block' section.`);
+                    and remove this site from the 'Block' section.`
+                );
                 return;
             }
 
             if (!this.audioRecorder.startRecording()) {
-                alert('Failed to start recording.');
+                dispatchErrorToast(this, 'Failed to start recording.');
                 return;
             }
 
@@ -88,11 +77,37 @@ export class RecordButton extends LitElement {
                 window.webkitAudioContext)();
         } else {
             this.isRecording = false;
-            this.handleFinish();
-            const audio = await this.audioRecorder.stopRecording();
-            if (audio.recordingUrl) {
-                this.utteranceService.saveAudio(audio);
+            let audio;
+
+            try {
+                audio = await this.audioRecorder.stopRecording();
+            } catch (e) {
+                dispatchErrorToast(
+                    this,
+                    `Could not record successfully; ${e.name}: ${e.message}`
+                );
             }
+
+            const qualityCheck = new QualityControl(this.context, audio.blob);
+            const qualityResult = qualityCheck.isQualitySound();
+            if (!qualityResult.success) {
+                return;
+            }
+
+            if (audio.recordingUrl) {
+                try {
+                    const resp = await this.utteranceService.saveAudio(audio);
+
+                    if (!resp) throw new Error();
+                } catch (e) {
+                    dispatchErrorToast(
+                        this,
+                        `Could not upload recording successfully`
+                    );
+                }
+            }
+
+            this.handleFinish();
         }
     }
 
@@ -151,14 +166,13 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
+
     render() {
         return html`
             <mwc-icon-button
                 id="record-button"
                 icon=${this.isRecording ? 'stop' : 'mic'}
-                style=${styleMap(
-                    this.isRecording ? recordingStyle : nonRecordingStyle
-                )}
+                class=${this.isRecording ? 'recording' : ''}
                 @click=${this.recordHandler}
             >
             </mwc-icon-button>
