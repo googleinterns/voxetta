@@ -121,24 +121,6 @@ export class RecordButton extends LitElement {
     }
 
     /**
-     * Returns whether or not the application is actively recording.
-     * @return {Boolean} Whether or not the application is actively
-     *  recording.
-     */
-    // getIsRecording() {
-    //     return this.isRecording;
-    // }
-
-    /**
-     * Returns the current audio stream being recorded.
-     * @returns {Object} The current audio stream being
-     *  recorded.
-     */
-    getAudioStream() {
-        return this.audioStream;
-    }
-
-    /**
      * Returns the context of the audio.
      * @returns {Object} The current context for the audio.
      */

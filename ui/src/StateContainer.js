@@ -133,7 +133,6 @@ export class StateContainer extends LitElement {
      * Causes a new prompt to render in the vox-prompts child component.
      */
     handleChangePrompt() {
-        this.collectionState = CollectionStates.TRANSITIONING;
         const promptComponent = this.viewShadowRoot.querySelector(
             'vox-prompts'
         );
@@ -180,6 +179,11 @@ export class StateContainer extends LitElement {
         }
     }
 
+    handleSkipPrompt() {
+        this.collectionState = CollectionStates.TRANSITIONING;
+        this.getNewPrompt();
+    }
+
     render() {
         return html` <div
             id="state-wrapper"
@@ -188,7 +192,7 @@ export class StateContainer extends LitElement {
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-collection-state=${this.updateCollectionState}
-            @skip-prompt="${this.handleChangePrompt}"
+            @skip-prompt="${this.handleSkipPrompt}"
             @end-session="${this.handleEndSession}"
             @update-wave="${this.handleUpdateWave}"
             @add-toast="${this.handleAddToast}"
