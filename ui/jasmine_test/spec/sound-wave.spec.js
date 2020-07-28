@@ -20,7 +20,7 @@ import {StubCanvasCtx} from './helpers/stubs/StubCanvasCtx.js';
 import {StubAnalyser} from './helpers/stubs/StubAnalyser.js';
 import {StubFreqs} from './helpers/stubs/StubFreqs.js';
 
-describe('Testing the Sound Wave methods', function() {
+describe('Testing the Sound Wave methods', () => {
 
     let canvas;
     let stream;

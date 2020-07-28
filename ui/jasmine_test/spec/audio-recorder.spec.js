@@ -16,7 +16,7 @@
 
 import {AudioRecorder} from '../../src/utils/AudioRecorder.js';
 
-describe('Testing the Audio Recorder methods', function() {
+describe('Testing the Audio Recorder methods', () => {
 
     let audioStream;
     const audioRecorder = new AudioRecorder();

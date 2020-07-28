@@ -16,7 +16,7 @@
 
 import {QualityControl} from '../../src/utils/QualityControl.js';
 
-describe('Testing the quality control methods', function() {
+describe('Testing the quality control methods', () => {
 
     let qualityControl;
 
