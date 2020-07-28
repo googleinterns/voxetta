@@ -24,6 +24,9 @@ import {Icon} from '@material/mwc-icon';
 
 import style from '../styles/components/UserForm.css.js';
 
+const MAX_USER_AGE = 120;
+const MIN_USER_AGE = 0; 
+
 /**
  * Component responsible for providing users a means to provide
  * their personal information.
@@ -35,6 +38,7 @@ export class UserForm extends LitElement {
             gender: {type: String},
             userAge: {type: Number},
             deviceType: {type: String},
+            loginCompleted: {type: Boolean},
         };
     }
 
@@ -45,7 +49,11 @@ export class UserForm extends LitElement {
     constructor() {
         super();
         this.addEventListener('input', this.formIsValid);
-        this.addEventListener('click', this.formIsValid);
+    }
+
+    firstUpdated() {
+        this.checkInitialEnable(); 
+        this.handleFirstAccess(); 
     }
 
     /**
@@ -74,17 +82,13 @@ export class UserForm extends LitElement {
      */
     formIsValid() {
         const userIdValidity = this.shadowRoot
-            .getElementById('user-id')
-            .checkValidity();
+            .getElementById('user-id').checkValidity();
         const genderValidity = this.shadowRoot
-            .getElementById('gender-list')
-            .checkValidity();
+            .getElementById('gender-list').checkValidity();
         const userAgeValidity = this.shadowRoot
-            .getElementById('user-age')
-            .checkValidity();
+            .getElementById('user-age').checkValidity();
         const deviceTypeValidity = this.shadowRoot
-            .getElementById('device-type')
-            .checkValidity();
+            .getElementById('device-type').checkValidity();
 
         const formValidity =
             userIdValidity &&
@@ -93,6 +97,43 @@ export class UserForm extends LitElement {
             deviceTypeValidity;
         const saveButton = this.shadowRoot.getElementById('save-button');
         saveButton.disabled = !formValidity;
+    }
+
+    /**
+     * Enables the save button when accessed via the login flow if
+     * the cookies and URL contain every required piece of user information.
+     */
+    checkInitialEnable() {
+        let formValidity = true;
+        const filledOut = 
+            this.userId && 
+            this.gender && 
+            this.userAge && 
+            this.deviceType
+
+        if (!filledOut) {
+            formValidity = false; 
+        }
+
+        if (this.userAge < MIN_USER_AGE 
+            || this.userAge > MAX_USER_AGE) {
+                formValidity = false; 
+        }
+
+        const saveButton = this.shadowRoot.getElementById('save-button');
+        saveButton.disabled = !formValidity;
+    }
+
+    /**
+     * Emits an event that causes the loggingIn property to be made
+     * false.
+     */
+    handleFirstAccess() {
+        const event = new CustomEvent('first-access-over', {
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
     }
 
     /**
@@ -187,12 +228,19 @@ export class UserForm extends LitElement {
                         @click=${this.processForm}>
                     </mwc-button>
                 </form>
-                <mwc-button 
-                    class="cancel"
-                    unelevated 
-                    label="Cancel"
-                    @click=${this.handleExitForm}>
-                </mwc-button>
+
+                <!-- 'Cancel' button is not visible before a complete login -->
+                ${this.loginCompleted
+                    ? html`
+                        <mwc-button 
+                            class="cancel"
+                            unelevated 
+                            label="Cancel"
+                            @click=${this.handleExitForm}>
+                        </mwc-button>
+                    `
+                    : html``}  
+
             </section>
         `;
     }
