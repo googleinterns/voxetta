@@ -17,6 +17,7 @@
 import {JSDOM} from 'jsdom';
 import {StubMediaRecorder} from './stubs/StubMediaRecorder.js';
 import {StubFormData} from './stubs/StubFormData.js';
+import {StubCustomEvent} from './stubs/StubCustomEvent.js';
 
 const dom = new JSDOM('<html><body></body></html>');
 global.document = dom.window.document;
@@ -28,3 +29,4 @@ global.MediaRecorder = StubMediaRecorder;
 global.requestAnimationFrame = () => {};
 global.cancelAnimationFrame = () => {};
 global.FormData = StubFormData;
+global.CustomEvent = StubCustomEvent;

@@ -10,7 +10,8 @@
     "rules": {
         "indent": ["warn", 4, {"SwitchCase": 1}],
         "prettier/prettier": ["warn"],
-        "require-jsdoc": ["off"]
+        "require-jsdoc": ["off"],
+        "class-methods-use-this": ["off"]
     },
     "plugins": ["lit", "jasmine", "prettier"],
     "parserOptions": {

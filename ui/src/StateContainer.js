@@ -18,8 +18,12 @@ import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
 import Views from './utils/ViewsEnum';
+import * as ToastUtils from './utils/ToastUtils';
 
+import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
+
+import style from './styles/StateContainer.css.js';
 
 export class StateContainer extends LitElement {
     static get properties() {
@@ -28,7 +32,12 @@ export class StateContainer extends LitElement {
             canRecord: {type: Boolean},
             isRecording: {type: Boolean},
             audioStream: {type: Object},
+            toast: {type: Object},
         };
+    }
+
+    static get styles() {
+        return style;
     }
 
     constructor() {
@@ -148,12 +157,25 @@ export class StateContainer extends LitElement {
         this.cookieService.makeUserInfoCookie(e.detail.userInfo);
     }
 
+    handleAddToast(e) {
+        this.toast = e.detail.message;
+    }
+
+    handleClearToast() {
+        this.toast = undefined;
+    }
+
+    renderToast() {
+        if (!this.toast) {
+            return html``;
+        }
+        return html` <vox-toast message="${this.toast}"></vox-toast> `;
+    }
+
     render() {
         return html` <div
             id="state-wrapper"
-            @country-selected="${this.handleCountrySelected}}"
-            @cancel-tos="${this.handleCancelTerms}"
-            @accept-tos="${this.handleAcceptTerms}"
+            @country-selected="${this.handleCountrySelected}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @update-user-info="${this.handleUserInfoUpdate}"
@@ -161,7 +183,12 @@ export class StateContainer extends LitElement {
             @skip-prompt="${this.handleChangePrompt}"
             @end-session="${this.handleEndSession}"
             @update-wave="${this.handleUpdateWave}"
+            @add-toast="${this.handleAddToast}"
+            @clear-toast="${this.handleClearToast}"
+            @accept-tos="${this.handleAcceptTerms}"
+            @cancel-tos="${this.handleCancelTerms}"
         >
+            ${this.renderToast()}
             <vox-view-container
                 .country=${this.country}
                 .view=${this.view}

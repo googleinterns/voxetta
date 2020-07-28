@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-/**
- * Service responsible for creating and fetching the appropriate
- * terms of service.
- */
-export class ToSService {
-    /**
-     * Returns an array form of the appropriate terms file.
-     * @return {Array} The paragraphs that make up the appropriate
-     * terms of service.
-     */
-    async getToS(country) {
-        const fileName = `${country.split(' ').join('_')}.tos.txt`;
-        const terms = await fetch(`/data/ToS/${fileName}`, {
-            headers: {'Content-Type': 'text/plain'},
-        }).then((response) => response.text());
+export const StubCustomEvent = (event, initialParams) => {
+    const params = initialParams || {
+        bubbles: false,
+        cancelable: false,
+        detail: null,
+    };
 
-        return terms;
-    }
-}
+    const evt = document.createEvent('CustomEvent');
+
+    evt.initCustomEvent(
+        event,
+        params.bubbles,
+        params.cancelable,
+        params.detail
+    );
+    return evt;
+};

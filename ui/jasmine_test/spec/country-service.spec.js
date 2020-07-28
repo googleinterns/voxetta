@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
+import fetchMock from 'fetch-mock';
 import {CountryService} from '../../src/utils/CountryService';
 
-import fetchMock from 'fetch-mock';
-
 describe('Testing that the Country Service', () => {
-
-    const countryService = new CountryService(); 
+    const countryService = new CountryService();
 
     it('properly parses a text file into a country array', async () => {
-
-        const dummySuccessResponse = 'Canada\nUnited States\nMexico'
+        const dummySuccessResponse = 'Canada\nUnited States\nMexico';
 
         // Mock successful fetch
-        fetchMock.mock('/src/data/countries.txt', {
+        fetchMock.mock('/data/countries.txt', {
             status: 200,
-            body: dummySuccessResponse
+            body: dummySuccessResponse,
         });
 
         const countryArray = await countryService.getCountries();
+
         expect(countryArray).toEqual(['Canada', 'United States', 'Mexico']);
     });
 });
