@@ -94,7 +94,10 @@ export class ViewContainer extends LitElement {
                 </div>
 
                 <!-- Recording section  -->
-                <vox-recording-section .collectionState=${this.collectionState}>
+                <vox-recording-section
+                    .collectionState=${this.collectionState}
+                    .audioStream=${this.audioStream}
+                >
                 </vox-recording-section>
             </div>
         `;

@@ -24,6 +24,7 @@ export class RecordingSection extends LitElement {
     static get properties() {
         return {
             collectionState: {type: String},
+            audioStream: {type: Object},
         };
     }
 
