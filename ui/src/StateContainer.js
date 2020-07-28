@@ -17,8 +17,6 @@
 import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
-import {UrlService} from './utils/UrlService';
-
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
 
@@ -34,7 +32,6 @@ export class StateContainer extends LitElement {
             canRecord: {type: Boolean},
             isRecording: {type: Boolean},
             audioStream: {type: Object},
-            context: {type: Object},
             toast: {type: Object},
         };
     }
@@ -116,7 +113,6 @@ export class StateContainer extends LitElement {
         );
         this.isRecording = recordComponent.getIsRecording();
         this.audioStream = recordComponent.getAudioStream();
-        this.context = recordComponent.getContext(); 
     }
 
     /**
@@ -177,31 +173,33 @@ export class StateContainer extends LitElement {
     }
 
     render() {
-        return html` 
-            <div
-                id="state-wrapper"
-                @country-selected="${this.handleCountrySelected}}"
-                @cancel-tos="${this.handleCancelTerms}"
-                @accept-tos="${this.handleAcceptTerms}"
-                @enter-form="${this.handleEnterForm}"
-                @exit-form="${this.handleExitForm}"
-                @update-user-info="${this.handleUserInfoUpdate}"
-                @change-prompt="${this.handleChangePrompt}"
-                @skip-prompt="${this.handleChangePrompt}"
-                @end-session="${this.handleEndSession}"
-                @update-wave="${this.handleUpdateWave}"
-                @add-toast="${this.handleAddToast}"
-                @clear-toast="${this.handleClearToast}">
-                <vox-view-container
-                    .country=${this.country}
-                    .view=${this.view}
-                    ?can-record=${this.canRecord}
-                    ?is-recording=${this.isRecording}
-                    .audioStream=${this.audioStream}
-                    .user=${this.user}
-                    .context=${this.context}>
-                </vox-view-container>
-            </div>`;
+        return html` <div
+            id="state-wrapper"
+            @country-selected="${(e) => {
+                this.country = e.detail.country;
+                this.handleCountrySelected();
+            }}"
+            @enter-form="${this.handleEnterForm}"
+            @exit-form="${this.handleExitForm}"
+            @update-user-info="${this.handleUserInfoUpdate}"
+            @change-prompt="${this.handleChangePrompt}"
+            @skip-prompt="${this.handleChangePrompt}"
+            @end-session="${this.handleEndSession}"
+            @update-wave="${this.handleUpdateWave}"
+            @add-toast="${this.handleAddToast}"
+            @clear-toast="${this.handleClearToast}"
+        >
+            ${this.renderToast()}
+            <vox-view-container
+                .country=${this.country}
+                .view=${this.view}
+                ?can-record=${this.canRecord}
+                ?is-recording=${this.isRecording}
+                .audio-stream=${this.audioStream}
+                .user=${this.user}
+            >
+            </vox-view-container>
+        </div>`;
     }
 }
 
