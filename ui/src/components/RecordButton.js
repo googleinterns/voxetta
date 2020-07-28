@@ -97,7 +97,7 @@ export class RecordButton extends LitElement {
 
             // Do auto qc checks
             const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityResult = qualityCheck.isQualitySound();
+            const qualityResult = await qualityCheck.isQualitySound();
             if (!qualityResult.success) {
                 // If qc failed, pivot to QC error collection state
                 this.dispatchCollectionState(CollectionStates.QC_ERROR);
