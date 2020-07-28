@@ -60,7 +60,7 @@ export class UrlService {
      * @return {String} The project id stored in the URL, or null
      * if such a parameter does not exist.
      */
-    getProject() {
+    getProjectId() {
         return this.getParamValue('project');
     }
 
@@ -69,7 +69,7 @@ export class UrlService {
      * @return {String} The vendor stored in the URL, or null
      * if such a parameter does not exist.
      */
-    getVendor() {
+    getVendorId() {
         return this.getParamValue('vendor');
     }
 }

@@ -49,6 +49,7 @@ export class StateContainer extends LitElement {
         this.cookieService = new CookieService();
 
         this.setUserId();
+        this.setProjectDetails();
         this.user = {
             userId: this.cookieService.getUserId(),
             gender: this.cookieService.getGender(),
@@ -58,8 +59,7 @@ export class StateContainer extends LitElement {
  
         this.canRecord = true;
         this.country = undefined;
-        this.loginCompleted = false; 
-        this.project = this.urlService.getProject();
+        this.loginCompleted = false;
         this.userInfoPresent = false; 
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
@@ -69,6 +69,15 @@ export class StateContainer extends LitElement {
         this.viewShadowRoot = this.shadowRoot.querySelector(
             'vox-view-container'
         ).shadowRoot;
+    }
+
+    /**
+     * Parses the URL for relevant project-related details. 
+     */
+    setProjectDetails() {
+        this.projectId = this.urlService.getProjectId();
+        this.userLang = this.urlService.getLang();
+        this.vendorId = this.urlService.getVendorId();
     }
 
     /**
