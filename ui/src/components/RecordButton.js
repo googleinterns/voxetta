@@ -27,9 +27,10 @@ import style from '../styles/components/RecordButton.css.js';
 export class RecordButton extends LitElement {
     static get properties() {
         return {
-            collectionState: {type: Boolean},
+            collectionState: {type: String},
             audioStream: {type: Object},
             context: {type: Object},
+            isRecording: {type: Boolean},
         };
     }
 
@@ -53,7 +54,7 @@ export class RecordButton extends LitElement {
      * audio file.
      */
     async recordHandler() {
-        if (!this.getIsRecordingState()) {
+        if (!this.isRecording) {
             // attempt to init; check for browser permission
             try {
                 await this.audioRecorder.initRecorder();
@@ -129,13 +130,6 @@ export class RecordButton extends LitElement {
     }
 
     /**
-     * @returns {Boolean} If the current local state property is the recording state
-     */
-    getIsRecordingState() {
-        return this.collectionState === CollectionStates.RECORDING;
-    }
-
-    /**
      * Emits an event that causes the application to render a sound
      * wave that corresponds to the current audio stream.
      */
@@ -176,8 +170,8 @@ export class RecordButton extends LitElement {
         return html`
             <mwc-icon-button
                 id="record-button"
-                icon=${this.getIsRecordingState() ? 'stop' : 'mic'}
-                class=${this.getIsRecordingState() ? 'recording' : ''}
+                icon=${this.isRecording ? 'stop' : 'mic'}
+                class=${this.isRecording ? 'recording' : ''}
                 @click=${this.recordHandler}
             >
             </mwc-icon-button>

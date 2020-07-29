@@ -31,6 +31,7 @@ export class WaveCanvas extends LitElement {
             width: {type: Number},
             height: {type: Number},
             context: {type: Object},
+            isRecording: {type: Boolean},
         };
     }
 
@@ -71,21 +72,14 @@ export class WaveCanvas extends LitElement {
     updated(changedProperties) {
         if (
             this.audioStream != changedProperties.get('audioStream') &&
-            this.getIsRecordingState()
+            this.isRecording
         ) {
             this.soundWave.setStream(this.audioStream);
             this.soundWave.setContext(this.context);
             this.soundWave.createSoundWave();
-        } else if (!this.getIsRecordingState() && this.soundWave != undefined) {
+        } else if (!this.isRecording && this.soundWave != undefined) {
             this.soundWave.stopSoundWave();
         }
-    }
-
-    /**
-     * @returns {Boolean} If the current local state property is the recording state
-     */
-    getIsRecordingState() {
-        return this.collectionState === CollectionStates.RECORDING;
     }
 
     render() {

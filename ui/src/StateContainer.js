@@ -69,6 +69,15 @@ export class StateContainer extends LitElement {
         ).shadowRoot;
     }
 
+    updated(changedProperties) {
+        if (
+            changedProperties.has('collectionState') &&
+            this.collectionState === CollectionStates.TRANSITIONING
+        ) {
+            this.handleChangePrompt();
+        }
+    }
+
     /**
      * Updates user-related fields with the appropriate values.
      * @param {Object} userInfo - The information entered on the user form.
@@ -173,17 +182,20 @@ export class StateContainer extends LitElement {
         return html` <vox-toast message="${this.toast}"></vox-toast> `;
     }
 
+    /**
+     * Updates the collection state when a new collection view is necessary
+     * @param {Object} e Event object containing new state
+     */
     updateCollectionState(e) {
         this.collectionState = e.detail.state;
-
-        if (this.collectionState === CollectionStates.TRANSITIONING) {
-            this.handleChangePrompt();
-        }
     }
 
+    /**
+     * Sets the collection state to transitioning,
+     * which triggers the prompt component to fetch a new prompt
+     */
     handleSkipPrompt() {
         this.collectionState = CollectionStates.TRANSITIONING;
-        this.handleChangePrompt();
     }
 
     render() {

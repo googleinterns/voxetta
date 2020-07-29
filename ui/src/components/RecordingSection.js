@@ -26,6 +26,7 @@ export class RecordingSection extends LitElement {
             collectionState: {type: String},
             audioStream: {type: Object},
             context: {type: Object},
+            isRecording: {type: Boolean},
         };
     }
 
@@ -33,18 +34,20 @@ export class RecordingSection extends LitElement {
         return style;
     }
 
-    /**
-     * @returns {Boolean} If the current local state property is the recording state
-     */
-    getIsRecordingState() {
-        return this.collectionState === CollectionStates.RECORDING;
+    updated(changedProperties) {
+        if (
+            changedProperties.get('collectionState') ===
+            CollectionStates.RECORDING
+        ) {
+            this.isRecording = true;
+        }
     }
 
     renderFeedbackWindow() {
         switch (this.collectionState) {
             case CollectionStates.RECORDING:
                 return html` <vox-sound-wave
-                    .collectionState=${this.collectionState}
+                    ?isRecording=${this.isRecording}
                     .audioStream=${this.audioStream}
                     .context=${this.context}
                 >
@@ -59,14 +62,14 @@ export class RecordingSection extends LitElement {
     }
 
     render() {
-        return html` <div id="feedback top-level-component">
+        return html` <div id="feedback">
                 ${this.renderFeedbackWindow()}
             </div>
 
-            <div class="buttons top-level-component">
+            <div class="buttons">
                 <div class="button-container"></div>
                 <div class="record-button-container">
-                    <vox-record-button .collectionState=${this.collectionState}>
+                    <vox-record-button ?isRecording=${this.isRecording}>
                     </vox-record-button>
                 </div>
                 <div class="button-container">
