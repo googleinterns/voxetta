@@ -17,6 +17,7 @@
 import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
+
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
 
@@ -30,6 +31,7 @@ export class StateContainer extends LitElement {
         return {
             view: {type: String},
             canRecord: {type: Boolean},
+            context: {type: Object},
             isRecording: {type: Boolean},
             audioStream: {type: Object},
             toast: {type: Object},
@@ -113,6 +115,7 @@ export class StateContainer extends LitElement {
         );
         this.isRecording = recordComponent.getIsRecording();
         this.audioStream = recordComponent.getAudioStream();
+        this.context = recordComponent.getContext(); 
     }
 
     /**
@@ -194,8 +197,9 @@ export class StateContainer extends LitElement {
                 .view=${this.view}
                 ?can-record=${this.canRecord}
                 ?is-recording=${this.isRecording}
-                .audio-stream=${this.audioStream}
+                .audioStream=${this.audioStream}
                 .user=${this.user}
+                .context=${this.context}
             >
             </vox-view-container>
         </div>`;
