@@ -33,6 +33,7 @@ export class ViewContainer extends LitElement {
         return {
             audioStream: {type: Object, attribute: 'audio-stream'},
             canRecord: {type: Boolean, attribute: 'can-record'},
+            context: {type: Object},
             country: {type: String},
             isRecording: {type: Boolean, attribute: 'is-recording'},
             loginCompleted: {type: Boolean, attribute: 'login-completed'},
@@ -99,6 +100,7 @@ export class ViewContainer extends LitElement {
                     <vox-sound-wave
                         .isRecording=${this.isRecording}
                         .audioStream=${this.audioStream}
+                        .context=${this.context}
                     >
                     </vox-sound-wave>
                 </div>
