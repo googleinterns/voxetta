@@ -27,7 +27,7 @@ export class UrlService {
      *  if the parameter was not included in the given URL.
      */
     getParamValue(key) {
-        const query = window.location.search.slice(1);
+        const query = this.getUrlQuery();
         if (query.includes(`${key}=`)) {
             return query
                 .split('&')
@@ -36,6 +36,15 @@ export class UrlService {
         }
         return null;
     }  
+
+    /**
+     * Retrieves the query string from the URL and replaces
+     * the initial '?' with a '&' for ease of parsing.
+     * @return {String} The query string of the current URL.
+     */
+    getUrlQuery() {
+        return '&' + window.location.search.slice(1);
+    }
 
     /**
      * Retrieves the user's id from the URL, if it is present.
