@@ -177,13 +177,13 @@ export class StateContainer extends LitElement {
         this.collectionState = e.detail.state;
 
         if (this.collectionState === CollectionStates.TRANSITIONING) {
-            this.getNewPrompt();
+            this.handleChangePrompt();
         }
     }
 
     handleSkipPrompt() {
         this.collectionState = CollectionStates.TRANSITIONING;
-        this.getNewPrompt();
+        this.handleChangePrompt();
     }
 
     render() {

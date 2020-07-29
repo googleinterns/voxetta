@@ -40,7 +40,7 @@ export class WaveCanvas extends LitElement {
         this.canvasId = 'myCanvas';
         this.canvas;
         this.width = this.getWidth();
-        this.height = 100;
+        this.height = 200;
     }
 
     /**

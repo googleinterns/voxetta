@@ -17,7 +17,7 @@
 import {css} from 'lit-element';
 
 export default css`
-    .feedback,
+    #feedback,
     .buttons {
         align-items: center;
         display: flex;
