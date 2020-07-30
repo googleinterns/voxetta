@@ -67,7 +67,7 @@ export class Prompts extends LitElement {
     renderPromptType() {
         switch (this.prompt.type) {
             case 'TEXT':
-                return html`<p>${this.prompt.body}</p>`;
+                return html`<p dir="auto">${this.prompt.body}</p>`;
             case 'IMAGE':
                 return html`<img
                     src="${this.prompt.body}"
