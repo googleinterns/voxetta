@@ -33,6 +33,7 @@ export class ViewContainer extends LitElement {
         return {
             audioStream: {type: Object, attribute: 'audio-stream'},
             canRecord: {type: Boolean, attribute: 'can-record'},
+            context: {type: Object},
             country: {type: String},
             context: {type: Object},
             isRecording: {type: Boolean, attribute: 'is-recording'},
