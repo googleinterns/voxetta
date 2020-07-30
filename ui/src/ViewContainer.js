@@ -31,7 +31,7 @@ import {WaveCanvas} from './components/WaveCanvas';
 export class ViewContainer extends LitElement {
     static get properties() {
         return {
-            audioStream: {type: Object, attribute: 'audio-stream'},
+            audioStream: {type: Object},
             canRecord: {type: Boolean, attribute: 'can-record'},
             context: {type: Object},
             country: {type: String},

@@ -34,11 +34,12 @@ const MIN_USER_AGE = 0;
 export class UserForm extends LitElement {
     static get properties() {
         return {
-            userId: {type: String},
-            gender: {type: String},
-            userAge: {type: Number},
             deviceType: {type: String},
+            disableSaveButton: {type: String},
+            gender: {type: String},
             loginCompleted: {type: Boolean},
+            userAge: {type: Number},
+            userId: {type: String},
         };
     }
 
@@ -48,6 +49,7 @@ export class UserForm extends LitElement {
 
     constructor() {
         super();
+        this.disableSaveButton = true; 
         this.addEventListener('input', this.formIsValid);
     }
 
@@ -97,8 +99,8 @@ export class UserForm extends LitElement {
             genderValidity &&
             userAgeValidity &&
             deviceTypeValidity;
-        const saveButton = this.shadowRoot.getElementById('save-button');
-        saveButton.disabled = !formValidity;
+
+        this.disableSaveButton = !formValidity;
     }
 
     /**
@@ -122,8 +124,7 @@ export class UserForm extends LitElement {
                 formValidity = false; 
         }
 
-        const saveButton = this.shadowRoot.getElementById('save-button');
-        saveButton.disabled = !formValidity;
+        this.disableSaveButton = !formValidity;
     }
 
     /**
@@ -226,7 +227,7 @@ export class UserForm extends LitElement {
                         id="save-button"
                         class="save"
                         unelevated 
-                        disabled
+                        ?disabled=${this.disableSaveButton}
                         label="Save"
                         @click=${this.processForm}>
                     </mwc-button>

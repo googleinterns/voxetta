@@ -49,7 +49,7 @@ export class StateContainer extends LitElement {
         this.urlService = new UrlService(); 
         this.cookieService = new CookieService();
 
-        this.setUserId();
+        this.setUserInfoOntoCookie();
         this.setProjectDetails();
         this.user = {
             userId: this.cookieService.getUserId(),
@@ -86,7 +86,7 @@ export class StateContainer extends LitElement {
      * the userId provided in the URL priority and clear every other
      * component of user information. 
      */
-    setUserId() {
+    setUserInfoOntoCookie() {
         const userIdUrl = this.urlService.getUserId();
         const userIdCookie = this.cookieService.getUserId();
         if (userIdUrl && (userIdUrl !== userIdCookie)) {
