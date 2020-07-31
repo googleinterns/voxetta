@@ -25,10 +25,10 @@ export class QualityControl {
     * @param {Object} blob - the blob containig utterance data
     * @private {Object} Allows access to data of the utterance  
     */
-    constructor(context, blob) {
+    constructor(context, blob, audioBuffer) {
         this.context = context;
         this.blob = blob;
-        this.audioBuffer;
+        this.audioBuffer = audioBuffer;
     }
     
    /**

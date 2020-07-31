@@ -17,6 +17,7 @@
 import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
+
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
 import {CollectionStates} from './utils/CollectionStatesEnum';
