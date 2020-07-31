@@ -33,10 +33,10 @@ export class ViewContainer extends LitElement {
     static get properties() {
         return {
             audioStream: {type: Object},
+            collectionState: {type: String},
             canRecord: {type: Boolean, attribute: 'can-record'},
             context: {type: Object},
             country: {type: String},
-            collectionState: {type: String},
             isRecording: {type: Boolean, attribute: 'is-recording'},
             loginCompleted: {type: Boolean, attribute: 'login-completed'},
             user: {type: Object},

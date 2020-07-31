@@ -60,9 +60,12 @@ export class StateContainer extends LitElement {
         };
 
         this.canRecord = true;
+
         this.collectionState = CollectionStates.NOT_RECORDING;
+
         this.country = undefined;
         this.loginCompleted = false;
+        this.userInfoPresent = false;
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
     }
@@ -258,13 +261,12 @@ export class StateContainer extends LitElement {
         >
             ${this.renderToast()}
             <vox-view-container
-                .audioStream=${this.audioStream}
                 .country=${this.country}
-                .context=${this.context}
+                .view=${this.view}
                 .collectionState=${this.collectionState}
                 .user=${this.user}
-                .view=${this.view}
-                ?can-record=${this.canRecord}
+                .context=${this.context}
+                ?is-recording=${this.isRecording}
                 ?login-completed=${this.loginCompleted}
             >
             </vox-view-container>

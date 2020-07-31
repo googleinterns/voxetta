@@ -7,6 +7,7 @@
  * QC_ERROR = (After RECORDING) Recording has failed an auto QC check
  * UPLOAD_ERROR = (After BEFORE_UPLOAD) Utterance failed to upload, likely because of a connection issue
  */
+
 export const CollectionStates = {
     NOT_RECORDING: 'NOT_RECORDING',
     RECORDING: 'RECORDING',
