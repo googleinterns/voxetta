@@ -231,7 +231,6 @@ export class StateContainer extends LitElement {
      */
     updateCollectionState(e) {
         this.collectionState = e.detail.state;
-        console.log(this.collectionState);
     }
 
     /**
@@ -266,6 +265,7 @@ export class StateContainer extends LitElement {
                 .view=${this.view}
                 .collectionState=${this.collectionState}
                 .user=${this.user}
+                .audioStream=${this.audioStream}
                 .context=${this.context}
                 ?is-recording=${this.isRecording}
                 ?login-completed=${this.loginCompleted}
