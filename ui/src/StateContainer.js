@@ -32,12 +32,11 @@ export class StateContainer extends LitElement {
     static get properties() {
         return {
             audioStream: {type: Object},
-            audioStream: {type: Object},
             canRecord: {type: Boolean},
             collectionState: {type: String},
             context: {type: Object},
             toast: {type: Object},
-            view: {type: String}
+            view: {type: String},
         };
     }
 
@@ -47,8 +46,8 @@ export class StateContainer extends LitElement {
 
     constructor() {
         super();
-        
-        this.urlService = new UrlService(); 
+
+        this.urlService = new UrlService();
         this.cookieService = new CookieService();
 
         this.setUserInfoOntoCookie();
@@ -59,7 +58,7 @@ export class StateContainer extends LitElement {
             userAge: this.cookieService.getUserAge(),
             deviceType: this.cookieService.getDeviceType(),
         };
- 
+
         this.canRecord = true;
         this.collectionState = CollectionStates.NOT_RECORDING;
         this.country = undefined;
@@ -84,7 +83,7 @@ export class StateContainer extends LitElement {
     }
 
     /**
-     * Parses the URL for relevant project-related details. 
+     * Parses the URL for relevant project-related details.
      */
     setProjectDetails() {
         this.projectId = this.urlService.getProjectId();
@@ -95,12 +94,12 @@ export class StateContainer extends LitElement {
     /**
      * If present and different from that stored in the cookies, give
      * the userId provided in the URL priority and clear every other
-     * component of user information. 
+     * component of user information.
      */
     setUserInfoOntoCookie() {
         const userIdUrl = this.urlService.getUserId();
         const userIdCookie = this.cookieService.getUserId();
-        if (userIdUrl && (userIdUrl !== userIdCookie)) {
+        if (userIdUrl && userIdUrl !== userIdCookie) {
             const user = {
                 userId: userIdUrl,
                 gender: '',
@@ -108,7 +107,7 @@ export class StateContainer extends LitElement {
                 deviceType: '',
             };
             this.cookieService.makeUserInfoCookie(user);
-        } 
+        }
     }
 
     /**
@@ -254,7 +253,6 @@ export class StateContainer extends LitElement {
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-collection-state=${this.updateCollectionState}
             @skip-prompt="${this.handleSkipPrompt}"
-            @end-session="${this.handleEndSession}"
             @first-access-over="${this.handleFirstAccessOver}"
             @update-wave="${this.handleUpdateWave}"
         >

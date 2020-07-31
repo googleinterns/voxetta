@@ -36,7 +36,6 @@ export class ViewContainer extends LitElement {
             canRecord: {type: Boolean, attribute: 'can-record'},
             context: {type: Object},
             country: {type: String},
-            context: {type: Object},
             collectionState: {type: String},
             isRecording: {type: Boolean, attribute: 'is-recording'},
             loginCompleted: {type: Boolean, attribute: 'login-completed'},
@@ -54,9 +53,7 @@ export class ViewContainer extends LitElement {
      * @returns {HTML} The HTML template for the country selection state.
      */
     renderCountrySelectionTemplate() {
-        return html`
-            <vox-country-selector></vox-country-selector>
-        `;
+        return html` <vox-country-selector></vox-country-selector> `;
     }
 
     /**
