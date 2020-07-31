@@ -61,6 +61,21 @@ export default css`
         flex: 1;
     }
 
+    .buttons {
+        padding-bottom: 10vh;
+        padding-top: 40px;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .record-button-container {
+        margin: 0 60px;
+    }
+
+    .button-container {
+        width: 50px;
+    }
+
     /* Details */
 
     header {
@@ -84,4 +99,11 @@ export default css`
     /* 
         Breakpoints 
     */
+
+    /* Tablet */
+    @media screen and (min-width: 600px) {
+        .buttons {
+            padding-bottom: 14vh;
+        }
+    }
 `;

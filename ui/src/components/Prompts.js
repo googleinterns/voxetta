@@ -16,10 +16,11 @@
 
 import {LitElement, html} from 'lit-element';
 
-import {Icon} from '@material/mwc-icon';
 import * as promptApi from '../utils/PromptApiService.js';
 
 import style from '../styles/components/Prompts.css.js';
+
+import {Icon} from '@material/mwc-icon';
 
 export class Prompts extends LitElement {
     static get properties() {
@@ -73,8 +74,6 @@ export class Prompts extends LitElement {
                     src="${this.prompt.body}"
                     alt="Prompt Image"
                 />`;
-            default:
-                return html``;
         }
     }
 
@@ -93,8 +92,6 @@ export class Prompts extends LitElement {
                 return html`<p><b>Prompt failed to load.</b></p>`;
             case 'FINISHED':
                 return html`<p>Your work session is finished.</p>`;
-            default:
-                return html``;
         }
     }
 
