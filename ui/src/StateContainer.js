@@ -17,6 +17,7 @@
 import {LitElement, html} from 'lit-element';
 
 import {CookieService} from './utils/CookieService';
+import {UrlService} from './utils/UrlService';
 
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
@@ -29,12 +30,12 @@ import style from './styles/StateContainer.css.js';
 export class StateContainer extends LitElement {
     static get properties() {
         return {
-            view: {type: String},
+            audioStream: {type: Object},
             canRecord: {type: Boolean},
             context: {type: Object},
             isRecording: {type: Boolean},
-            audioStream: {type: Object},
             toast: {type: Object},
+            view: {type: String},
         };
     }
 
@@ -44,20 +45,24 @@ export class StateContainer extends LitElement {
 
     constructor() {
         super();
-
-        this.country = undefined;
+        
+        this.urlService = new UrlService(); 
         this.cookieService = new CookieService();
 
+        this.setUserInfoOntoCookie();
+        this.setProjectDetails();
         this.user = {
             userId: this.cookieService.getUserId(),
             gender: this.cookieService.getGender(),
             userAge: this.cookieService.getUserAge(),
             deviceType: this.cookieService.getDeviceType(),
         };
-
-        this.view = Views.COUNTRY_SELECTION;
+ 
         this.canRecord = true;
-
+        this.country = undefined;
+        this.loginCompleted = false;
+        this.userInfoPresent = false; 
+        this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
     }
 
@@ -65,6 +70,34 @@ export class StateContainer extends LitElement {
         this.viewShadowRoot = this.shadowRoot.querySelector(
             'vox-view-container'
         ).shadowRoot;
+    }
+
+    /**
+     * Parses the URL for relevant project-related details. 
+     */
+    setProjectDetails() {
+        this.projectId = this.urlService.getProjectId();
+        this.userLang = this.urlService.getLang();
+        this.vendorId = this.urlService.getVendorId();
+    }
+
+    /**
+     * If present and different from that stored in the cookies, give
+     * the userId provided in the URL priority and clear every other
+     * component of user information. 
+     */
+    setUserInfoOntoCookie() {
+        const userIdUrl = this.urlService.getUserId();
+        const userIdCookie = this.cookieService.getUserId();
+        if (userIdUrl && (userIdUrl !== userIdCookie)) {
+            const user = {
+                userId: userIdUrl,
+                gender: '',
+                userAge: '',
+                deviceType: '',
+            };
+            this.cookieService.makeUserInfoCookie(user);
+        } 
     }
 
     /**
@@ -99,10 +132,18 @@ export class StateContainer extends LitElement {
 
     /**
      * Updates the state such that the Terms of Service closes and the
-     * recording page appears.
+     * user form appears.
      */
     handleAcceptTerms() {
-        this.view = Views.COLLECTION;
+        this.view = Views.USER_FORM;
+    }
+
+    /**
+     * Updates the loginComplete property such that the application
+     * knows the user's login process is complete.
+     */
+    handleFirstAccessOver() {
+        this.loginCompleted = true;
     }
 
     /**
@@ -178,28 +219,30 @@ export class StateContainer extends LitElement {
     render() {
         return html` <div
             id="state-wrapper"
+            @accept-tos="${this.handleAcceptTerms}"
+            @add-toast="${this.handleAddToast}"
+            @cancel-tos="${this.handleCancelTerms}"
+            @change-prompt="${this.handleChangePrompt}"
+            @clear-toast="${this.handleClearToast}"
             @country-selected="${this.handleCountrySelected}"
+            @end-session="${this.handleEndSession}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
-            @update-user-info="${this.handleUserInfoUpdate}"
-            @change-prompt="${this.handleChangePrompt}"
+            @first-access-over="${this.handleFirstAccessOver}"
             @skip-prompt="${this.handleChangePrompt}"
-            @end-session="${this.handleEndSession}"
+            @update-user-info="${this.handleUserInfoUpdate}"
             @update-wave="${this.handleUpdateWave}"
-            @add-toast="${this.handleAddToast}"
-            @clear-toast="${this.handleClearToast}"
-            @accept-tos="${this.handleAcceptTerms}"
-            @cancel-tos="${this.handleCancelTerms}"
         >
             ${this.renderToast()}
             <vox-view-container
+                .audioStream=${this.audioStream}
                 .country=${this.country}
+                .context=${this.context}
+                .user=${this.user}
                 .view=${this.view}
                 ?can-record=${this.canRecord}
                 ?is-recording=${this.isRecording}
-                .audioStream=${this.audioStream}
-                .user=${this.user}
-                .context=${this.context}
+                ?login-completed=${this.loginCompleted}
             >
             </vox-view-container>
         </div>`;

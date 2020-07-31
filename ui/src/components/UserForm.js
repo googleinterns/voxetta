@@ -24,6 +24,9 @@ import {Icon} from '@material/mwc-icon';
 
 import style from '../styles/components/UserForm.css.js';
 
+const MAX_USER_AGE = 120;
+const MIN_USER_AGE = 0; 
+
 /**
  * Component responsible for providing users a means to provide
  * their personal information.
@@ -31,10 +34,12 @@ import style from '../styles/components/UserForm.css.js';
 export class UserForm extends LitElement {
     static get properties() {
         return {
-            userId: {type: String},
-            gender: {type: String},
-            userAge: {type: Number},
             deviceType: {type: String},
+            disableSaveButton: {type: String},
+            gender: {type: String},
+            loginCompleted: {type: Boolean},
+            userAge: {type: Number},
+            userId: {type: String},
         };
     }
 
@@ -44,8 +49,15 @@ export class UserForm extends LitElement {
 
     constructor() {
         super();
+        this.disableSaveButton = true; 
         this.addEventListener('input', this.formIsValid);
-        this.addEventListener('click', this.formIsValid);
+    }
+
+    firstUpdated() {
+        if (!this.loginCompleted) {
+            this.checkInitialEnable(); 
+        }
+        this.handleFirstAccess(); 
     }
 
     /**
@@ -74,25 +86,57 @@ export class UserForm extends LitElement {
      */
     formIsValid() {
         const userIdValidity = this.shadowRoot
-            .getElementById('user-id')
-            .checkValidity();
+            .getElementById('user-id').checkValidity();
         const genderValidity = this.shadowRoot
-            .getElementById('gender-list')
-            .checkValidity();
+            .getElementById('gender-list').checkValidity();
         const userAgeValidity = this.shadowRoot
-            .getElementById('user-age')
-            .checkValidity();
+            .getElementById('user-age').checkValidity();
         const deviceTypeValidity = this.shadowRoot
-            .getElementById('device-type')
-            .checkValidity();
+            .getElementById('device-type').checkValidity();
 
         const formValidity =
             userIdValidity &&
             genderValidity &&
             userAgeValidity &&
             deviceTypeValidity;
-        const saveButton = this.shadowRoot.getElementById('save-button');
-        saveButton.disabled = !formValidity;
+
+        this.disableSaveButton = !formValidity;
+    }
+
+    /**
+     * Enables the save button when accessed via the login flow if
+     * the cookies and URL contain every required piece of user information.
+     */
+    checkInitialEnable() {
+        let formValidity = true;
+        const filledOut = 
+            this.userId && 
+            this.gender && 
+            this.userAge && 
+            this.deviceType
+
+        if (!filledOut) {
+            formValidity = false; 
+        }
+
+        if (this.userAge < MIN_USER_AGE 
+            || this.userAge > MAX_USER_AGE) {
+                formValidity = false; 
+        }
+
+        this.disableSaveButton = !formValidity;
+    }
+
+    /**
+     * Emits an event that causes the loggingIn property to be made
+     * false.
+     */
+    handleFirstAccess() {
+        const event = new CustomEvent('first-access-over', {
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
     }
 
     /**
@@ -150,7 +194,8 @@ export class UserForm extends LitElement {
                             validationMessage="This field is required."
                             label="Gender" 
                             placeholder="Select your gender"
-                            value=${this.gender}>
+                            value=${this.gender}
+                            @click=${this.formIsValid}>
                                 <mwc-list-item disabled></mwc-list-item>
                                 <mwc-list-item value="Female">Female</mwc-list-item>
                                 <mwc-list-item value="Male">Male</mwc-list-item>  
@@ -182,17 +227,24 @@ export class UserForm extends LitElement {
                         id="save-button"
                         class="save"
                         unelevated 
-                        disabled
+                        ?disabled=${this.disableSaveButton}
                         label="Save"
                         @click=${this.processForm}>
                     </mwc-button>
                 </form>
-                <mwc-button 
-                    class="cancel"
-                    unelevated 
-                    label="Cancel"
-                    @click=${this.handleExitForm}>
-                </mwc-button>
+
+                <!-- 'Cancel' button is not visible before a complete login -->
+                ${this.loginCompleted
+                    ? html`
+                        <mwc-button 
+                            class="cancel"
+                            unelevated 
+                            label="Cancel"
+                            @click=${this.handleExitForm}>
+                        </mwc-button>
+                    `
+                    : html``}  
+
             </section>
         `;
     }
