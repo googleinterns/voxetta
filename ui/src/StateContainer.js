@@ -231,6 +231,7 @@ export class StateContainer extends LitElement {
      */
     updateCollectionState(e) {
         this.collectionState = e.detail.state;
+        console.log(this.collectionState);
     }
 
     /**
@@ -253,11 +254,11 @@ export class StateContainer extends LitElement {
             @end-session="${this.handleEndSession}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
+            @first-access-over="${this.handleFirstAccessOver}"
+            @skip-prompt="${this.handleSkipPrompt}"
+            @update-wave="${this.handleUpdateWave}"
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-collection-state=${this.updateCollectionState}
-            @skip-prompt="${this.handleSkipPrompt}"
-            @first-access-over="${this.handleFirstAccessOver}"
-            @update-wave="${this.handleUpdateWave}"
         >
             ${this.renderToast()}
             <vox-view-container
