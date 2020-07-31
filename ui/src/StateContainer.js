@@ -264,7 +264,6 @@ export class StateContainer extends LitElement {
                 .country=${this.country}
                 .view=${this.view}
                 .collectionState=${this.collectionState}
-                .audioStream=${this.audioStream}
                 .user=${this.user}
                 .context=${this.context}
                 ?is-recording=${this.isRecording}
