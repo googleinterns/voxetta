@@ -32,13 +32,16 @@ import {RecordingSection} from './components/RecordingSection';
 export class ViewContainer extends LitElement {
     static get properties() {
         return {
-            view: {type: String},
-            canRecord: {type: Boolean},
-            collectionState: {type: String},
             audioStream: {type: Object},
-            user: {type: Object},
+            canRecord: {type: Boolean, attribute: 'can-record'},
+            context: {type: Object},
             country: {type: String},
             context: {type: Object},
+            collectionState: {type: String},
+            isRecording: {type: Boolean, attribute: 'is-recording'},
+            loginCompleted: {type: Boolean, attribute: 'login-completed'},
+            user: {type: Object},
+            view: {type: String},
         };
     }
 
@@ -52,7 +55,7 @@ export class ViewContainer extends LitElement {
      */
     renderCountrySelectionTemplate() {
         return html`
-            <vox-country-selector></vox-user-form>
+            <vox-country-selector></vox-country-selector>
         `;
     }
 
@@ -116,6 +119,7 @@ export class ViewContainer extends LitElement {
                 .gender=${this.user.gender}
                 .userAge=${this.user.userAge}
                 .deviceType=${this.user.deviceType}
+                .loginCompleted=${this.loginCompleted}
             >
             </vox-user-form>
         `;
