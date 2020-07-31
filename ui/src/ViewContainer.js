@@ -27,6 +27,7 @@ import {ToS} from './components/ToS';
 import {UserForm} from './components/UserForm';
 import {UserIcon} from './components/UserIcon';
 import {WaveCanvas} from './components/WaveCanvas';
+import {RecordingSection} from './components/RecordingSection';
 
 export class ViewContainer extends LitElement {
     static get properties() {
@@ -36,6 +37,7 @@ export class ViewContainer extends LitElement {
             context: {type: Object},
             country: {type: String},
             context: {type: Object},
+            collectionState: {type: String},
             isRecording: {type: Boolean, attribute: 'is-recording'},
             loginCompleted: {type: Boolean, attribute: 'login-completed'},
             user: {type: Object},
@@ -48,7 +50,7 @@ export class ViewContainer extends LitElement {
     }
 
     /**
-     * Renders the componenets associated with the country selection state. 
+     * Renders the componenets associated with the country selection state.
      * @returns {HTML} The HTML template for the country selection state.
      */
     renderCountrySelectionTemplate() {
@@ -58,15 +60,11 @@ export class ViewContainer extends LitElement {
     }
 
     /**
-     * Renders the componenets associated with the terms of service state. 
+     * Renders the componenets associated with the terms of service state.
      * @returns {HTML} The HTML template for the terms of service state.
      */
     renderTermsOfServiceTemplate() {
-        return html`
-            <vox-tos
-                .country = ${this.country}>
-            </vox-tos>
-        `;
+        return html` <vox-tos .country=${this.country}> </vox-tos> `;
     }
 
     /**
@@ -93,31 +91,19 @@ export class ViewContainer extends LitElement {
 
                     <div class="connection-status"></div>
                 </header>
+
+                <!-- Prompts -->
                 <div class="prompts top-level-component">
                     <vox-prompts></vox-prompts>
                 </div>
 
-                <div id="feedback top-level-component">
-                    <vox-sound-wave
-                        .isRecording=${this.isRecording}
-                        .audioStream=${this.audioStream}
-                        .context=${this.context}
-                    >
-                    </vox-sound-wave>
-                </div>
-
-                <!-- Hide recording when finished -->
-                ${this.canRecord
-                    ? html`<div class="buttons top-level-component">
-                          <div class="button-container"></div>
-                          <div class="record-button-container">
-                              <vox-record-button> </vox-record-button>
-                          </div>
-                          <div class="button-container">
-                              <vox-skip-button> </vox-skip-button>
-                          </div>
-                      </div>`
-                    : html``}
+                <!-- Recording section  -->
+                <vox-recording-section
+                    .collectionState=${this.collectionState}
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}
+                >
+                </vox-recording-section>
             </div>
         `;
     }
@@ -141,14 +127,12 @@ export class ViewContainer extends LitElement {
 
     render() {
         let viewTemplate;
-        
+
         switch (this.view) {
             case Views.COUNTRY_SELECTION:
-                return html`
-                    ${this.renderCountrySelectionTemplate()} `;
+                return html` ${this.renderCountrySelectionTemplate()} `;
             case Views.TERMS_OF_SERVICE:
-                return html`
-                    ${this.renderTermsOfServiceTemplate()} `;
+                return html` ${this.renderTermsOfServiceTemplate()} `;
             case Views.COLLECTION:
                 viewTemplate = html` ${this.renderCollectionView()} `;
                 break;

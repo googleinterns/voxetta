@@ -21,6 +21,7 @@ import {UrlService} from './utils/UrlService';
 
 import Views from './utils/ViewsEnum';
 import * as ToastUtils from './utils/ToastUtils';
+import {CollectionStates} from './utils/CollectionStatesEnum';
 
 import {Toast} from './components/feedback/Toast';
 import {ViewContainer} from './ViewContainer';
@@ -31,11 +32,12 @@ export class StateContainer extends LitElement {
     static get properties() {
         return {
             audioStream: {type: Object},
+            audioStream: {type: Object},
             canRecord: {type: Boolean},
+            collectionState: {type: String},
             context: {type: Object},
-            isRecording: {type: Boolean},
             toast: {type: Object},
-            view: {type: String},
+            view: {type: String}
         };
     }
 
@@ -59,9 +61,9 @@ export class StateContainer extends LitElement {
         };
  
         this.canRecord = true;
+        this.collectionState = CollectionStates.NOT_RECORDING;
         this.country = undefined;
         this.loginCompleted = false;
-        this.userInfoPresent = false; 
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
     }
@@ -70,6 +72,15 @@ export class StateContainer extends LitElement {
         this.viewShadowRoot = this.shadowRoot.querySelector(
             'vox-view-container'
         ).shadowRoot;
+    }
+
+    updated(changedProperties) {
+        if (
+            changedProperties.has('collectionState') &&
+            this.collectionState === CollectionStates.TRANSITIONING
+        ) {
+            this.handleChangePrompt();
+        }
     }
 
     /**
@@ -147,16 +158,12 @@ export class StateContainer extends LitElement {
     }
 
     /**
-     * Updates the isRecording and audioStream properties with the most up-to-date
+     * Updates the audioStream property with the most up-to-date
      * data from the vox-record-button component.
      */
-    handleUpdateWave() {
-        const recordComponent = this.viewShadowRoot.querySelector(
-            'vox-record-button'
-        );
-        this.isRecording = recordComponent.getIsRecording();
-        this.audioStream = recordComponent.getAudioStream();
-        this.context = recordComponent.getContext(); 
+    handleUpdateWave(e) {
+        this.audioStream = e.detail.audioStream;
+        this.context = e.detail.context;
     }
 
     /**
@@ -216,6 +223,22 @@ export class StateContainer extends LitElement {
         return html` <vox-toast message="${this.toast}"></vox-toast> `;
     }
 
+    /**
+     * Updates the collection state when a new collection view is necessary
+     * @param {Object} e Event object containing new state
+     */
+    updateCollectionState(e) {
+        this.collectionState = e.detail.state;
+    }
+
+    /**
+     * Sets the collection state to transitioning,
+     * which triggers the prompt component to fetch a new prompt
+     */
+    handleSkipPrompt() {
+        this.collectionState = CollectionStates.TRANSITIONING;
+    }
+
     render() {
         return html` <div
             id="state-wrapper"
@@ -228,9 +251,11 @@ export class StateContainer extends LitElement {
             @end-session="${this.handleEndSession}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
-            @first-access-over="${this.handleFirstAccessOver}"
-            @skip-prompt="${this.handleChangePrompt}"
             @update-user-info="${this.handleUserInfoUpdate}"
+            @update-collection-state=${this.updateCollectionState}
+            @skip-prompt="${this.handleSkipPrompt}"
+            @end-session="${this.handleEndSession}"
+            @first-access-over="${this.handleFirstAccessOver}"
             @update-wave="${this.handleUpdateWave}"
         >
             ${this.renderToast()}
@@ -238,10 +263,10 @@ export class StateContainer extends LitElement {
                 .audioStream=${this.audioStream}
                 .country=${this.country}
                 .context=${this.context}
+                .collectionState=${this.collectionState}
                 .user=${this.user}
                 .view=${this.view}
                 ?can-record=${this.canRecord}
-                ?is-recording=${this.isRecording}
                 ?login-completed=${this.loginCompleted}
             >
             </vox-view-container>

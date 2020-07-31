@@ -20,15 +20,17 @@ import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 import {QualityControl} from '../utils/QualityControl';
 import {dispatchErrorToast} from '../utils/ToastUtils.js';
+import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 import style from '../styles/components/RecordButton.css.js';
 
 export class RecordButton extends LitElement {
     static get properties() {
         return {
-            isRecording: {type: Boolean},
+            collectionState: {type: String},
             audioStream: {type: Object},
             context: {type: Object},
+            isRecording: {type: Boolean},
         };
     }
 
@@ -38,7 +40,6 @@ export class RecordButton extends LitElement {
 
     constructor() {
         super();
-        this.isRecording = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
     }
@@ -54,6 +55,7 @@ export class RecordButton extends LitElement {
      */
     async recordHandler() {
         if (!this.isRecording) {
+            // attempt to init; check for browser permission
             try {
                 await this.audioRecorder.initRecorder();
             } catch (e) {
@@ -66,17 +68,23 @@ export class RecordButton extends LitElement {
                 return;
             }
 
+            // start recording
             if (!this.audioRecorder.startRecording()) {
                 dispatchErrorToast(this, 'Failed to start recording.');
                 return;
             }
 
-            this.isRecording = true;
+            // Set to recording state
+            this.dispatchCollectionState(CollectionStates.RECORDING);
+
             this.audioStream = this.audioRecorder.stream;
             this.context = new (window.AudioContext ||
                 window.webkitAudioContext)();
         } else {
-            this.isRecording = false;
+            // Set to before recording state
+            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
+
+            // Capture audio into variable
             let audio;
 
             try {
@@ -88,45 +96,29 @@ export class RecordButton extends LitElement {
                 );
             }
 
+            // Do auto qc checks
             const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityResult = qualityCheck.isQualitySound();
+            const qualityResult = await qualityCheck.isQualitySound();
             if (!qualityResult.success) {
+                // If qc failed, pivot to QC error collection state
+                this.dispatchCollectionState(CollectionStates.QC_ERROR);
                 return;
             }
 
+            // Attempt to upload it
             if (audio.recordingUrl) {
                 try {
                     const resp = await this.utteranceService.saveAudio(audio);
 
                     if (!resp) throw new Error();
                 } catch (e) {
-                    dispatchErrorToast(
-                        this,
-                        `Could not upload recording successfully`
-                    );
+                    // If upload failed, pivot to upload error collection state
+                    this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
                 }
             }
 
             this.handleFinish();
         }
-    }
-
-    /**
-     * Returns whether or not the application is actively recording.
-     * @return {Boolean} Whether or not the application is actively
-     *  recording.
-     */
-    getIsRecording() {
-        return this.isRecording;
-    }
-
-    /**
-     * Returns the current audio stream being recorded.
-     * @returns {Object} The current audio stream being
-     *  recorded.
-     */
-    getAudioStream() {
-        return this.audioStream;
     }
 
     /**
@@ -144,7 +136,6 @@ export class RecordButton extends LitElement {
     handleWaveCanvas() {
         const event = new CustomEvent('update-wave', {
             detail: {
-                isRecording: this.isRecording,
                 audioStream: this.audioStream,
                 context: this.context,
             },
@@ -155,16 +146,24 @@ export class RecordButton extends LitElement {
         this.dispatchEvent(event);
     }
 
+    dispatchCollectionState(newState) {
+        const event = new CustomEvent('update-collection-state', {
+            detail: {
+                state: newState,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
+    }
+
     /**
      * Emits an event that causes a new prompt to be rendered
      * on the recording page.
      */
     handleFinish() {
-        const event = new CustomEvent('change-prompt', {
-            bubbles: true,
-            composed: true,
-        });
-        this.dispatchEvent(event);
+        this.dispatchCollectionState(CollectionStates.TRANSITIONING);
     }
 
     render() {

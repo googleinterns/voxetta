@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import {SoundWave} from './SoundWave';
 import {LitElement, html, css} from 'lit-element';
+import {SoundWave} from './SoundWave';
+import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 /**
  * Canvas responsible for holding soundwave once user starts recording
@@ -26,10 +27,11 @@ export class WaveCanvas extends LitElement {
             canvasId: {type: String},
             canvas: {type: Object},
             audioStream: {type: Object},
-            isRecording: {type: Boolean},
+            collectionState: {type: String},
             width: {type: Number},
             height: {type: Number},
             context: {type: Object},
+            isRecording: {type: Boolean},
         };
     }
 
@@ -39,7 +41,7 @@ export class WaveCanvas extends LitElement {
         this.canvasId = 'myCanvas';
         this.canvas;
         this.width = this.getWidth();
-        this.height = 100;
+        this.height = 200;
     }
 
     /**
