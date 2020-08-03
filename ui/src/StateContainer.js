@@ -255,18 +255,18 @@ export class StateContainer extends LitElement {
             @exit-form="${this.handleExitForm}"
             @first-access-over="${this.handleFirstAccessOver}"
             @skip-prompt="${this.handleSkipPrompt}"
-            @update-wave="${this.handleUpdateWave}"
-            @update-user-info="${this.handleUserInfoUpdate}"
             @update-collection-state=${this.updateCollectionState}
+            @update-user-info="${this.handleUserInfoUpdate}"
+            @update-wave="${this.handleUpdateWave}"
         >
             ${this.renderToast()}
             <vox-view-container
-                .country=${this.country}
-                .view=${this.view}
-                .collectionState=${this.collectionState}
-                .user=${this.user}
                 .audioStream=${this.audioStream}
+                .collectionState=${this.collectionState}
                 .context=${this.context}
+                .country=${this.country}
+                .user=${this.user}
+                .view=${this.view}
                 ?is-recording=${this.isRecording}
                 ?login-completed=${this.loginCompleted}
             >
