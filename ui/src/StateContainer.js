@@ -32,12 +32,11 @@ export class StateContainer extends LitElement {
     static get properties() {
         return {
             audioStream: {type: Object},
-            audioStream: {type: Object},
             canRecord: {type: Boolean},
             collectionState: {type: String},
             context: {type: Object},
             toast: {type: Object},
-            view: {type: String}
+            view: {type: String},
         };
     }
 
@@ -47,8 +46,8 @@ export class StateContainer extends LitElement {
 
     constructor() {
         super();
-        
-        this.urlService = new UrlService(); 
+
+        this.urlService = new UrlService();
         this.cookieService = new CookieService();
 
         this.setUserInfoOntoCookie();
@@ -59,11 +58,14 @@ export class StateContainer extends LitElement {
             userAge: this.cookieService.getUserAge(),
             deviceType: this.cookieService.getDeviceType(),
         };
- 
+
         this.canRecord = true;
+
         this.collectionState = CollectionStates.NOT_RECORDING;
+
         this.country = undefined;
         this.loginCompleted = false;
+        this.userInfoPresent = false;
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
     }
@@ -84,7 +86,7 @@ export class StateContainer extends LitElement {
     }
 
     /**
-     * Parses the URL for relevant project-related details. 
+     * Parses the URL for relevant project-related details.
      */
     setProjectDetails() {
         this.projectId = this.urlService.getProjectId();
@@ -95,12 +97,12 @@ export class StateContainer extends LitElement {
     /**
      * If present and different from that stored in the cookies, give
      * the userId provided in the URL priority and clear every other
-     * component of user information. 
+     * component of user information.
      */
     setUserInfoOntoCookie() {
         const userIdUrl = this.urlService.getUserId();
         const userIdCookie = this.cookieService.getUserId();
-        if (userIdUrl && (userIdUrl !== userIdCookie)) {
+        if (userIdUrl && userIdUrl !== userIdCookie) {
             const user = {
                 userId: userIdUrl,
                 gender: '',
@@ -108,7 +110,7 @@ export class StateContainer extends LitElement {
                 deviceType: '',
             };
             this.cookieService.makeUserInfoCookie(user);
-        } 
+        }
     }
 
     /**
@@ -251,22 +253,21 @@ export class StateContainer extends LitElement {
             @end-session="${this.handleEndSession}"
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
-            @update-user-info="${this.handleUserInfoUpdate}"
-            @update-collection-state=${this.updateCollectionState}
-            @skip-prompt="${this.handleSkipPrompt}"
-            @end-session="${this.handleEndSession}"
             @first-access-over="${this.handleFirstAccessOver}"
+            @skip-prompt="${this.handleSkipPrompt}"
+            @update-collection-state=${this.updateCollectionState}
+            @update-user-info="${this.handleUserInfoUpdate}"
             @update-wave="${this.handleUpdateWave}"
         >
             ${this.renderToast()}
             <vox-view-container
                 .audioStream=${this.audioStream}
-                .country=${this.country}
-                .context=${this.context}
                 .collectionState=${this.collectionState}
+                .context=${this.context}
+                .country=${this.country}
                 .user=${this.user}
                 .view=${this.view}
-                ?can-record=${this.canRecord}
+                ?is-recording=${this.isRecording}
                 ?login-completed=${this.loginCompleted}
             >
             </vox-view-container>
