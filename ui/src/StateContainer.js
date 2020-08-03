@@ -35,6 +35,7 @@ export class StateContainer extends LitElement {
             canRecord: {type: Boolean},
             collectionState: {type: String},
             context: {type: Object},
+            qcError: {type: String},
             toast: {type: Object},
             view: {type: String},
         };
@@ -169,6 +170,15 @@ export class StateContainer extends LitElement {
     }
 
     /**
+     * Updates the qcError property with the most up-to-date
+     * data from the vox-record-button component.
+     */
+    handleQCError(e) {
+        this.qcError = e.detail.qcError;
+    }
+
+
+    /**
      * Updates the view such that the record page closes and the user form appears.
      */
     handleEnterForm() {
@@ -258,6 +268,7 @@ export class StateContainer extends LitElement {
             @update-collection-state=${this.updateCollectionState}
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-wave="${this.handleUpdateWave}"
+            @update-QC-Error="${this.handleQCError}"
         >
             ${this.renderToast()}
             <vox-view-container
@@ -265,6 +276,7 @@ export class StateContainer extends LitElement {
                 .collectionState=${this.collectionState}
                 .context=${this.context}
                 .country=${this.country}
+                .qcError=${this.qcError}
                 .user=${this.user}
                 .view=${this.view}
                 ?is-recording=${this.isRecording}
