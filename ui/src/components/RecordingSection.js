@@ -45,6 +45,7 @@ export class RecordingSection extends LitElement {
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
         this.finishedAudio = undefined;
+        this.qcError = ""
     }
 
     updated(changedProperties) {
@@ -125,7 +126,8 @@ export class RecordingSection extends LitElement {
         const qualityResult = await qualityCheck.isQualitySound();
         if (!qualityResult.success) {
             // If qc failed, pivot to QC error collection state
-            this.dispatchCollectionState(CollectionStates.QC_ERROR);
+            this.qcError = "qc error"
+            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
             return;
         }
 
@@ -155,6 +157,11 @@ export class RecordingSection extends LitElement {
 
         // Dispatch transition to next prompt.
         this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+    }
+
+
+    handleReRecord() {
+        this.dispatchCollectionState(CollectionStates.NOT_RECORDING)
     }
 
     startPlayback() {}
@@ -209,10 +216,8 @@ export class RecordingSection extends LitElement {
                     @playback-start=${this.startPlayback}
                     @playback-stop=${this.stopPlayback}
                 ></vox-playback-button>`;
-            case CollectionStates.QC_ERROR:
-                return html`qc error`;
             default:
-                return html``;
+                return this.qcError ? this.qcError : html``;
         }
     }
 
@@ -224,7 +229,7 @@ export class RecordingSection extends LitElement {
             <div class="buttons">
                 <div class="button-container">
                     ${this.collectionState === CollectionStates.BEFORE_UPLOAD
-                        ? html` <vox-re-record-button></vox-re-record-button>`
+                        ? html`<vox-re-record-button @re-record=${this.handleReRecord}></vox-re-record-button>`
                         : html``}
                 </div>
                 <div class="record-button-container">
