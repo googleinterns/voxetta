@@ -22,7 +22,6 @@ export default css`
         border: none;
         color: #a0a0a0;
         cursor: pointer;
-        font-family: 'Roboto';
         text-transform: uppercase;
         width: 80px;
         height: 80px;

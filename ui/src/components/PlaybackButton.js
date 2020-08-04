@@ -26,10 +26,10 @@ export class PlaybackButton extends LitElement {
     static get properties() {
         return {
             audioUrl: {type: String},
-            playing: {type: Boolean}
+            playing: {type: Boolean},
         };
     }
-    
+
     static get styles() {
         return style;
     }
@@ -41,11 +41,10 @@ export class PlaybackButton extends LitElement {
         this.playing = false;
     }
 
-
     updated() {
-        // only update if url is new
+        // only update if audio isn't set
         if (!this.audio && this.audioUrl) {
-            this.audio = new Audio(this.audioUrl)
+            this.audio = new Audio(this.audioUrl);
         }
     }
 
@@ -56,7 +55,7 @@ export class PlaybackButton extends LitElement {
         } else {
             this.playing = false;
             this.audio.pause();
-            
+
             // set to beginning
             this.audio.currentTime = 0;
         }
@@ -64,9 +63,12 @@ export class PlaybackButton extends LitElement {
 
     render() {
         return html` <button @click="${this.handleClick}">
-
-            <mwc-icon>${this.playing ? "pause_circle_outline" : "play_circle_outline"}</mwc-icon>
-            <span>${this.playing ? "Pause" : "Listen"}</span>
+            <mwc-icon
+                >${this.playing
+                    ? 'pause_circle_outline'
+                    : 'play_circle_outline'}</mwc-icon
+            >
+            <span>${this.playing ? 'Pause' : 'Listen'}</span>
         </button>`;
     }
 }

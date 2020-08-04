@@ -51,7 +51,7 @@ export class RecordingSection extends LitElement {
     handleAudioUrl(e) {
         this.audioUrl = e.detail.url;
     }
-    
+
     dispatchCollectionState(newState) {
         const event = new CustomEvent('update-collection-state', {
             detail: {
@@ -63,7 +63,6 @@ export class RecordingSection extends LitElement {
 
         this.dispatchEvent(event);
     }
-
 
     /**
      * Rendering related
@@ -104,7 +103,10 @@ export class RecordingSection extends LitElement {
                         : html``}
                 </div>
                 <div class="record-button-container">
-                    <vox-record-button .collectionState=${this.collectionState} @set-audio-url=${this.handleAudioUrl}>
+                    <vox-record-button
+                        .collectionState=${this.collectionState}
+                        @set-audio-url=${this.handleAudioUrl}
+                    >
                     </vox-record-button>
                 </div>
                 <div class="button-container">

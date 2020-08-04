@@ -26,7 +26,7 @@ export class ReRecordButton extends LitElement {
     }
 
     static get styles() {
-        return style
+        return style;
     }
 
     dispatchReRecord() {

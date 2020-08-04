@@ -110,7 +110,6 @@ export class RecordButton extends LitElement {
             return;
         }
 
-
         this.finishedAudio = audio;
         this.dispatchAudioUrl(this.finishedAudio.recordingUrl);
 
@@ -175,7 +174,7 @@ export class RecordButton extends LitElement {
     dispatchAudioUrl(url) {
         const event = new CustomEvent('set-audio-url', {
             detail: {
-                url: url,
+                url,
             },
             bubbles: true,
             composed: true,
