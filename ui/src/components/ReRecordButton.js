@@ -18,11 +18,15 @@ import {LitElement, html} from 'lit-element';
 
 import {CollectionStates} from '../utils/CollectionStatesEnum';
 
-import style from '../styles/components/ReRecordButton.css';
+import style from '../styles/components/ReRecordButton.css.js';
 
 export class ReRecordButton extends LitElement {
     static get properties() {
         return {};
+    }
+
+    static get styles() {
+        return style
     }
 
     dispatchReRecord() {

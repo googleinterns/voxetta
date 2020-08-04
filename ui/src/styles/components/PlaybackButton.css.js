@@ -17,34 +17,29 @@
 import {css} from 'lit-element';
 
 export default css`
-    #feedback,
-    .buttons {
-        align-items: center;
+    button {
+
         display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: center;
+        align-items: center;
+
+        padding: 10px 14px;
+        background: #FFFFFF;
+        border: 1px solid #BDC1C6;
+        box-sizing: border-box;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 700;
+        color: #5F6368;
     }
 
-    .buttons {
-        padding-bottom: 10vh;
-        padding-top: 40px;
-        flex-direction: row;
-        justify-content: center;
+    button:hover {
+        background-color: #dcdcdc;
     }
 
-    .record-button-container {
-        margin: 0 60px;
-    }
+    mwc-icon {
+        margin-right: 6px;}
 
-    .button-container {
-        width: 80px;
-    }
-
-    /* Tablet */
-    @media screen and (min-width: 600px) {
-        .buttons {
-            padding-bottom: 14vh;
-        }
+    span {
+        line-height: 0;
     }
 `;

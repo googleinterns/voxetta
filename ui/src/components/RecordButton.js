@@ -110,10 +110,12 @@ export class RecordButton extends LitElement {
             return;
         }
 
-        // Checks finished; transition to before_upload state
-        this.dispatchCollectionState(CollectionStates.BEFORE_UPLOAD);
 
         this.finishedAudio = audio;
+        this.dispatchAudioUrl(this.finishedAudio.recordingUrl);
+
+        // Checks finished; transition to before_upload state
+        this.dispatchCollectionState(CollectionStates.BEFORE_UPLOAD);
     }
 
     /**
@@ -162,6 +164,18 @@ export class RecordButton extends LitElement {
         const event = new CustomEvent('update-collection-state', {
             detail: {
                 state: newState,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    dispatchAudioUrl(url) {
+        const event = new CustomEvent('set-audio-url', {
+            detail: {
+                url: url,
             },
             bubbles: true,
             composed: true,

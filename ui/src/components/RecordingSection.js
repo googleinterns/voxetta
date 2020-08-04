@@ -40,15 +40,30 @@ export class RecordingSection extends LitElement {
 
     constructor() {
         super();
-        this.audioRecorder = new AudioRecorder();
-        this.utteranceService = new UtteranceApiService();
-        this.finishedAudio = undefined;
+        this.audioUrl = undefined;
         this.qcError = '';
     }
 
     handleReRecord() {
         this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
     }
+
+    handleAudioUrl(e) {
+        this.audioUrl = e.detail.url;
+    }
+    
+    dispatchCollectionState(newState) {
+        const event = new CustomEvent('update-collection-state', {
+            detail: {
+                state: newState,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
+    }
+
 
     /**
      * Rendering related
@@ -66,6 +81,7 @@ export class RecordingSection extends LitElement {
                 </vox-sound-wave>`;
             case CollectionStates.BEFORE_UPLOAD:
                 return html`<vox-playback-button
+                    .audioUrl=${this.audioUrl}
                     @playback-start=${this.startPlayback}
                     @playback-stop=${this.stopPlayback}
                 ></vox-playback-button>`;
@@ -88,7 +104,7 @@ export class RecordingSection extends LitElement {
                         : html``}
                 </div>
                 <div class="record-button-container">
-                    <vox-record-button .collectionState=${this.collectionState}>
+                    <vox-record-button .collectionState=${this.collectionState} @set-audio-url=${this.handleAudioUrl}>
                     </vox-record-button>
                 </div>
                 <div class="button-container">

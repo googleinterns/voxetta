@@ -16,18 +16,57 @@
 
 import {LitElement, html} from 'lit-element';
 
+import {Icon} from '@material/mwc-icon';
+
 import {CollectionStates} from '../utils/CollectionStatesEnum';
 
-import style from '../styles/components/ReRecordButton.css';
+import style from '../styles/components/PlaybackButton.css';
 
 export class PlaybackButton extends LitElement {
     static get properties() {
-        return {};
+        return {
+            audioUrl: {type: String},
+            playing: {type: Boolean}
+        };
+    }
+    
+    static get styles() {
+        return style;
+    }
+
+    constructor() {
+        super();
+
+        this.audio = undefined;
+        this.playing = false;
+    }
+
+
+    updated() {
+        // only update if url is new
+        if (!this.audio && this.audioUrl) {
+            this.audio = new Audio(this.audioUrl)
+        }
+    }
+
+    handleClick() {
+        if (!this.playing) {
+            this.playing = true;
+            this.audio.play();
+        } else {
+            this.playing = false;
+            this.audio.pause();
+            
+            // set to beginning
+            this.audio.currentTime = 0;
+        }
     }
 
     render() {
-        return html` <button @click="${this.playback}">
-            playback
+        return html` <button @click="${this.handleClick}">
+
+            <mwc-icon>${this.playing ? "pause_circle_outline" : "play_circle_outline"}</mwc-icon>
+            <span>${this.playing ? "Pause" : "Listen"}</span>
         </button>`;
     }
 }

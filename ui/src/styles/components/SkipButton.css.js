@@ -24,9 +24,16 @@ export default css`
         cursor: pointer;
         font-family: 'Roboto';
         text-transform: uppercase;
-        width: 50px;
+        width: 80px;
+        height: 80px;
     }
+
     button:hover {
         background-color: #dcdcdc;
+    }
+
+    mwc-icon {
+        display: block;
+        margin-bottom: 6px;
     }
 `;
