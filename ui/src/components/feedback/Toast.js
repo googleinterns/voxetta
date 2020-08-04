@@ -28,6 +28,7 @@ export class Toast extends LitElement {
     static get properties() {
         return {
             message: {type: String},
+            reupload: {type: Boolean},
         };
     }
 
@@ -39,10 +40,33 @@ export class Toast extends LitElement {
         ToastUtils.clearToast(this);
     }
 
+    /**
+     * Emits an event that results in an attempt to manually
+     * resubmit the last failed audio upload.
+     */
+    handleReuploadAudio() {
+        const event = new CustomEvent('reupload-audio', {
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+        ToastUtils.clearToast(this);
+    }
+
     render() {
         return html`
             <div class="toast">
                 <p>${this.message}</p>
+
+                <!-- Display the reupload button if it is a reupload toast -->
+                ${this.reupload
+                    ? html`
+                        <mwc-icon-button
+                            icon="autorenew"
+                            @click=${this.handleReuploadAudio}
+                        ></mwc-icon-button>
+                      `
+                    : html``}
 
                 <mwc-icon-button
                     icon="clear"

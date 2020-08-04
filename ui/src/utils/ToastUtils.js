@@ -18,11 +18,13 @@
  * Dispatches an error toast event from the element it is called from
  * @param {LitElement} e Element to dispatch event from (usually `this`)
  * @param {*} message Message to display in error toast template
+ * @param {Boolean} reupload Denotes if the toast is a reuploading toast
  */
-const dispatchErrorToast = (elem, message) => {
+const dispatchErrorToast = (elem, message, reupload=false) => {
     const toastEvent = new CustomEvent('add-toast', {
         detail: {
             message,
+            reupload,
         },
         bubbles: true,
         composed: true,
