@@ -65,6 +65,7 @@ export class StateContainer extends LitElement {
 
         this.country = undefined;
         this.loginCompleted = false;
+        this.reupload = false; 
         this.userInfoPresent = false;
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
@@ -202,8 +203,8 @@ export class StateContainer extends LitElement {
     }
 
     /**
-     * Handles user form updating
-     * @param {Event} e object dispatched from user form
+     * Handles user form updating.
+     * @param {Event} e Object dispatched from the user form.
      */
     handleUserInfoUpdate(e) {
         this.updateUserInformation(e.detail.userInfo);
@@ -212,6 +213,7 @@ export class StateContainer extends LitElement {
 
     handleAddToast(e) {
         this.toast = e.detail.message;
+        this.reupload = e.detail.reupload; 
     }
 
     handleClearToast() {
@@ -222,7 +224,13 @@ export class StateContainer extends LitElement {
         if (!this.toast) {
             return html``;
         }
-        return html` <vox-toast message="${this.toast}"></vox-toast> `;
+ 
+        return html` 
+            <vox-toast 
+                message="${this.toast}"
+                ?reupload="${this.reupload}"
+            >
+            </vox-toast> `;
     }
 
     /**
@@ -231,6 +239,27 @@ export class StateContainer extends LitElement {
      */
     updateCollectionState(e) {
         this.collectionState = e.detail.state;
+    }
+
+    /**
+     * Saves the current audio file locally.
+     * @param {Event} e Object dispatched from the record button.
+     */
+    handleSaveAudio(e) {
+        this.latestAudio = e.detail.audio; 
+    }
+
+    /**
+     * Attempts to reupload the latest audio file.
+     */
+    handleReuploadAudio() {
+        const recordComponent = this.viewShadowRoot.querySelector(
+            'vox-recording-section'
+        );
+        const buttonComponent = recordComponent.shadowRoot.querySelector(
+            'vox-record-button'
+        );
+        buttonComponent.uploadAudio(this.latestAudio);
     }
 
     /**
@@ -254,12 +283,13 @@ export class StateContainer extends LitElement {
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @first-access-over="${this.handleFirstAccessOver}"
+            @reupload-audio="${this.handleReuploadAudio}"
+            @save-audio="${this.handleSaveAudio}"
             @skip-prompt="${this.handleSkipPrompt}"
             @update-collection-state=${this.updateCollectionState}
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-wave="${this.handleUpdateWave}"
         >
-            ${this.renderToast()}
             <vox-view-container
                 .audioStream=${this.audioStream}
                 .collectionState=${this.collectionState}
@@ -271,6 +301,7 @@ export class StateContainer extends LitElement {
                 ?login-completed=${this.loginCompleted}
             >
             </vox-view-container>
+            ${this.renderToast()}
         </div>`;
     }
 }
