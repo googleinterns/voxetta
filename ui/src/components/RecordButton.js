@@ -96,7 +96,7 @@ export class RecordButton extends LitElement {
                 );
             }
 
-            // Do auto qc checks
+            // Complete auto quality control checks
             const qualityCheck = new QualityControl(this.context, audio.blob);
             const qualityResult = await qualityCheck.isQualitySound();
             if (!qualityResult.success) {
@@ -105,20 +105,26 @@ export class RecordButton extends LitElement {
                 return;
             }
 
-            // Attempt to upload it
-            if (audio.recordingUrl) {
-                try {
-                    const resp = await this.utteranceService.saveAudio(audio);
-
-                    if (!resp) throw new Error();
-                } catch (e) {
-                    // If upload failed, pivot to upload error collection state
-                    this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
-                }
-            }
-
-            this.handleFinish();
+            // Attempt to upload the audio file
+            this.uploadAudio(audio)
         }
+    }
+
+    /**
+     * Attempts to upload the current audio file to the backend.
+     * @param {Object} audio An object containing an audio Blob and its 
+     *  corresponding URL.
+     */
+    async uploadAudio(audio) {
+        if (audio.recordingUrl) {
+            this.handleSaveAudio(audio);
+            const response = await this.utteranceService.saveAudio(audio);
+
+            if (!response) {
+                dispatchErrorToast(this, `Audio failed to upload. Retry?`, true);
+            }
+        }
+        this.handleFinish();
     }
 
     /**
@@ -138,6 +144,23 @@ export class RecordButton extends LitElement {
             detail: {
                 audioStream: this.audioStream,
                 context: this.context,
+            },
+
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Emits an event that causes the current audio file
+     * to be saved locally in case it is needed in the
+     * future for re-uploading purposes.
+     */
+    handleSaveAudio(audio) {
+        const event = new CustomEvent('save-audio', {
+            detail: {
+                audio,
             },
 
             bubbles: true,
