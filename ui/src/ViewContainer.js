@@ -39,6 +39,7 @@ export class ViewContainer extends LitElement {
             country: {type: String},
             isRecording: {type: Boolean, attribute: 'is-recording'},
             loginCompleted: {type: Boolean, attribute: 'login-completed'},
+            qcError: {type: String},
             user: {type: Object},
             view: {type: String},
         };
@@ -99,6 +100,7 @@ export class ViewContainer extends LitElement {
                     .collectionState=${this.collectionState}
                     .audioStream=${this.audioStream}
                     .context=${this.context}
+                    .qcError=${this.qcError}
                 >
                 </vox-recording-section>
             </div>

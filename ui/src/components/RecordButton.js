@@ -31,6 +31,7 @@ export class RecordButton extends LitElement {
             audioStream: {type: Object},
             context: {type: Object},
             isRecording: {type: Boolean},
+            qcError: {type: String},
         };
     }
 
@@ -44,8 +45,11 @@ export class RecordButton extends LitElement {
         this.utteranceService = new UtteranceApiService();
     }
 
-    updated() {
+    updated(changedProperties) {
         this.handleWaveCanvas();
+        if (changedProperties.has('qcError')) {
+            this.handleQcError();
+        }
     }
 
     /**
@@ -102,6 +106,7 @@ export class RecordButton extends LitElement {
             if (!qualityResult.success) {
                 // If qc failed, pivot to QC error collection state
                 this.dispatchCollectionState(CollectionStates.QC_ERROR);
+                this.qcError = qualityResult.errorMessage;
                 return;
             }
 
@@ -145,6 +150,21 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
+
+    /**
+     * Emits an event that causes the application to render the QCError
+     */
+    handleQcError() {
+        const event = new CustomEvent('update-qc-error', {
+            detail: {
+                qcError: this.qcError,
+            },
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+    }
+
 
     dispatchCollectionState(newState) {
         const event = new CustomEvent('update-collection-state', {

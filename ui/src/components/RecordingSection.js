@@ -26,6 +26,7 @@ export class RecordingSection extends LitElement {
             collectionState: {type: String},
             audioStream: {type: Object},
             context: {type: Object},
+            qcError: {type: String},
         };
     }
 
@@ -55,7 +56,7 @@ export class RecordingSection extends LitElement {
             case CollectionStates.BEFORE_UPLOAD:
                 return html`put play button here`;
             case CollectionStates.QC_ERROR:
-                return html`qc error`;
+                return html`<p>${this.qcError}</p>`;
             default:
                 return html``;
         }
