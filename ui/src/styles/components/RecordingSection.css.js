@@ -41,6 +41,12 @@ export default css`
         width: 80px;
     }
 
+    p {
+        text-align: center;
+        color: red;
+    }
+
+
     /* Tablet */
     @media screen and (min-width: 600px) {
         .buttons {
