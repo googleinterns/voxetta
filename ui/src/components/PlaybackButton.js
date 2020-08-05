@@ -48,6 +48,9 @@ export class PlaybackButton extends LitElement {
         }
     }
 
+    /**
+     * Plays or pauses audio depending on this.playing boolean
+     */
     handleClick() {
         if (!this.playing) {
             this.playing = true;

@@ -66,9 +66,8 @@ export class RecordingSection extends LitElement {
     }
 
     /**
-     * Rendering related
+     * Render space above recording button depending on state
      */
-
     renderFeedbackWindow() {
         switch (this.collectionState) {
             case CollectionStates.RECORDING:

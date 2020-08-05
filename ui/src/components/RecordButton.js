@@ -139,7 +139,7 @@ export class RecordButton extends LitElement {
         if (audio.recordingUrl) {
             try {
                 const resp = await this.utteranceService.saveAudio(audio);
-                if (!resp) throw new Error();
+                if (!resp) throw new Error('Failed to upload utterance');
             } catch (e) {
                 // If upload failed, pivot to upload error collection state
                 this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
