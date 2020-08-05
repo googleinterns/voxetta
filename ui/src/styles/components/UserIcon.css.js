@@ -17,13 +17,20 @@
 import {css} from 'lit-element';
 
 export default css`
+
     div {
         display: inline-flex;
         align-items: center;
         padding: 0;
     }
+
     div:hover {
         background: #eeeeee;
+    }
+
+    mwc-icon {
+        display: none;
+        color: #9aa0a6;
     }
 
     mwc-icon-button {
@@ -35,11 +42,6 @@ export default css`
         display: none;
         margin: 0 8px 0 12px;
         font-size: 14px;
-    }
-
-    mwc-icon {
-        display: none;
-        color: #9aa0a6;
     }
 
     /* Breakpoints */

@@ -17,6 +17,7 @@
 import {css} from 'lit-element';
 
 export default css`
+
     .container {
         align-items: center;
         color: #3c4043;
@@ -27,6 +28,7 @@ export default css`
         text-align: center;
         width: 100vw;
     }
+
     .header-container {
         align-items: center;
         display: flex;
@@ -35,14 +37,16 @@ export default css`
         justify-content: center;
         width: 270x;
     }
+
     .title-container {
         width: 250px;
     }
+
     .icon-container {
         width: 20px;
     }
-    h1,
-    h2 {
+
+    h1,h2 {
         font-family: 'Roboto';
         font-weight: normal;
         margin-top: 5px;
@@ -50,38 +54,46 @@ export default css`
         margin-right: 0px;
         width: 270px;
     }
+
     h1.title {
         font-size: 30px;
         margin-bottom: 5px;
         padding-left: 5px;
     }
+
     h2.description {
         font-size: 18px;
         margin-bottom: 10px;
     }
+
     mwc-icon {
         --mdc-icon-size: 40px;
         float: left;
         position: relative;
     }
+
     mwc-textfield {
         --mdc-theme-primary: #1a73e8;
         padding: 10px;
         width: 300px;
     }
+
     mwc-select {
         --mdc-theme-primary: #1a73e8;
         padding: 10px;
         width: 300px;
     }
+
     mwc-button {
         padding: 10px;
         width: 250px;
     }
+
     mwc-button.save {
         --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
     }
+    
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;

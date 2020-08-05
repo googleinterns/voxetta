@@ -25,15 +25,18 @@ export default css`
         justify-content: center; 
         text-align: center;  
     }
+
     mwc-select {
         width: 300px; 
     }
+
     h3 {
         font-family: 'Roboto';
         font-size: 28px; 
         font-weight: normal;
         padding: 0px 20px 0px 20px;
     }
+    
     p {
         font-family: 'Roboto';
         font-size: 18px; 

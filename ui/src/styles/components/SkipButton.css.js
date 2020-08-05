@@ -17,6 +17,7 @@
 import {css} from 'lit-element';
 
 export default css`
+
     button {
         background-color: white;
         border: none;
@@ -26,6 +27,7 @@ export default css`
         text-transform: uppercase;
         width: 50px;
     }
+    
     button:hover {
         background-color: #dcdcdc;
     }

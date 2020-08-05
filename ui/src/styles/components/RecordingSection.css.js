@@ -17,39 +17,40 @@
 import {css} from 'lit-element';
 
 export default css`
+
     #feedback,
+    
+    .feedback-container {
+        height: 100px; 
+    }
+
     .buttons {
         align-items: center;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-    }
-    .buttons {
         padding-bottom: 10vh;
         padding-top: 40px;
-        flex-direction: row;
-        justify-content: center;
+    } 
+
+    .button-container {
+        width: 50px;
     }
 
     .record-button-container {
         margin: 0 60px;
     }
 
-    .button-container {
-        width: 50px;
-    }
-
     p {
-        text-align: center;
         color: red;
+        text-align: center;
     }
-
 
     /* Tablet */
     @media screen and (min-width: 600px) {
         .buttons {
-            padding-bottom: 14vh;
+            padding-bottom: 10vh;
         }
     }
 `;

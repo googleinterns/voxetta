@@ -17,6 +17,7 @@
 import {css} from 'lit-element';
 
 export default css`
+
     textarea.terms {
         border: none;
         font-family: 'Roboto';
@@ -26,6 +27,7 @@ export default css`
         overflow: scroll; 
         padding: 5px 20px 0px 20px; 
     }
+
     div.button-container {
         align-items: center; 
         box-shadow: 0px -3px 1px -1px #dcdcdc;
@@ -36,15 +38,18 @@ export default css`
         justify-content: center; 
         text-align: center;  
     }
+
     mwc-button {
         font-size: 8x;
         padding: 10px;
     }
+
     mwc-button.accept {
         --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
         width: 60vw;
     }
+    
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;

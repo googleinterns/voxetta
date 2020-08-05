@@ -43,8 +43,8 @@ export default css`
 
     header.top-level-component {
         align-items: center;
-        height: 70px;
         flex-direction: row;
+        height: 70px;
     }
 
     header > div {

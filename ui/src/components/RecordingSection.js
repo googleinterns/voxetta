@@ -63,7 +63,8 @@ export class RecordingSection extends LitElement {
     }
 
     render() {
-        return html`<div id="feedback">
+        return html`
+            <div id="feedback" class="feedback-container">
                 ${this.renderFeedbackWindow()}
             </div>
 
