@@ -20,6 +20,7 @@ import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
 import {QualityControl} from '../utils/QualityControl';
 import {dispatchErrorToast} from '../utils/ToastUtils.js';
+import {dispatchRetryToast} from '../utils/ToastUtils.js';
 import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 import style from '../styles/components/RecordButton.css.js';
@@ -121,7 +122,7 @@ export class RecordButton extends LitElement {
             const response = await this.utteranceService.saveAudio(audio);
 
             if (!response) {
-                dispatchErrorToast(this, `Audio failed to upload. Retry?`, true);
+                dispatchRetryToast(this, `Audio failed to upload. Retry?`);
             }
         }
         this.handleFinish();

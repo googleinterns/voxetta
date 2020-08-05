@@ -15,16 +15,32 @@
  */
 
 /**
- * Dispatches an error toast event from the element it is called from
- * @param {LitElement} e Element to dispatch event from (usually `this`)
- * @param {*} message Message to display in error toast template
- * @param {Boolean} reupload Denotes if the toast is a reuploading toast
+ * Dispatches an error toast event from the element it is called from.
+ * @param {LitElement} e Element to dispatch event from (usually `this`).
+ * @param {*} message Message to display in error toast template.
  */
 const dispatchErrorToast = (elem, message, reupload=false) => {
     const toastEvent = new CustomEvent('add-toast', {
         detail: {
             message,
-            reupload,
+        },
+        bubbles: true,
+        composed: true,
+    });
+
+    elem.dispatchEvent(toastEvent);
+};
+
+/**
+ * Dispatches a retry toast event from the element it is called from.
+ * @param {LitElement} e Element to dispatch event from (usually `this`).
+ * @param {*} message Message to display in error toast template.
+ */
+const dispatchRetryToast = (elem, message) => {
+    const toastEvent = new CustomEvent('add-toast', {
+        detail: {
+            message,
+            reupload: true,
         },
         bubbles: true,
         composed: true,
@@ -47,4 +63,4 @@ const clearToast = (elem) => {
     elem.dispatchEvent(toastEvent);
 };
 
-export {dispatchErrorToast, clearToast};
+export {dispatchErrorToast, dispatchRetryToast, clearToast};
