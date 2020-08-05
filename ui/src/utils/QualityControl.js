@@ -47,10 +47,10 @@ export class QualityControl {
 
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
-            qualityResult.errorMessage += 'Recording is too short. Try again!';
+            qualityResult.errorMessage = 'Recording is too short. Try again!';
         } else if (audioResult) {
             qualityResult.success = false;
-            qualityResult.errorMessage += audioResult;
+            qualityResult.errorMessage = audioResult;
         }
 
         return qualityResult;

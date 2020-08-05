@@ -173,7 +173,7 @@ export class StateContainer extends LitElement {
      * Updates the qcError property with the most up-to-date
      * data from the vox-record-button component.
      */
-    handleQCError(e) {
+    handleQcError(e) {
         this.qcError = e.detail.qcError;
     }
 
@@ -268,7 +268,7 @@ export class StateContainer extends LitElement {
             @update-collection-state=${this.updateCollectionState}
             @update-user-info="${this.handleUserInfoUpdate}"
             @update-wave="${this.handleUpdateWave}"
-            @update-QC-Error="${this.handleQCError}"
+            @update-qc-error="${this.handleQcError}"
         >
             ${this.renderToast()}
             <vox-view-container

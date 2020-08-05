@@ -45,9 +45,11 @@ export class RecordButton extends LitElement {
         this.utteranceService = new UtteranceApiService();
     }
 
-    updated() {
+    updated(changedProperties) {
         this.handleWaveCanvas();
-        this.handleQCError();
+        if (changedProperties.has('qcError')) {
+            this.handleQcError();
+        }
     }
 
     /**
@@ -150,10 +152,10 @@ export class RecordButton extends LitElement {
     }
 
     /**
-     * Emits an event that causes the application to render thee QCError
+     * Emits an event that causes the application to render the QCError
      */
-    handleQCError() {
-        const event = new CustomEvent('update-QC-Error', {
+    handleQcError() {
+        const event = new CustomEvent('update-qc-error', {
             detail: {
                 qcError: this.qcError,
             },
