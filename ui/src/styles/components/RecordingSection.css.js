@@ -25,6 +25,7 @@ export default css`
         flex-wrap: wrap;
         justify-content: center;
     }
+
     .buttons {
         padding-bottom: 10vh;
         padding-top: 40px;
@@ -37,7 +38,7 @@ export default css`
     }
 
     .button-container {
-        width: 50px;
+        width: 80px;
     }
 
     p {

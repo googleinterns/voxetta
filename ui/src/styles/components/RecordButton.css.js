@@ -37,8 +37,23 @@ export default css`
         color: #3c4043;
     }
 
-    mwc-icon-button.recording {
+    .recording {
         background: #ea4335;
+        box-shadow: 0px 2px 14px rgba(234, 67, 53, 0.4),
+            0px 8px 12px rgba(60, 64, 67, 0.11),
+            0px 2px 4px rgba(60, 64, 67, 0.1),
+            0px 3px 16px rgba(128, 134, 139, 0.06),
+            0px 7px 26px rgba(128, 134, 139, 0.09);
+        color: white;
+    }
+
+    .confirm {
+        background: #34a853;
+        box-shadow: 0px 2px 14px rgba(52, 168, 83, 0.5),
+            0px 8px 12px rgba(60, 64, 67, 0.11),
+            0px 2px 4px rgba(60, 64, 67, 0.1),
+            0px 3px 16px rgba(128, 134, 139, 0.06),
+            0px 7px 26px rgba(128, 134, 139, 0.09);
         color: white;
     }
 `;

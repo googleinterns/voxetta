@@ -18,6 +18,7 @@ import {LitElement, html} from 'lit-element';
 
 import {Icon} from '@material/mwc-icon';
 import * as promptApi from '../utils/PromptApiService.js';
+import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 import style from '../styles/components/Prompts.css.js';
 
@@ -58,6 +59,17 @@ export class Prompts extends LitElement {
         } else {
             this.state = 'FAILURE';
         }
+
+        // transition to before recording state
+        const event = new CustomEvent('update-collection-state', {
+            detail: {
+                state: CollectionStates.NOT_RECORDING,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
     }
 
     /**
