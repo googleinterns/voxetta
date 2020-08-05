@@ -125,28 +125,20 @@ export class RecordButton extends LitElement {
      * Handles logic to upload recording and trigger transition to next prompt.
      */
     async handleUploadRecording(audio) {
+        // Do auto qc checks
+        const qualityCheck = new QualityControl(this.context, audio.blob);
+        const qualityResult = await qualityCheck.isQualitySound();
+        if (!qualityResult.success) {
+            // If qc failed, pivot to QC error collection state
+            this.dispatchCollectionState(CollectionStates.QC_ERROR);
+            this.qcError = qualityResult.errorMessage;
+            return;
+        }
+
         // Attempt to upload it
         if (audio.recordingUrl) {
             try {
-                const resp = await this.utteranceService.saveAudio(
-                    audio
-                );
-            }
-
-            // Do auto qc checks
-            const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityResult = await qualityCheck.isQualitySound();
-            if (!qualityResult.success) {
-                // If qc failed, pivot to QC error collection state
-                this.dispatchCollectionState(CollectionStates.QC_ERROR);
-                this.qcError = qualityResult.errorMessage;
-                return;
-            }
-
-            // Attempt to upload it
-            if (audio.recordingUrl) {
-                try {
-                    const resp = await this.utteranceService.saveAudio(audio);
+                const resp = await this.utteranceService.saveAudio(audio);
                 if (!resp) throw new Error();
             } catch (e) {
                 // If upload failed, pivot to upload error collection state
@@ -203,7 +195,7 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
-        
+
     dispatchAudioUrl(url) {
         const event = new CustomEvent('set-audio-url', {
             detail: {
