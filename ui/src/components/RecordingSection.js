@@ -31,6 +31,7 @@ export class RecordingSection extends LitElement {
             collectionState: {type: String},
             audioStream: {type: Object},
             context: {type: Object},
+            qcError: {type: String},
         };
     }
 
@@ -84,8 +85,10 @@ export class RecordingSection extends LitElement {
                     @playback-start=${this.startPlayback}
                     @playback-stop=${this.stopPlayback}
                 ></vox-playback-button>`;
+            case CollectionStates.QC_ERROR:
+                return html`<p>${this.qcError}</p>`;
             default:
-                return this.qcError ? this.qcError : html``;
+                return html``;
         }
     }
 

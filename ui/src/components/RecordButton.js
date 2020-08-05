@@ -34,6 +34,7 @@ export class RecordButton extends LitElement {
             buttonIcon: {type: String},
             buttonClass: {type: String},
             disabled: {type: Boolean},
+            qcError: {type: String},
         };
     }
 
@@ -52,6 +53,9 @@ export class RecordButton extends LitElement {
     updated(changedProperties) {
         this.handleWaveCanvas();
         this.determineButtonAttributes();
+        if (changedProperties.has('qcError')) {
+            this.handleQcError();
+        }
     }
 
     /**
@@ -120,14 +124,29 @@ export class RecordButton extends LitElement {
     /**
      * Handles logic to upload recording and trigger transition to next prompt.
      */
-    async handleUploadRecording() {
+    async handleUploadRecording(audio) {
         // Attempt to upload it
-        if (this.finishedAudio.recordingUrl) {
+        if (audio.recordingUrl) {
             try {
                 const resp = await this.utteranceService.saveAudio(
-                    this.finishedAudio
+                    audio
                 );
+            }
 
+            // Do auto qc checks
+            const qualityCheck = new QualityControl(this.context, audio.blob);
+            const qualityResult = await qualityCheck.isQualitySound();
+            if (!qualityResult.success) {
+                // If qc failed, pivot to QC error collection state
+                this.dispatchCollectionState(CollectionStates.QC_ERROR);
+                this.qcError = qualityResult.errorMessage;
+                return;
+            }
+
+            // Attempt to upload it
+            if (audio.recordingUrl) {
+                try {
+                    const resp = await this.utteranceService.saveAudio(audio);
                 if (!resp) throw new Error();
             } catch (e) {
                 // If upload failed, pivot to upload error collection state
@@ -155,7 +174,7 @@ export class RecordButton extends LitElement {
 
         // before_upload to transition
         else if (this.collectionState === CollectionStates.BEFORE_UPLOAD) {
-            this.handleUploadRecording();
+            this.handleUploadRecording(this.finishedAudio);
         }
     }
 
@@ -171,6 +190,20 @@ export class RecordButton extends LitElement {
         this.dispatchEvent(event);
     }
 
+    /**
+     * Emits an event that causes the application to render the QCError
+     */
+    handleQcError() {
+        const event = new CustomEvent('update-qc-error', {
+            detail: {
+                qcError: this.qcError,
+            },
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+    }
+        
     dispatchAudioUrl(url) {
         const event = new CustomEvent('set-audio-url', {
             detail: {
