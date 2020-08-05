@@ -54,7 +54,11 @@ export class UtteranceApiService {
         }
 
         const query = await response.json();
-        return query.success; 
+        if (query.success) {
+            window.URL.revokeObjectURL(audio.url)
+            return true;
+        } 
+        return false; 
     }
 
     /**
