@@ -29,6 +29,9 @@ export class ReRecordButton extends LitElement {
         return style;
     }
 
+    /**
+     * Sends an event to trigger re-record logic
+     */
     dispatchReRecord() {
         const event = new CustomEvent('re-record', {
             bubbles: true,
