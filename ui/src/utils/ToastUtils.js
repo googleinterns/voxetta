@@ -19,10 +19,11 @@
  * @param {LitElement} e Element to dispatch event from (usually `this`).
  * @param {*} message Message to display in error toast template.
  */
-const dispatchErrorToast = (elem, message, reupload=false) => {
+const dispatchErrorToast = (elem, message) => {
     const toastEvent = new CustomEvent('add-toast', {
         detail: {
             message,
+            icon: 'clear',
         },
         bubbles: true,
         composed: true,
@@ -40,7 +41,7 @@ const dispatchRetryToast = (elem, message) => {
     const toastEvent = new CustomEvent('add-toast', {
         detail: {
             message,
-            reupload: true,
+            icon: 'autorenew',
         },
         bubbles: true,
         composed: true,

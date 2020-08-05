@@ -213,7 +213,7 @@ export class StateContainer extends LitElement {
 
     handleAddToast(e) {
         this.toast = e.detail.message;
-        this.reupload = e.detail.reupload; 
+        this.icon = e.detail.icon; 
     }
 
     handleClearToast() {
@@ -228,7 +228,7 @@ export class StateContainer extends LitElement {
         return html` 
             <vox-toast 
                 message="${this.toast}"
-                ?reupload="${this.reupload}"
+                icon="${this.icon}"
             >
             </vox-toast> `;
     }
@@ -283,7 +283,7 @@ export class StateContainer extends LitElement {
             @enter-form="${this.handleEnterForm}"
             @exit-form="${this.handleExitForm}"
             @first-access-over="${this.handleFirstAccessOver}"
-            @reupload-audio="${this.handleReuploadAudio}"
+            @toast-autorenew="${this.handleReuploadAudio}"
             @save-audio="${this.handleSaveAudio}"
             @skip-prompt="${this.handleSkipPrompt}"
             @update-collection-state=${this.updateCollectionState}

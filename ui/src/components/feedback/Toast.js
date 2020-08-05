@@ -22,13 +22,13 @@ import style from '../../styles/components/feedback/Toast.css.js';
 import * as ToastUtils from '../../utils/ToastUtils.js';
 
 /**
- * Component that displays error messages as a "toast" at the top of the app view.
+ * Component that displays error messages as a "toast" at the bottom of the app view.
  */
 export class Toast extends LitElement {
     static get properties() {
         return {
             message: {type: String},
-            reupload: {type: Boolean},
+            icon: {type: String},
         };
     }
 
@@ -36,21 +36,20 @@ export class Toast extends LitElement {
         return style;
     }
 
-    dispatchClearToast() {
-        ToastUtils.clearToast(this);
-    }
-
     /**
-     * Emits an event that results in an attempt to manually
-     * resubmit the last failed audio upload.
+     * Clears the toast and emits an event to handle the the 
+     * user's toast interaction properly.
      */
-    handleReuploadAudio() {
-        const event = new CustomEvent('reupload-audio', {
-            bubbles: true,
-            composed: true,
-        });
-        this.dispatchEvent(event);
+    handleToastInteraction() {
         ToastUtils.clearToast(this);
+
+        if (this.icon !== 'clear') {
+            const event = new CustomEvent('toast-' + this.icon, {
+                bubbles: true,
+                composed: true,
+            });
+            this.dispatchEvent(event);
+        }
     }
 
     render() {
@@ -58,19 +57,9 @@ export class Toast extends LitElement {
             <div class="toast">
                 <p>${this.message}</p>
 
-                <!-- Display the reupload button if it is a reupload toast -->
-                ${this.reupload
-                    ? html`
-                        <mwc-icon-button
-                            icon="autorenew"
-                            @click=${this.handleReuploadAudio}
-                        ></mwc-icon-button>
-                      `
-                    : html``}
-
                 <mwc-icon-button
-                    icon="clear"
-                    @click=${this.dispatchClearToast}
+                    icon="${this.icon}"
+                    @click=${this.handleToastInteraction}
                 ></mwc-icon-button>
             </div>
         `;
