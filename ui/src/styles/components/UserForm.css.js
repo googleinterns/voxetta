@@ -17,6 +17,9 @@
 import {css} from 'lit-element';
 
 export default css`
+    section {
+        padding-top: 10vh;
+    }
     .container {
         align-items: center;
         color: #3c4043;
@@ -75,6 +78,7 @@ export default css`
         width: 300px;
     }
     mwc-button {
+        --mdc-typography-button-text-transform: sentencecase;
         padding: 10px;
         width: 250px;
     }
