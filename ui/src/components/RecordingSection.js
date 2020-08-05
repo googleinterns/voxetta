@@ -42,8 +42,6 @@ export class RecordingSection extends LitElement {
         return this.collectionState === CollectionStates.RECORDING;
     }
 
-    
-
     renderFeedbackWindow() {
         switch (this.collectionState) {
             case CollectionStates.RECORDING:
@@ -64,18 +62,20 @@ export class RecordingSection extends LitElement {
 
     render() {
         return html`
-            <div id="feedback" class="feedback-container">
-                ${this.renderFeedbackWindow()}
-            </div>
-
-            <div class="buttons">
-                <div class="button-container"></div>
-                <div class="record-button-container">
-                    <vox-record-button ?isRecording=${this.isRecording()}>
-                    </vox-record-button>
+            <div class="section-container">
+                <div id="feedback" class="feedback-container">
+                    ${this.renderFeedbackWindow()}
                 </div>
-                <div class="button-container">
-                    <vox-skip-button> </vox-skip-button>
+
+                <div class="buttons">
+                    <div class="button-container"></div>
+                    <div class="record-button-container">
+                        <vox-record-button ?isRecording=${this.isRecording()}>
+                        </vox-record-button>
+                    </div>
+                    <div class="button-container">
+                        <vox-skip-button> </vox-skip-button>
+                    </div>
                 </div>
             </div>`;
     }

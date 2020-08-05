@@ -19,9 +19,17 @@ import {css} from 'lit-element';
 export default css`
 
     #feedback,
+
+    .section-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     
     .feedback-container {
-        height: 100px; 
+        height: 120px; 
     }
 
     .buttons {
@@ -30,7 +38,6 @@ export default css`
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        padding-bottom: 10vh;
         padding-top: 40px;
     } 
 

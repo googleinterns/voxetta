@@ -44,7 +44,7 @@ export default css`
     header.top-level-component {
         align-items: center;
         flex-direction: row;
-        height: 70px;
+        height: 10vh;
     }
 
     header > div {
@@ -52,9 +52,14 @@ export default css`
     }
 
     vox-prompts {
+        align-items: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        height: 50vh; 
+    }
+
+    vox-recording-section {
+        height: 40vh; 
     }
 
     .prompts {
