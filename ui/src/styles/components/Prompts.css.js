@@ -28,7 +28,7 @@ export default css`
     p {
         color: black;
         font-size: 44px;
-        max-width: 70vw;
+        max-width: 85vw;
     }
 
     img {

@@ -50,9 +50,11 @@ export class RecordingSection extends LitElement {
     updated() {
         if (
             this.collectionState === CollectionStates.TRANSITIONING ||
-            this.collectionState === CollectionStates.UPLOAD_ERROR
+            this.collectionState === CollectionStates.UPLOAD_ERROR ||
+            this.collectionState === CollectionStates.TOAST
         )
             this.disableButtons = true;
+        else this.disableButtons = false;
     }
 
     handleReRecord() {
@@ -73,6 +75,10 @@ export class RecordingSection extends LitElement {
         });
 
         this.dispatchEvent(event);
+    }
+
+    toastDisplayed() {
+        return this.collectionState === CollectionStates.TOAST;
     }
 
     /**
@@ -104,10 +110,13 @@ export class RecordingSection extends LitElement {
                 return html``;
         }
     }
-  
-  render() {
-        return html`
-            <div class="section-container">
+
+    render() {
+        return html` <div
+                class="section-container ${this.toastDisplayed()
+                    ? 'buttons-disabled'
+                    : ''}"
+            >
                 <div id="feedback" class="feedback-container">
                     ${this.renderFeedbackWindow()}
                 </div>

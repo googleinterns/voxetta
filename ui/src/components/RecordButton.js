@@ -17,8 +17,8 @@
 import {LitElement, html} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {CollectionStates} from '../utils/CollectionStatesEnum';
-import {dispatchErrorToast} from '../utils/ToastUtils.js';
-import {dispatchRetryToast} from '../utils/ToastUtils.js';
+import {dispatchErrorToast, dispatchRetryToast} from '../utils/ToastUtils.js';
+
 import {QualityControl} from '../utils/QualityControl';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
@@ -140,7 +140,7 @@ export class RecordButton extends LitElement {
 
     /**
      * Attempts to upload the current audio file to the backend.
-     * @param {Object} audio An object containing an audio Blob and its 
+     * @param {Object} audio An object containing an audio Blob and its
      *  corresponding URL.
      */
     async uploadAudio(audio) {
@@ -153,8 +153,8 @@ export class RecordButton extends LitElement {
                 this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
             }
 
-        // Dispatch transition to next prompt.
-        this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+            // Dispatch transition to next prompt.
+            this.dispatchCollectionState(CollectionStates.TRANSITIONING);
         }
     }
 
@@ -163,7 +163,10 @@ export class RecordButton extends LitElement {
      */
     async handleButtonClick() {
         // not_recording to recording
-        if (this.collectionState === CollectionStates.NOT_RECORDING || this.collectionState === CollectionStates.QC_ERROR) {
+        if (
+            this.collectionState === CollectionStates.NOT_RECORDING ||
+            this.collectionState === CollectionStates.QC_ERROR
+        ) {
             this.handleStartRecording();
         }
 
@@ -176,7 +179,6 @@ export class RecordButton extends LitElement {
         else if (this.collectionState === CollectionStates.BEFORE_UPLOAD) {
             this.handleUploadRecording(this.finishedAudio);
         }
-        this.handleFinish();
     }
 
     dispatchCollectionState(newState) {
@@ -205,7 +207,6 @@ export class RecordButton extends LitElement {
         this.dispatchEvent(event);
     }
 
-
     /**
      * Emits an event that causes the current audio file
      * to be saved locally in case it is needed in the
@@ -222,7 +223,7 @@ export class RecordButton extends LitElement {
         });
         this.dispatchEvent(event);
     }
-      
+
     dispatchAudioUrl(url) {
         const event = new CustomEvent('set-audio-url', {
             detail: {
@@ -267,7 +268,7 @@ export class RecordButton extends LitElement {
             this.buttonIcon = 'mic';
             this.buttonClass = '';
             this.disabled = true;
-        }else if (this.collectionState === CollectionStates.QC_ERROR) {
+        } else if (this.collectionState === CollectionStates.QC_ERROR) {
             this.buttonIcon = 'mic';
             this.buttonClass = '';
             this.disabled = false;

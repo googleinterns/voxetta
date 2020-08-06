@@ -15,4 +15,5 @@ export const CollectionStates = {
     TRANSITIONING: 'TRANSITIONING',
     QC_ERROR: 'QC_ERROR',
     UPLOAD_ERROR: 'UPLOAD_ERROR',
+    TOAST: 'TOAST',
 };
