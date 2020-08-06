@@ -136,16 +136,7 @@ export class RecordButton extends LitElement {
             return;
         }
 
-        // Attempt to upload it
-        if (audio.recordingUrl) {
-            try {
-                const resp = await this.utteranceService.saveAudio(audio);
-                if (!resp) throw new Error('Failed to upload utterance');
-            } catch (e) {
-                // If upload failed, pivot to upload error collection state
-                this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
-            }
-        }
+        this.uploadAudio(audio);
     }
 
     /**
@@ -160,10 +151,12 @@ export class RecordButton extends LitElement {
 
             if (!response) {
                 dispatchRetryToast(this, `Audio failed to upload. Retry?`);
+                this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
             }
 
         // Dispatch transition to next prompt.
         this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+        }
     }
 
     /**
