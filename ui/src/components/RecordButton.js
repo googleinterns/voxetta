@@ -110,7 +110,7 @@ export class RecordButton extends LitElement {
         if (!qualityResult.success) {
             // If qc failed, pivot to QC error collection state
             this.qcError = 'qc error';
-            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
+            this.dispatchCollectionState(CollectionStates.QC_ERROR);
             return;
         }
 
