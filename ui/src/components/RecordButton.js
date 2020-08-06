@@ -109,9 +109,8 @@ export class RecordButton extends LitElement {
         const qualityCheck = new QualityControl(this.context, audio.blob);
         const qualityResult = await qualityCheck.isQualitySound();
         if (!qualityResult.success) {
-            // If qc failed, pivot to QC error collection state
-            this.qcError = 'qc error';
-            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
+            this.qcError = qualityResult.errorMessage;
+            this.dispatchCollectionState(CollectionStates.QC_ERROR);
             return;
         }
 
@@ -164,7 +163,7 @@ export class RecordButton extends LitElement {
      */
     async handleButtonClick() {
         // not_recording to recording
-        if (this.collectionState === CollectionStates.NOT_RECORDING) {
+        if (this.collectionState === CollectionStates.NOT_RECORDING || this.collectionState === CollectionStates.QC_ERROR) {
             this.handleStartRecording();
         }
 
@@ -268,6 +267,10 @@ export class RecordButton extends LitElement {
             this.buttonIcon = 'mic';
             this.buttonClass = '';
             this.disabled = true;
+        }else if (this.collectionState === CollectionStates.QC_ERROR) {
+            this.buttonIcon = 'mic';
+            this.buttonClass = '';
+            this.disabled = false;
         }
     }
 
