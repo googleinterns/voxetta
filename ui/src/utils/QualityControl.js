@@ -47,10 +47,10 @@ export class QualityControl {
 
         if (this.audioBuffer.duration < 2.0) {
             qualityResult.success = false;
-            qualityResult.errorMessage += 'Audio recording failed: recording was too short. Try again';
+            qualityResult.errorMessage = 'Recording is too short. Try again!';
         } else if (audioResult) {
             qualityResult.success = false;
-            qualityResult.errorMessage += audioResult;
+            qualityResult.errorMessage = audioResult;
         }
 
         return qualityResult;
@@ -69,7 +69,7 @@ export class QualityControl {
         if (average > soundCutOff) {
             return null;
         } else {
-            return 'Audio recording failed: recording was silent. Try again';
+            return 'Recording is too silent. Try again!';
         }
     }
 

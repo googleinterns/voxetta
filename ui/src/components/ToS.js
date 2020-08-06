@@ -107,29 +107,31 @@ export class ToS extends LitElement {
 
     render() {
         return html`
-            <textarea 
-                id="terms-container"
-                class="terms"
-                dir="auto"
-                readonly
-                @scroll="${this.checkScroll}">
-                    ${this.tos}
-            </textarea>
-            <div class="button-container">
-                <mwc-button 
-                    class="cancel"
-                    unelevated 
-                    label="Cancel"
-                    @click=${this.handleCancelTerms}>
-                </mwc-button>
-                <mwc-button 
-                    id="accept-button"
-                    class="accept"
-                    unelevated 
-                    ?disabled=${this.disabled}
-                    label="I have read and agree to terms"
-                    @click=${this.handleAcceptTerms}>
-                </mwc-button>
+            <div class="tos-container">
+                <textarea 
+                    id="terms-container"
+                    class="terms"
+                    dir="auto"
+                    readonly
+                    @scroll="${this.checkScroll}">
+                        ${this.tos}
+                </textarea>
+                <div class="button-container">
+                    <mwc-button 
+                        class="cancel"
+                        unelevated 
+                        label="Cancel"
+                        @click=${this.handleCancelTerms}>
+                    </mwc-button>
+                    <mwc-button 
+                        id="accept-button"
+                        class="accept"
+                        unelevated 
+                        ?disabled=${this.disabled}
+                        label="I have read and agree to terms"
+                        @click=${this.handleAcceptTerms}>
+                    </mwc-button>
+                </div>
             </div>
         `;
     }

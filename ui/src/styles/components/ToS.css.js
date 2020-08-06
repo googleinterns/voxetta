@@ -22,13 +22,12 @@ export default css`
         font-family: 'Roboto';
         font-size: 15px; 
         height: 85vh;
-        width: 90%;
         overflow: scroll; 
-        padding: 5px 20px 0px 20px; 
+        padding-top: 3vh;
+        width: 90%;
     }
     div.button-container {
         align-items: center; 
-        box-shadow: 0px -3px 1px -1px #dcdcdc;
         display: flex; 
         flex-direction: row; 
         flex-wrap: wrap;
@@ -36,18 +35,26 @@ export default css`
         justify-content: center; 
         text-align: center;  
     }
+    div.tos-container {
+        align-items: center;
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+    }
     mwc-button {
+        --mdc-typography-button-letter-spacing: 0px;
+        --mdc-typography-button-text-transform: sentencecase;
         font-size: 8x;
         padding: 10px;
     }
     mwc-button.accept {
         --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
-        width: 60vw;
+        width: 55vw;
     }
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;
-        width: 15vw;
+        width: 25vw;
     }
 `;

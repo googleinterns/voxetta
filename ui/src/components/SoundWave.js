@@ -85,8 +85,8 @@ export class SoundWave {
         this.analyser.getByteFrequencyData(this.freqs);
         let isInversed = true;
         for (let i = 0; i < bars; i++) {
-            const radians = (Math.PI * 2) / bars;
-            const barHeight = this.freqs[i] * 0.5;
+            const radians = (Math.PI * 2) / this.canvas.width;
+            const barHeight = this.freqs[i] * 0.25;
             const xStart = i * 2;
             const yStart = this.canvas.height / 2;
             const xEnd = i * 2;
@@ -94,11 +94,11 @@ export class SoundWave {
             if (isInversed) {
                 isInversed = false;
                 yEnd =
-                    this.canvas.height / 2 + Math.cos(radians * i) * barHeight;
+                    this.canvas.height / 2 + Math.sin(radians * i) * barHeight;
             } else {
                 isInversed = true;
                 yEnd =
-                    this.canvas.height / 2 - Math.cos(radians * i) * barHeight;
+                    this.canvas.height / 2 - Math.sin(radians * i) * barHeight;
             }
             const color = `rgb(${237}, ${73}, ${62})`;
             this.canvasCtx.strokeStyle = color;

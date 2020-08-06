@@ -18,14 +18,17 @@ import {css} from 'lit-element';
 
 export default css`
     button {
-        background-color: white;
-        border: none;
-        color: #a0a0a0;
+        display: flex;
+        align-items: center;
+        padding: 10px 14px;
+
+        background: #ffffff;
+        border: 1px solid #bdc1c6;
+        box-sizing: border-box;
+        border-radius: 999px;
         cursor: pointer;
-        font-family: 'Roboto';
-        text-transform: uppercase;
-        width: 80px;
-        height: 80px;
+        color: #5f6368;
+        font-weight: 700;
     }
 
     button:hover {
@@ -33,7 +36,10 @@ export default css`
     }
 
     mwc-icon {
-        display: block;
-        margin-bottom: 6px;
+        margin-right: 6px;
+    }
+
+    span {
+        line-height: 0;
     }
 `;
