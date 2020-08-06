@@ -16,6 +16,11 @@
 
 import {LitElement, html} from 'lit-element';
 
+import {ReRecordButton} from './ReRecordButton';
+import {PlaybackButton} from './PlaybackButton';
+
+import {AudioRecorder} from '../utils/AudioRecorder';
+import {UtteranceApiService} from '../utils/UtteranceApiService';
 import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 import style from '../styles/components/RecordingSection.css';
@@ -35,47 +40,82 @@ export class RecordingSection extends LitElement {
     }
 
     constructor() {
-        super()
-    }
-    
-    isRecording() {
-        return this.collectionState === CollectionStates.RECORDING;
+        super();
+        this.audioUrl = undefined;
+        this.qcError = '';
     }
 
+    handleReRecord() {
+        this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
+    }
+
+    handleAudioUrl(e) {
+        this.audioUrl = e.detail.url;
+    }
+
+    dispatchCollectionState(newState) {
+        const event = new CustomEvent('update-collection-state', {
+            detail: {
+                state: newState,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Render space above recording button depending on state
+     */
     renderFeedbackWindow() {
         switch (this.collectionState) {
             case CollectionStates.RECORDING:
                 return html` <vox-sound-wave
-                    ?isRecording=${this.isRecording()}
+                    ?isRecording=${this.collectionState ===
+                    CollectionStates.RECORDING}
                     .audioStream=${this.audioStream}
                     .context=${this.context}
                 >
                 </vox-sound-wave>`;
             case CollectionStates.BEFORE_UPLOAD:
-                return html`put play button here`;
+                return html`<vox-playback-button
+                    .audioUrl=${this.audioUrl}
+                    @playback-start=${this.startPlayback}
+                    @playback-stop=${this.stopPlayback}
+                ></vox-playback-button>`;
             case CollectionStates.QC_ERROR:
                 return html`<p>${this.qcError}</p>`;
             default:
                 return html``;
         }
     }
-
-    render() {
+  
+  render() {
         return html`
             <div class="section-container">
                 <div id="feedback" class="feedback-container">
                     ${this.renderFeedbackWindow()}
                 </div>
+            </div>
 
-                <div class="buttons">
-                    <div class="button-container"></div>
-                    <div class="record-button-container">
-                        <vox-record-button ?isRecording=${this.isRecording()}>
-                        </vox-record-button>
-                    </div>
-                    <div class="button-container">
-                        <vox-skip-button> </vox-skip-button>
-                    </div>
+            <div class="buttons">
+                <div class="button-container">
+                    ${this.collectionState === CollectionStates.BEFORE_UPLOAD
+                        ? html`<vox-re-record-button
+                              @re-record=${this.handleReRecord}
+                          ></vox-re-record-button>`
+                        : html``}
+                </div>
+                <div class="record-button-container">
+                    <vox-record-button
+                        .collectionState=${this.collectionState}
+                        @set-audio-url=${this.handleAudioUrl}
+                    >
+                    </vox-record-button>
+                </div>
+                <div class="button-container">
+                    <vox-skip-button> </vox-skip-button>
                 </div>
             </div>`;
     }

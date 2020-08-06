@@ -27,7 +27,7 @@ export default css`
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .feedback-container {
         height: 120px; 
     }
@@ -47,6 +47,10 @@ export default css`
 
     .record-button-container {
         margin: 0 60px;
+    }
+
+    .button-container {
+        width: 80px;
     }
 
     p {

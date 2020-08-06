@@ -17,31 +17,23 @@
 import {css} from 'lit-element';
 
 export default css`
-    div {
-        align-items: center; 
-        display: flex; 
-        flex-direction: column; 
-        flex-wrap: wrap;
-        justify-content: center; 
-        text-align: center;  
+    button {
+        background-color: white;
+        border: none;
+        color: #a0a0a0;
+        cursor: pointer;
+        text-transform: uppercase;
+        width: 80px;
+        height: 80px;
     }
 
-    mwc-select {
-        --mdc-theme-primary: #1a73e8;
-        width: 300px; 
+    button:hover {
+        background-color: #dcdcdc;
     }
 
-    h3 {
-        font-family: 'Roboto';
-        font-size: 28px; 
-        font-weight: normal;
-        padding: 30px 40px 0px 40px;
-    }
-    
-    p {
-        font-family: 'Roboto';
-        font-size: 18px; 
-        font-weight: bolder; 
-        padding: 0px 40px 0px 40px;
+    mwc-icon {
+        display: block;
+        margin-bottom: 6px;
+        transform: scaleX(-1);
     }
 `;

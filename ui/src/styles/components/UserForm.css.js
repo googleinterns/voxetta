@@ -18,6 +18,10 @@ import {css} from 'lit-element';
 
 export default css`
 
+    section {
+        padding-top: 10vh;
+    }
+
     .container {
         align-items: center;
         color: #3c4043;
@@ -85,6 +89,8 @@ export default css`
     }
 
     mwc-button {
+        --mdc-typography-button-letter-spacing: 0px;
+        --mdc-typography-button-text-transform: sentencecase;
         padding: 10px;
         width: 250px;
     }

@@ -16,11 +16,11 @@
 
 import {LitElement, html} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
+import {CollectionStates} from '../utils/CollectionStatesEnum';
+import {dispatchErrorToast} from '../utils/ToastUtils.js';
+import {QualityControl} from '../utils/QualityControl';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
-import {QualityControl} from '../utils/QualityControl';
-import {dispatchErrorToast} from '../utils/ToastUtils.js';
-import {CollectionStates} from '../utils/CollectionStatesEnum';
 
 import style from '../styles/components/RecordButton.css.js';
 
@@ -31,6 +31,9 @@ export class RecordButton extends LitElement {
             audioStream: {type: Object},
             context: {type: Object},
             isRecording: {type: Boolean},
+            buttonIcon: {type: String},
+            buttonClass: {type: String},
+            disabled: {type: Boolean},
             qcError: {type: String},
         };
     }
@@ -41,97 +44,168 @@ export class RecordButton extends LitElement {
 
     constructor() {
         super();
+        this.disabled = false;
         this.audioRecorder = new AudioRecorder();
         this.utteranceService = new UtteranceApiService();
+        this.finishedAudio = undefined;
     }
 
     updated(changedProperties) {
         this.handleWaveCanvas();
+        this.determineButtonAttributes();
         if (changedProperties.has('qcError')) {
             this.handleQcError();
         }
     }
 
     /**
-     * If the user is not currently recording, begin recording using the Microphone
-     * component. Otherwise, stop recording and save and display the just-recorded
-     * audio file.
+     * Handles logic to start recording audio.
      */
-    async recordHandler() {
-        if (!this.isRecording) {
-            // attempt to init; check for browser permission
-            try {
-                await this.audioRecorder.initRecorder();
-            } catch (e) {
-                dispatchErrorToast(
-                    this,
-                    `Microphone access is currently blocked for this site. 
+    async handleStartRecording() {
+        // attempt to init; check for browser permission
+        try {
+            await this.audioRecorder.initRecorder();
+        } catch (e) {
+            dispatchErrorToast(
+                this,
+                `Microphone access is currently blocked for this site. 
                     To unblock, please navigate to chrome://settings/content/microphone 
                     and remove this site from the 'Block' section.`
-                );
-                return;
-            }
-
-            // start recording
-            if (!this.audioRecorder.startRecording()) {
-                dispatchErrorToast(this, 'Failed to start recording.');
-                return;
-            }
-
-            // Set to recording state
-            this.dispatchCollectionState(CollectionStates.RECORDING);
-
-            this.audioStream = this.audioRecorder.stream;
-            this.context = new (window.AudioContext ||
-                window.webkitAudioContext)();
-        } else {
-            // Set to before recording state
-            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
-
-            // Capture audio into variable
-            let audio;
-
-            try {
-                audio = await this.audioRecorder.stopRecording();
-            } catch (e) {
-                dispatchErrorToast(
-                    this,
-                    `Could not record successfully; ${e.name}: ${e.message}`
-                );
-            }
-
-            // Do auto qc checks
-            const qualityCheck = new QualityControl(this.context, audio.blob);
-            const qualityResult = await qualityCheck.isQualitySound();
-            if (!qualityResult.success) {
-                // If qc failed, pivot to QC error collection state
-                this.dispatchCollectionState(CollectionStates.QC_ERROR);
-                this.qcError = qualityResult.errorMessage;
-                return;
-            }
-
-            // Attempt to upload it
-            if (audio.recordingUrl) {
-                try {
-                    const resp = await this.utteranceService.saveAudio(audio);
-
-                    if (!resp) throw new Error();
-                } catch (e) {
-                    // If upload failed, pivot to upload error collection state
-                    this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
-                }
-            }
-
-            this.handleFinish();
+            );
+            return;
         }
+
+        // start recording
+        if (!this.audioRecorder.startRecording()) {
+            dispatchErrorToast(this, 'Failed to start recording.');
+            return;
+        }
+
+        // Set to recording state
+        this.dispatchCollectionState(CollectionStates.RECORDING);
+
+        this.audioStream = this.audioRecorder.stream;
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
     }
 
     /**
-     * Returns the context of the audio.
-     * @returns {Object} The current context for the audio.
+     * Handles logic to end recording and progress to before_recording state
      */
-    getContext() {
-        return this.context;
+    async handleEndRecording() {
+        // Capture audio into variable
+        let audio;
+
+        try {
+            audio = await this.audioRecorder.stopRecording();
+        } catch (e) {
+            dispatchErrorToast(
+                this,
+                `Could not record successfully; ${e.name}: ${e.message}`
+            );
+        }
+
+        // Do auto qc checks
+        const qualityCheck = new QualityControl(this.context, audio.blob);
+        const qualityResult = await qualityCheck.isQualitySound();
+        if (!qualityResult.success) {
+            // If qc failed, pivot to QC error collection state
+            this.qcError = 'qc error';
+            this.dispatchCollectionState(CollectionStates.NOT_RECORDING);
+            return;
+        }
+
+        this.finishedAudio = audio;
+        this.dispatchAudioUrl(this.finishedAudio.recordingUrl);
+
+        // Checks finished; transition to before_upload state
+        this.dispatchCollectionState(CollectionStates.BEFORE_UPLOAD);
+    }
+
+    /**
+     * Handles logic to upload recording and trigger transition to next prompt.
+     */
+    async handleUploadRecording(audio) {
+        // Do auto qc checks
+        const qualityCheck = new QualityControl(this.context, audio.blob);
+        const qualityResult = await qualityCheck.isQualitySound();
+        if (!qualityResult.success) {
+            // If qc failed, pivot to QC error collection state
+            this.dispatchCollectionState(CollectionStates.QC_ERROR);
+            this.qcError = qualityResult.errorMessage;
+            return;
+        }
+
+        // Attempt to upload it
+        if (audio.recordingUrl) {
+            try {
+                const resp = await this.utteranceService.saveAudio(audio);
+                if (!resp) throw new Error('Failed to upload utterance');
+            } catch (e) {
+                // If upload failed, pivot to upload error collection state
+                this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
+            }
+        }
+
+        // Dispatch transition to next prompt.
+        this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+    }
+
+    /**
+     * On button click, transitions to next collectionState in recording flow.
+     */
+    async handleButtonClick() {
+        // not_recording to recording
+        if (this.collectionState === CollectionStates.NOT_RECORDING) {
+            this.handleStartRecording();
+        }
+
+        // recording to before_upload
+        else if (this.collectionState === CollectionStates.RECORDING) {
+            this.handleEndRecording();
+        }
+
+        // before_upload to transition
+        else if (this.collectionState === CollectionStates.BEFORE_UPLOAD) {
+            this.handleUploadRecording(this.finishedAudio);
+        }
+    }
+
+    dispatchCollectionState(newState) {
+        const event = new CustomEvent('update-collection-state', {
+            detail: {
+                state: newState,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
+    }
+
+    /**
+     * Emits an event that causes the application to render the QCError
+     */
+    handleQcError() {
+        const event = new CustomEvent('update-qc-error', {
+            detail: {
+                qcError: this.qcError,
+            },
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+    }
+
+    dispatchAudioUrl(url) {
+        const event = new CustomEvent('set-audio-url', {
+            detail: {
+                url,
+            },
+            bubbles: true,
+            composed: true,
+        });
+
+        this.dispatchEvent(event);
     }
 
     /**
@@ -151,48 +225,32 @@ export class RecordButton extends LitElement {
         this.dispatchEvent(event);
     }
 
-    /**
-     * Emits an event that causes the application to render the QCError
-     */
-    handleQcError() {
-        const event = new CustomEvent('update-qc-error', {
-            detail: {
-                qcError: this.qcError,
-            },
-            bubbles: true,
-            composed: true,
-        });
-        this.dispatchEvent(event);
-    }
-
-
-    dispatchCollectionState(newState) {
-        const event = new CustomEvent('update-collection-state', {
-            detail: {
-                state: newState,
-            },
-            bubbles: true,
-            composed: true,
-        });
-
-        this.dispatchEvent(event);
-    }
-
-    /**
-     * Emits an event that causes a new prompt to be rendered
-     * on the recording page.
-     */
-    handleFinish() {
-        this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+    determineButtonAttributes() {
+        if (this.collectionState === CollectionStates.NOT_RECORDING) {
+            this.buttonIcon = 'mic';
+            this.buttonClass = '';
+            this.disabled = false;
+        } else if (this.collectionState === CollectionStates.RECORDING) {
+            this.buttonIcon = 'stop';
+            this.buttonClass = 'recording';
+        } else if (this.collectionState === CollectionStates.BEFORE_UPLOAD) {
+            this.buttonIcon = 'check';
+            this.buttonClass = 'confirm';
+        } else if (this.collectionState === CollectionStates.TRANSITIONING) {
+            this.buttonIcon = 'mic';
+            this.buttonClass = '';
+            this.disabled = true;
+        }
     }
 
     render() {
         return html`
             <mwc-icon-button
                 id="record-button"
-                icon=${this.isRecording ? 'stop' : 'mic'}
-                class=${this.isRecording ? 'recording' : ''}
-                @click=${this.recordHandler}
+                icon=${this.buttonIcon}
+                class=${this.buttonClass}
+                @click=${this.handleButtonClick}
+                ?disabled=${this.disabled}
             >
             </mwc-icon-button>
         `;

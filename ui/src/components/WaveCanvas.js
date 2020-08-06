@@ -71,7 +71,7 @@ export class WaveCanvas extends LitElement {
      */
     updated(changedProperties) {
         if (
-            this.audioStream != changedProperties.get('audioStream') &&
+            this.audioStream !== changedProperties.get('audioStream') &&
             this.isRecording
         ) {
             this.soundWave.setStream(this.audioStream);
