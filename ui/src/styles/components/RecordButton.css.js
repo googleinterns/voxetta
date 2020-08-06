@@ -17,6 +17,7 @@
 import {css} from 'lit-element';
 
 export default css`
+
     div {
         align-items: center;
         display: flex;
@@ -25,6 +26,7 @@ export default css`
         justify-content: center;
         text-align: center;
     }
+
     mwc-icon-button {
         --mdc-icon-button-size: 80px;
         --mdc-icon-size: 40px;

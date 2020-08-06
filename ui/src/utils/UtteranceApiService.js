@@ -32,28 +32,33 @@ export class UtteranceApiService {
     /**
      * Save a recorded audio file to an external database.
      * @param {Object} audio - An object containing an audio Blob and its corresponding URL.
-     * @returns {Boolean} Indicates whether or not an audio file was successfully uploaded.
+     * @return {Boolean} Indicates whether or not an audio file was successfully uploaded.
      */
     async saveAudio(audio) {
+
         // Get Blobstore URL & Form Data
         const url = await this.getUploadUrl();
-
-        if (!url) {
-            return false;
-        }
+        if (!url) return false;
 
         this.getFormData(audio);
 
-        const response = await fetch(url, {
-            method: 'POST',
-            body: this.formData,
-        });
-        const query = await response.json();
-
-        if (!query.success) {
-            return false;
+        // Attempt to save audio file
+        let response; 
+        try {
+            response = await fetch(url, {
+                method: 'POST',
+                body: this.formData,
+            });
+        } catch (e) { 
+            return false; 
         }
-        return true;
+
+        const query = await response.json();
+        if (query.success) {
+            window.URL.revokeObjectURL(audio.url);
+            return true;
+        } 
+        return false; 
     }
 
     /**
@@ -71,16 +76,20 @@ export class UtteranceApiService {
 
     /**
      * Retrieve and return a Blobstore upload link.
-     * @returns {String} A Blobstore URL
+     * @returns {String} A Blobstore URL, or null if a 
+     * URL was not able to be retrieved.
      */
     async getUploadUrl() {
-        const response = await fetch('/blobstore-utterance-upload-link');
-        const query = await response.json();
-
-        if (query.success) {
-            return query.url;
+        let response; 
+        try {
+            response = await fetch('/blobstore-utterance-upload-link');
+        } catch (e) {
+            return null;
         }
+        
+        const query = await response.json();
+        if (query.success) return query.url;
 
-        return null;
+        return null; 
     }
 }

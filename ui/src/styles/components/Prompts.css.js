@@ -18,19 +18,17 @@ import {css} from 'lit-element';
 
 export default css`
     #prompt-screen {
-        width: 100%;
-        height: 100%;
         align-items: center;
         display: flex;
+        height: 100%;
         text-align: center;
+        width: 100%;
     }
 
     p {
-        margin: 0 auto;
-        max-width: 70vw;
-
-        font-size: 44px;
         color: black;
+        font-size: 44px;
+        max-width: 70vw;
     }
 
     img {
@@ -54,7 +52,6 @@ export default css`
     }
 
     /* Prompt reset button  */
-
     button {
         background-color: white;
         border: none;

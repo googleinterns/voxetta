@@ -25,19 +25,23 @@ export default css`
         justify-content: center; 
         text-align: center;  
     }
+
     mwc-select {
+        --mdc-theme-primary: #1a73e8;
         width: 300px; 
     }
+
     h3 {
         font-family: 'Roboto';
         font-size: 28px; 
         font-weight: normal;
-        padding: 0px 20px 0px 20px;
+        padding: 30px 40px 0px 40px;
     }
+    
     p {
         font-family: 'Roboto';
         font-size: 18px; 
         font-weight: bolder; 
-        padding: 0px 20px 0px 20px;
+        padding: 0px 40px 0px 40px;
     }
 `;

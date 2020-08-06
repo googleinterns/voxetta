@@ -41,6 +41,7 @@ export default css`
     textarea.terms:focus {
         outline: none;
     }
+
     div.button-container {
         box-shadow: 0px 2px 6px rgba(60, 64, 67, 0.5),
             0px 1px 2px rgba(60, 64, 67, 0.3),
@@ -58,13 +59,25 @@ export default css`
         position: relative;
         z-index: 999;
     }
+
+    div.tos-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     mwc-button {
+        --mdc-typography-button-letter-spacing: 0px;
+        --mdc-typography-button-text-transform: sentencecase;
         font-size: 8x;
         padding: 10px;
     }
+
     mwc-button.accept {
         --mdc-theme-on-primary: white;
     }
+
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;
