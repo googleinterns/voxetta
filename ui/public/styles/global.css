@@ -1,5 +1,10 @@
 @import './normalize.css';
 
+html,
+:root {
+    --mdc-theme-primary: #1a73e8;
+}
+
 html {
     font-family: 'Roboto';
     font-size: 16px;

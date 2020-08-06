@@ -36,7 +36,7 @@ export class Prompts extends LitElement {
 
     constructor() {
         super();
-        this.state = 'LOADING';
+        this.state = 'NOT_ASKED';
     }
 
     firstUpdated() {
@@ -49,6 +49,7 @@ export class Prompts extends LitElement {
      */
     async getNewPrompt() {
         const promptRequest = await promptApi.getNewPrompt();
+        this.state = 'LOADING';
 
         if (promptRequest.status === 'SUCCESS') {
             this.state = 'SUCCESS';
@@ -100,11 +101,17 @@ export class Prompts extends LitElement {
             case 'SUCCESS':
                 return this.renderPromptType();
             case 'LOADING':
-                return html`<p>Loading...</p>`;
+                return html`<p class="loading-text">...</p>`;
             case 'FAILURE':
-                return html`<p><b>Prompt failed to load.</b></p>`;
+                return html` <div class="state-box">
+                    <mwc-icon class="failed-icon">clear</mwc-icon>
+                    <p>Failed to load prompt.</p>
+                </div>`;
             case 'FINISHED':
-                return html`<p>Your work session is finished.</p>`;
+                return html` <div class="state-box">
+                    <mwc-icon class="finished-icon">done</mwc-icon>
+                    <p>Your work session is finished.</p>
+                </div>`;
             default:
                 return html``;
         }

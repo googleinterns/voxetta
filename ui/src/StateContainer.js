@@ -62,7 +62,7 @@ export class StateContainer extends LitElement {
 
         this.canRecord = true;
 
-        this.collectionState = CollectionStates.NOT_RECORDING;
+        this.collectionState = CollectionStates.TRANSITIONING;
 
         this.country = undefined;
         this.loginCompleted = false;
@@ -176,7 +176,6 @@ export class StateContainer extends LitElement {
     handleQcError(e) {
         this.qcError = e.detail.qcError;
     }
-
 
     /**
      * Updates the view such that the record page closes and the user form appears.

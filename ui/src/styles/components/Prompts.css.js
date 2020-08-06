@@ -26,6 +26,7 @@ export default css`
     }
 
     p {
+        margin: 0 auto;
         max-width: 70vw;
 
         font-size: 44px;
@@ -34,6 +35,22 @@ export default css`
 
     img {
         max-height: 400px;
+    }
+
+    .loading-text {
+        opacity: 0.5;
+    }
+    mwc-icon {
+        margin-bottom: 20px;
+
+        --mdc-icon-size: 48px;
+    }
+
+    .finished-icon {
+        color: #34a853;
+    }
+    .failed-icon {
+        color: #ea4335;
     }
 
     /* Prompt reset button  */

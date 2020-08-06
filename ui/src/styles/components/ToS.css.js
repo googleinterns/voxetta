@@ -20,34 +20,32 @@ export default css`
     textarea.terms {
         border: none;
         font-family: 'Roboto';
-        font-size: 15px; 
+        font-size: 15px;
         height: 85vh;
         width: 90%;
-        overflow: scroll; 
-        padding: 5px 20px 0px 20px; 
+        overflow: scroll;
+        padding: 5px 20px 0px 20px;
     }
     div.button-container {
-        align-items: center; 
+        align-items: center;
         box-shadow: 0px -3px 1px -1px #dcdcdc;
-        display: flex; 
-        flex-direction: row; 
+        display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
         height: 12vh;
-        justify-content: center; 
-        text-align: center;  
+        justify-content: center;
+        text-align: center;
     }
     mwc-button {
         font-size: 8x;
         padding: 10px;
     }
     mwc-button.accept {
-        --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
         width: 60vw;
     }
     mwc-button.cancel {
         --mdc-theme-primary: white;
-        --mdc-theme-on-primary: #1a73e8;
         width: 15vw;
     }
 `;
