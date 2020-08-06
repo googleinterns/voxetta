@@ -62,7 +62,7 @@ export class StateContainer extends LitElement {
 
         this.canRecord = true;
 
-        this.collectionState = CollectionStates.TRANSITIONING;
+        this.collectionState = CollectionStates.NOT_RECORDING;
 
         this.country = undefined;
         this.loginCompleted = false;

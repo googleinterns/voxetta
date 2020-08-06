@@ -17,24 +17,46 @@
 import {css} from 'lit-element';
 
 export default css`
+    div.tos-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        height: 100vh;
+        width: 100vw;
+    }
     textarea.terms {
         border: none;
         font-family: 'Roboto';
         font-size: 15px;
-        height: 85vh;
-        width: 90%;
+        height: 100%;
+        flex: 1;
         overflow: scroll;
-        padding: 5px 20px 0px 20px;
+        padding-top: 3vh;
+        width: 90%;
+
+        overflow-x: hidden;
+    }
+    textarea.terms:focus {
+        outline: none;
     }
     div.button-container {
+        box-shadow: 0px 2px 6px rgba(60, 64, 67, 0.5),
+            0px 1px 2px rgba(60, 64, 67, 0.3),
+            0px 4px 8px rgba(128, 134, 139, 0.06),
+            0px -2px 8px rgba(128, 134, 139, 0.09);
+
+        width: 100vw;
         align-items: center;
-        box-shadow: 0px -3px 1px -1px #dcdcdc;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        height: 12vh;
+        height: 80px;
         justify-content: center;
         text-align: center;
+        position: relative;
+        z-index: 999;
     }
     mwc-button {
         font-size: 8x;
@@ -42,10 +64,9 @@ export default css`
     }
     mwc-button.accept {
         --mdc-theme-on-primary: white;
-        width: 60vw;
     }
     mwc-button.cancel {
         --mdc-theme-primary: white;
-        width: 15vw;
+        --mdc-theme-on-primary: #1a73e8;
     }
 `;
