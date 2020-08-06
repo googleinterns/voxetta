@@ -22,12 +22,13 @@ import style from '../../styles/components/feedback/Toast.css.js';
 import * as ToastUtils from '../../utils/ToastUtils.js';
 
 /**
- * Component that displays error messages as a "toast" at the top of the app view.
+ * Component that displays error messages as a "toast" at the bottom of the app view.
  */
 export class Toast extends LitElement {
     static get properties() {
         return {
             message: {type: String},
+            icon: {type: String},
         };
     }
 
@@ -35,8 +36,20 @@ export class Toast extends LitElement {
         return style;
     }
 
-    dispatchClearToast() {
+    /**
+     * Clears the toast and emits an event to handle the the 
+     * user's toast interaction properly.
+     */
+    handleToastInteraction() {
         ToastUtils.clearToast(this);
+
+        if (this.icon !== 'clear') {
+            const event = new CustomEvent('toast-' + this.icon, {
+                bubbles: true,
+                composed: true,
+            });
+            this.dispatchEvent(event);
+        }
     }
 
     render() {
@@ -45,8 +58,8 @@ export class Toast extends LitElement {
                 <p>${this.message}</p>
 
                 <mwc-icon-button
-                    icon="clear"
-                    @click=${this.dispatchClearToast}
+                    icon="${this.icon}"
+                    @click=${this.handleToastInteraction}
                 ></mwc-icon-button>
             </div>
         `;

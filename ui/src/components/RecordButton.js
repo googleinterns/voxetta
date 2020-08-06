@@ -18,6 +18,7 @@ import {LitElement, html} from 'lit-element';
 import {Icon} from '@material/mwc-icon';
 import {CollectionStates} from '../utils/CollectionStatesEnum';
 import {dispatchErrorToast} from '../utils/ToastUtils.js';
+import {dispatchRetryToast} from '../utils/ToastUtils.js';
 import {QualityControl} from '../utils/QualityControl';
 import {AudioRecorder} from '../utils/AudioRecorder';
 import {UtteranceApiService} from '../utils/UtteranceApiService';
@@ -135,19 +136,27 @@ export class RecordButton extends LitElement {
             return;
         }
 
-        // Attempt to upload it
+        this.uploadAudio(audio);
+    }
+
+    /**
+     * Attempts to upload the current audio file to the backend.
+     * @param {Object} audio An object containing an audio Blob and its 
+     *  corresponding URL.
+     */
+    async uploadAudio(audio) {
         if (audio.recordingUrl) {
-            try {
-                const resp = await this.utteranceService.saveAudio(audio);
-                if (!resp) throw new Error('Failed to upload utterance');
-            } catch (e) {
-                // If upload failed, pivot to upload error collection state
+            this.handleSaveAudio(audio);
+            const response = await this.utteranceService.saveAudio(audio);
+
+            if (!response) {
+                dispatchRetryToast(this, `Audio failed to upload. Retry?`);
                 this.dispatchCollectionState(CollectionStates.UPLOAD_ERROR);
             }
-        }
 
         // Dispatch transition to next prompt.
         this.dispatchCollectionState(CollectionStates.TRANSITIONING);
+        }
     }
 
     /**
@@ -168,6 +177,7 @@ export class RecordButton extends LitElement {
         else if (this.collectionState === CollectionStates.BEFORE_UPLOAD) {
             this.handleUploadRecording(this.finishedAudio);
         }
+        this.handleFinish();
     }
 
     dispatchCollectionState(newState) {
@@ -196,6 +206,24 @@ export class RecordButton extends LitElement {
         this.dispatchEvent(event);
     }
 
+
+    /**
+     * Emits an event that causes the current audio file
+     * to be saved locally in case it is needed in the
+     * future for re-uploading purposes.
+     */
+    handleSaveAudio(audio) {
+        const event = new CustomEvent('save-audio', {
+            detail: {
+                audio,
+            },
+
+            bubbles: true,
+            composed: true,
+        });
+        this.dispatchEvent(event);
+    }
+      
     dispatchAudioUrl(url) {
         const event = new CustomEvent('set-audio-url', {
             detail: {
