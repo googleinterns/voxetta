@@ -55,7 +55,7 @@ export class UtteranceApiService {
 
         const query = await response.json();
         if (query.success) {
-            window.URL.revokeObjectURL(audio.url)
+            window.URL.revokeObjectURL(audio.url);
             return true;
         } 
         return false; 

@@ -23,6 +23,7 @@ const dom = new JSDOM('<html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
 global.window.alert = () => {};
+global.window.URL.revokeObjectURL = () => {};
 global.navigator = dom.window.navigator;
 global.navigator.mediaDevices = {getUserMedia: () => {}};
 global.MediaRecorder = StubMediaRecorder;
