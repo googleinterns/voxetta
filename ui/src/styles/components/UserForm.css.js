@@ -78,6 +78,7 @@ export default css`
         width: 300px;
     }
     mwc-button {
+        --mdc-typography-button-letter-spacing: 0px;
         --mdc-typography-button-text-transform: sentencecase;
         padding: 10px;
         width: 250px;

@@ -28,7 +28,6 @@ export default css`
     }
     div.button-container {
         align-items: center; 
-        box-shadow: 0px -3px 1px -1px #dcdcdc;
         display: flex; 
         flex-direction: row; 
         flex-wrap: wrap;
@@ -43,6 +42,7 @@ export default css`
         justify-content: center; 
     }
     mwc-button {
+        --mdc-typography-button-letter-spacing: 0px;
         --mdc-typography-button-text-transform: sentencecase;
         font-size: 8x;
         padding: 10px;
@@ -50,11 +50,11 @@ export default css`
     mwc-button.accept {
         --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
-        width: 65vw;
+        width: 55vw;
     }
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;
-        width: 15vw;
+        width: 25vw;
     }
 `;
