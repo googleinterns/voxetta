@@ -17,8 +17,10 @@
 import {css} from 'lit-element';
 
 export default css`
+
     #feedback,
-    .buttons {
+
+    .section-container {
         align-items: center;
         display: flex;
         flex-direction: column;
@@ -26,11 +28,21 @@ export default css`
         justify-content: center;
     }
 
+    .feedback-container {
+        height: 120px; 
+    }
+
     .buttons {
-        padding-bottom: 10vh;
-        padding-top: 40px;
+        align-items: center;
+        display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
+        padding-top: 40px;
+    } 
+
+    .button-container {
+        width: 50px;
     }
 
     .record-button-container {
@@ -42,15 +54,14 @@ export default css`
     }
 
     p {
-        text-align: center;
         color: red;
+        text-align: center;
     }
-
 
     /* Tablet */
     @media screen and (min-width: 600px) {
         .buttons {
-            padding-bottom: 14vh;
+            padding-bottom: 10vh;
         }
     }
 `;

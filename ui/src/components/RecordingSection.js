@@ -90,10 +90,13 @@ export class RecordingSection extends LitElement {
                 return html``;
         }
     }
-
-    render() {
-        return html`<div id="feedback">
-                ${this.renderFeedbackWindow()}
+  
+  render() {
+        return html`
+            <div class="section-container">
+                <div id="feedback" class="feedback-container">
+                    ${this.renderFeedbackWindow()}
+                </div>
             </div>
 
             <div class="buttons">
