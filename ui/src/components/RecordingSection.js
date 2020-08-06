@@ -52,11 +52,41 @@ export class RecordingSection extends LitElement {
                     .audioStream=${this.audioStream}
                     .context=${this.context}
                 >
-                </vox-sound-wave>`;
+                </vox-sound-wave>
+                <p>w</p>`;
+            case CollectionStates.NOT_RECORDING:
+                return html` <vox-sound-wave
+                    ?isRecording=${this.isRecording()}
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}
+                >
+                </vox-sound-wave>
+                <p>w</p>`;
             case CollectionStates.BEFORE_UPLOAD:
-                return html`put play button here`;
+                return html` <vox-sound-wave
+                    ?isRecording=${this.isRecording()}
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}
+                >
+                </vox-sound-wave>
+                <p>w</p>`;
+            case CollectionStates.TRANSITIONING:
+                return html` <vox-sound-wave
+                    ?isRecording=${this.isRecording()}
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}
+                >
+                </vox-sound-wave>
+                <p>w</p>`;
             case CollectionStates.QC_ERROR:
-                return html`<p>${this.qcError}</p>`;
+                return html`
+                <vox-sound-wave
+                    ?isRecording=${this.isRecording()}
+                    .audioStream=${this.audioStream}
+                    .context=${this.context}
+                >
+                </vox-sound-wave>
+                <p>${this.qcError}</p>`;
             default:
                 return html``;
         }

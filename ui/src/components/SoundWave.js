@@ -22,20 +22,22 @@ export class SoundWave {
      * Creates a soundwave based off the loudness of the user.
      * @param {Object} canvas - A canvas to draw the soundwave on.
      * @param {Object} stream - stream the soundwave will be created off.
-     * @private {Object} Allows for the stream to be analyzed.
-     * @private {Number} Id needed to stop animation.
+     * @param {Object} context - context that allows us to create modifiers for the audio.
+     * @param {Object} canvasCtx - Allows for the soundwave to be drawn on the canvas.
+     * @param {Object} analyser - Allows for the stream to be analyzed.
      * @private {Array} Array used to store "loudness" of stream.
-     * @private {Object} Allows for the soundwave to be drawn on the canvas.
+     * @private {Number} Id needed to stop animation.
+     * @private {Object} Creates media stream source to be modified.
      */
     constructor(canvas, stream, context, canvasCtx, analyser, freqs) {
         this.canvas = canvas;
         this.stream = stream;
-        this.analyser = analyser;
-        this.stopId = undefined;
-        this.freqs = freqs;
-        this.source = undefined;
         this.context = context;
         this.canvasCtx = canvasCtx;
+        this.analyser = analyser;
+        this.freqs = freqs;
+        this.stopId = undefined;
+        this.source = undefined;
     }
 
     /**
