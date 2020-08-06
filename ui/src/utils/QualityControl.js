@@ -22,8 +22,8 @@ export class QualityControl {
    /**
     * Creates an quality control instance
     * @param {Object} context - Audio context used to extract data from utterance.
-    * @param {Object} blob - the blob containig utterance data
-    * @private {Object} Allows access to data of the utterance  
+    * @param {Object} blob - the blob containig utterance data.
+    * @param {Object} audioBuffer - Allows access to data of the utterance.
     */
     constructor(context, blob, audioBuffer) {
         this.context = context;
