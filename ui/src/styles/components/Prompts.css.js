@@ -17,7 +17,6 @@
 import {css} from 'lit-element';
 
 export default css`
-
     #prompt-screen {
         align-items: center;
         display: flex;
@@ -29,11 +28,27 @@ export default css`
     p {
         color: black;
         font-size: 44px;
-        max-width: 70vw;
+        max-width: 85vw;
     }
 
     img {
         max-height: 400px;
+    }
+
+    .loading-text {
+        opacity: 0.5;
+    }
+    mwc-icon {
+        margin-bottom: 20px;
+
+        --mdc-icon-size: 48px;
+    }
+
+    .finished-icon {
+        color: #34a853;
+    }
+    .failed-icon {
+        color: #ea4335;
     }
 
     /* Prompt reset button  */

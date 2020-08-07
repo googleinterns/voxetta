@@ -66,7 +66,7 @@ export class StateContainer extends LitElement {
 
         this.country = undefined;
         this.loginCompleted = false;
-        this.reupload = false; 
+        this.reupload = false;
         this.userInfoPresent = false;
         this.view = Views.COUNTRY_SELECTION;
         this.viewShadowRoot = undefined;
@@ -178,7 +178,6 @@ export class StateContainer extends LitElement {
         this.qcError = e.detail.qcError;
     }
 
-
     /**
      * Updates the view such that the record page closes and the user form appears.
      */
@@ -222,25 +221,25 @@ export class StateContainer extends LitElement {
     }
 
     handleAddToast(e) {
+        this.collectionState = CollectionStates.TOAST;
         this.toast = e.detail.message;
-        this.icon = e.detail.icon; 
+        this.icon = e.detail.icon;
     }
 
     handleClearToast() {
         this.toast = undefined;
+
+        this.collectionState = CollectionStates.NOT_RECORDING;
     }
 
     renderToast() {
         if (!this.toast) {
             return html``;
         }
- 
-        return html` 
-            <vox-toast 
-                message="${this.toast}"
-                icon="${this.icon}"
-            >
-            </vox-toast> `;
+
+        return html`
+            <vox-toast message="${this.toast}" icon="${this.icon}"> </vox-toast>
+        `;
     }
 
     /**
@@ -256,7 +255,7 @@ export class StateContainer extends LitElement {
      * @param {Event} e Object dispatched from the record button.
      */
     handleSaveAudio(e) {
-        this.latestAudio = e.detail.audio; 
+        this.latestAudio = e.detail.audio;
     }
 
     /**

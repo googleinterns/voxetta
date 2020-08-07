@@ -17,32 +17,54 @@
 import {css} from 'lit-element';
 
 export default css`
+    div.tos-container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
+        height: 100vh;
+        width: 100vw;
+    }
     textarea.terms {
         border: none;
         font-family: 'Roboto';
-        font-size: 15px; 
-        height: 85vh;
-        overflow: scroll; 
+        font-size: 15px;
+        height: 100%;
+        flex: 1;
+        overflow: scroll;
         padding-top: 3vh;
         width: 90%;
+
+        overflow-x: hidden;
+    }
+    textarea.terms:focus {
+        outline: none;
     }
 
     div.button-container {
-        align-items: center; 
-        display: flex; 
-        flex-direction: row; 
+        box-shadow: 0px 2px 6px rgba(60, 64, 67, 0.5),
+            0px 1px 2px rgba(60, 64, 67, 0.3),
+            0px 4px 8px rgba(128, 134, 139, 0.06),
+            0px -2px 8px rgba(128, 134, 139, 0.09);
+
+        width: 100vw;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
-        height: 12vh;
-        justify-content: center; 
-        text-align: center;  
+        height: 80px;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        z-index: 999;
     }
 
     div.tos-container {
         align-items: center;
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     mwc-button {
@@ -53,14 +75,11 @@ export default css`
     }
 
     mwc-button.accept {
-        --mdc-theme-primary: #1a73e8;
         --mdc-theme-on-primary: white;
-        width: 55vw;
     }
-    
+
     mwc-button.cancel {
         --mdc-theme-primary: white;
         --mdc-theme-on-primary: #1a73e8;
-        width: 25vw;
     }
 `;

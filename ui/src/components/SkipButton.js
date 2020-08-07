@@ -22,7 +22,7 @@ import style from '../styles/components/SkipButton.css.js';
 
 export class SkipButton extends LitElement {
     static get properties() {
-        return {};
+        return {disabled: {type: Boolean}};
     }
 
     static get styles() {
@@ -43,7 +43,7 @@ export class SkipButton extends LitElement {
 
     render() {
         return html`
-            <button @click="${this.handleSkip}">
+            <button @click="${this.handleSkip}" ?disabled=${this.disabled}>
                 <mwc-icon>skip_next</mwc-icon>
                 skip
             </button>

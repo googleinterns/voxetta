@@ -16,6 +16,7 @@
 
 import {LitElement, html} from 'lit-element';
 
+import {CircularProgress} from '@material/mwc-circular-progress';
 import {ReRecordButton} from './ReRecordButton';
 import {PlaybackButton} from './PlaybackButton';
 
@@ -32,6 +33,7 @@ export class RecordingSection extends LitElement {
             audioStream: {type: Object},
             context: {type: Object},
             qcError: {type: String},
+            disableButtons: {type: Boolean},
         };
     }
 
@@ -43,6 +45,16 @@ export class RecordingSection extends LitElement {
         super();
         this.audioUrl = undefined;
         this.qcError = '';
+    }
+
+    updated() {
+        if (
+            this.collectionState === CollectionStates.TRANSITIONING ||
+            this.collectionState === CollectionStates.UPLOAD_ERROR ||
+            this.collectionState === CollectionStates.TOAST
+        )
+            this.disableButtons = true;
+        else this.disableButtons = false;
     }
 
     handleReRecord() {
@@ -63,6 +75,10 @@ export class RecordingSection extends LitElement {
         });
 
         this.dispatchEvent(event);
+    }
+
+    toastDisplayed() {
+        return this.collectionState === CollectionStates.TOAST;
     }
 
     /**
@@ -86,14 +102,21 @@ export class RecordingSection extends LitElement {
                 ></vox-playback-button>`;
             case CollectionStates.QC_ERROR:
                 return html`<p>${this.qcError}</p>`;
+            case CollectionStates.TRANSITIONING:
+                return html`<mwc-circular-progress
+                    indeterminate
+                ></mwc-circular-progress>`;
             default:
                 return html``;
         }
     }
-  
-  render() {
-        return html`
-            <div class="section-container">
+
+    render() {
+        return html` <div
+                class="section-container ${this.toastDisplayed()
+                    ? 'buttons-disabled'
+                    : ''}"
+            >
                 <div id="feedback" class="feedback-container">
                     ${this.renderFeedbackWindow()}
                 </div>
@@ -104,6 +127,7 @@ export class RecordingSection extends LitElement {
                     ${this.collectionState === CollectionStates.BEFORE_UPLOAD
                         ? html`<vox-re-record-button
                               @re-record=${this.handleReRecord}
+                              ?disabled=${this.disableButtons}
                           ></vox-re-record-button>`
                         : html``}
                 </div>
@@ -111,11 +135,14 @@ export class RecordingSection extends LitElement {
                     <vox-record-button
                         .collectionState=${this.collectionState}
                         @set-audio-url=${this.handleAudioUrl}
+                        ?disabled=${this.disableButtons}
                     >
                     </vox-record-button>
                 </div>
                 <div class="button-container">
-                    <vox-skip-button> </vox-skip-button>
+                    <vox-skip-button
+                        ?disabled=${this.disableButtons}
+                    ></vox-skip-button>
                 </div>
             </div>`;
     }

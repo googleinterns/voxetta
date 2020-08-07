@@ -55,11 +55,12 @@ export default css`
         align-items: center;
         display: flex;
         flex-direction: column;
-        height: 50vh; 
+        flex: 1;
+        max-height: 50vh;
     }
 
     vox-recording-section {
-        height: 40vh; 
+        /* height: 40vh;  */
     }
 
     .prompts {
